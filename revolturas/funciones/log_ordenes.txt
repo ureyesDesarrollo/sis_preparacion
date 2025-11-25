@@ -1,0 +1,596 @@
+[2025-07-08 17:05:30] | OrdenID: 318 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-08 17:05:55] | OrdenID: 320 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-09 13:51:08] | OrdenID: 321 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-09 15:16:49] | OrdenID: 324 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-09 15:18:27] | OrdenID: 323 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-09 17:17:37] | OrdenID: 325 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-09 17:18:01] | OrdenID: 322 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-10 17:20:59] | OrdenID: 326 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-10 17:35:01] | OrdenID: 327 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-11 12:23:04] | OrdenID: 328 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-11 12:25:40] | OrdenID: 332 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-11 12:25:40] | OrdenID: 332 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-11 16:40:16] | OrdenID: 330 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-11 16:40:42] | OrdenID: 331 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-11 16:40:56] | OrdenID: 329 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-11 16:42:42] | OrdenID: 333 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-14 12:34:00] | OrdenID: 335 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-14 12:36:03] | OrdenID: 334 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-14 18:00:09] | OrdenID: 336 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-14 18:06:41] | OrdenID: 337 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-15 11:21:30] | OrdenID: 340 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-15 11:23:57] | OrdenID: 339 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-15 11:23:57] | OrdenID: 339 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-15 15:58:58] | OrdenID: 338 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-16 12:31:12] | OrdenID: 341 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-16 12:34:13] | OrdenID: 344 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-16 12:35:09] | OrdenID: 342 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-16 12:38:45] | OrdenID: 343 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-16 12:38:45] | OrdenID: 343 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-16 12:42:34] | OrdenID: 345 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-16 12:42:34] | OrdenID: 345 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-16 18:06:17] | OrdenID: 346 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-17 12:49:18] | OrdenID: 348 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-17 18:21:08] | OrdenID: 347 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-18 12:59:59] | OrdenID: 349 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-18 14:52:40] | OrdenID: 350 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-18 14:52:40] | OrdenID: 350 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-18 15:38:22] | OrdenID: 354 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-18 16:33:38] | OrdenID: 351 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-18 16:34:11] | OrdenID: 352 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-18 16:34:40] | OrdenID: 353 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-21 15:02:23] | OrdenID: 355 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-21 18:19:44] | OrdenID: 356 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-21 18:20:00] | OrdenID: 357 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-22 15:54:19] | OrdenID: 358 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-22 15:55:04] | OrdenID: 359 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-22 15:55:21] | OrdenID: 360 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-23 13:50:41] | OrdenID: 364 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-23 13:51:53] | OrdenID: 365 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-23 17:21:04] | OrdenID: 366 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-23 17:21:22] | OrdenID: 363 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-23 17:21:37] | OrdenID: 362 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-23 17:22:09] | OrdenID: 361 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-24 17:50:59] | OrdenID: 368 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 14:40:32] | OrdenID: 378 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-25 14:41:37] | OrdenID: 377 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-25 14:44:06] | OrdenID: 375 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-25 14:44:06] | OrdenID: 375 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-25 14:45:59] | OrdenID: 369 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 14:46:50] | OrdenID: 376 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-25 16:42:01] | OrdenID: 370 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 16:42:29] | OrdenID: 371 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 16:42:52] | OrdenID: 379 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 16:43:21] | OrdenID: 374 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 16:43:49] | OrdenID: 372 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 16:45:35] | OrdenID: 373 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-25 16:51:44] | OrdenID: 367 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-28 14:18:30] | OrdenID: 385 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-28 14:18:30] | OrdenID: 385 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-28 14:18:30] | OrdenID: 385 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-28 14:19:10] | OrdenID: 384 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-28 19:37:48] | OrdenID: 387 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-28 19:38:07] | OrdenID: 382 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-28 19:38:21] | OrdenID: 388 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-28 19:38:35] | OrdenID: 381 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-29 15:06:22] | OrdenID: 391 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-29 15:06:22] | OrdenID: 391 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-29 17:12:46] | OrdenID: 392 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-29 17:13:24] | OrdenID: 383 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-29 17:13:40] | OrdenID: 386 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-29 17:13:55] | OrdenID: 389 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-29 17:14:27] | OrdenID: 390 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-30 14:13:09] | OrdenID: 395 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-30 14:22:21] | OrdenID: 394 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-30 14:23:02] | OrdenID: 393 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-30 16:22:45] | OrdenID: 396 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-31 12:03:47] | OrdenID: 397 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-31 12:05:12] | OrdenID: 400 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-31 12:05:45] | OrdenID: 402 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-31 13:15:57] | OrdenID: 399 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-07-31 16:35:54] | OrdenID: 404 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-31 16:36:14] | OrdenID: 403 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-31 16:36:33] | OrdenID: 401 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-07-31 16:36:50] | OrdenID: 398 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-01 15:35:03] | OrdenID: 406 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-01 15:36:05] | OrdenID: 405 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-04 17:36:00] | OrdenID: 409 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-04 17:36:30] | OrdenID: 408 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-04 17:36:55] | OrdenID: 407 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-05 16:31:11] | OrdenID: 410 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-05 16:31:32] | OrdenID: 411 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 09:16:59] | OrdenID: 415 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 09:17:37] | OrdenID: 412 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 09:18:02] | OrdenID: 414 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 09:18:26] | OrdenID: 413 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 16:50:38] | OrdenID: 416 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 17:18:04] | OrdenID: 423 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 17:24:31] | OrdenID: 422 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 17:24:55] | OrdenID: 421 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 17:25:09] | OrdenID: 420 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 17:25:23] | OrdenID: 419 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 17:25:40] | OrdenID: 418 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-06 18:04:12] | OrdenID: 417 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-07 09:25:03] | OrdenID: 424 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-07 09:25:03] | OrdenID: 424 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-07 14:59:24] | OrdenID: 427 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-07 14:59:54] | OrdenID: 426 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-07 15:35:42] | OrdenID: 432 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-07 15:38:20] | OrdenID: 425 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-07 17:42:32] | OrdenID: 431 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-07 17:43:15] | OrdenID: 430 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-07 17:43:30] | OrdenID: 429 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-07 17:43:44] | OrdenID: 428 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-08 15:33:07] | OrdenID: 433 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-08 15:33:33] | OrdenID: 434 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-08 17:14:59] | OrdenID: 435 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-08 17:15:21] | OrdenID: 436 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-08 17:15:41] | OrdenID: 437 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-11 12:50:53] | OrdenID: 440 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-11 18:18:34] | OrdenID: 439 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-11 18:30:42] | OrdenID: 441 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-12 15:30:22] | OrdenID: 444 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-12 15:30:22] | OrdenID: 444 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-12 15:30:22] | OrdenID: 444 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-12 18:22:52] | OrdenID: 446 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-12 18:23:05] | OrdenID: 445 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-12 18:23:18] | OrdenID: 443 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-12 18:23:30] | OrdenID: 442 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-13 15:41:25] | OrdenID: 452 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-13 15:43:45] | OrdenID: 451 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-13 15:43:45] | OrdenID: 451 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-13 15:44:37] | OrdenID: 449 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-13 15:44:37] | OrdenID: 449 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-13 15:57:14] | OrdenID: 447 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-13 17:32:35] | OrdenID: 450 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-13 17:32:50] | OrdenID: 448 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-14 10:06:09] | OrdenID: 438 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-14 10:08:23] | OrdenID: 455 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-14 10:09:11] | OrdenID: 454 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-14 10:09:39] | OrdenID: 453 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-14 15:25:22] | OrdenID: 460 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-14 15:25:46] | OrdenID: 457 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-14 17:17:56] | OrdenID: 462 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-14 17:22:38] | OrdenID: 456 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-14 18:00:20] | OrdenID: 459 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-14 18:00:35] | OrdenID: 458 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-15 14:16:22] | OrdenID: 461 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-15 14:18:03] | OrdenID: 463 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-15 14:55:55] | OrdenID: 467 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-15 14:56:21] | OrdenID: 465 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-15 14:56:43] | OrdenID: 464 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-15 17:59:14] | OrdenID: 468 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-15 17:59:26] | OrdenID: 466 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-16 10:59:11] | OrdenID: 470 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-16 12:54:07] | OrdenID: 469 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-18 15:49:27] | OrdenID: 471 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-18 15:50:10] | OrdenID: 472 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-18 15:50:36] | OrdenID: 475 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-18 15:50:36] | OrdenID: 475 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-18 17:52:19] | OrdenID: 473 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-18 17:52:47] | OrdenID: 474 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-19 16:21:29] | OrdenID: 477 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-19 16:22:30] | OrdenID: 478 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-19 17:28:58] | OrdenID: 476 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-19 17:29:21] | OrdenID: 479 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-20 17:13:58] | OrdenID: 480 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-20 17:15:05] | OrdenID: 481 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-21 17:45:50] | OrdenID: 482 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-22 15:03:46] | OrdenID: 484 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-22 15:03:46] | OrdenID: 484 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-22 17:23:27] | OrdenID: 483 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-22 17:25:53] | OrdenID: 485 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-25 19:05:08] | OrdenID: 487 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-25 19:05:39] | OrdenID: 489 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-25 19:06:11] | OrdenID: 488 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-26 12:40:31] | OrdenID: 494 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-26 12:40:31] | OrdenID: 494 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-26 12:40:49] | OrdenID: 493 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-26 14:58:08] | OrdenID: 495 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-26 15:28:53] | OrdenID: 491 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-26 15:29:44] | OrdenID: 490 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-26 18:24:23] | OrdenID: 492 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-27 18:48:12] | OrdenID: 496 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-27 18:48:32] | OrdenID: 497 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-27 18:48:49] | OrdenID: 498 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-27 18:49:02] | OrdenID: 499 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-27 18:49:35] | OrdenID: 500 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-27 18:50:15] | OrdenID: 501 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-27 18:50:49] | OrdenID: 502 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-28 15:26:35] | OrdenID: 507 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-08-29 09:01:41] | OrdenID: 503 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 09:01:54] | OrdenID: 504 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 09:02:06] | OrdenID: 505 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 09:02:22] | OrdenID: 506 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 09:02:34] | OrdenID: 508 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 09:02:47] | OrdenID: 509 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 16:50:08] | OrdenID: 511 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 21:41:03] | OrdenID: 512 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-08-29 21:41:48] | OrdenID: 510 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-01 15:22:57] | OrdenID: 517 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-01 16:36:05] | OrdenID: 513 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-01 17:59:04] | OrdenID: 516 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-01 17:59:18] | OrdenID: 515 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-02 14:33:30] | OrdenID: 521 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-02 14:34:20] | OrdenID: 520 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-02 18:23:33] | OrdenID: 525 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-02 18:24:20] | OrdenID: 523 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-02 18:24:50] | OrdenID: 522 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-03 18:19:26] | OrdenID: 527 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-03 18:19:45] | OrdenID: 526 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-05 10:31:04] | OrdenID: 528 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-05 10:31:50] | OrdenID: 524 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-05 15:01:57] | OrdenID: 533 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-05 15:02:36] | OrdenID: 532 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-05 15:03:12] | OrdenID: 530 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-05 15:03:45] | OrdenID: 531 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-05 15:15:57] | OrdenID: 535 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-05 16:41:50] | OrdenID: 534 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-08 14:50:36] | OrdenID: 541 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-08 18:09:51] | OrdenID: 529 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-08 18:10:55] | OrdenID: 536 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-08 18:11:11] | OrdenID: 537 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-08 18:11:24] | OrdenID: 538 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-08 18:11:40] | OrdenID: 540 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-08 18:12:03] | OrdenID: 542 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-09 13:11:05] | OrdenID: 545 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-09 13:45:51] | OrdenID: 544 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-09 13:47:40] | OrdenID: 543 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-10 15:41:30] | OrdenID: 547 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-10 15:41:30] | OrdenID: 547 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-10 15:41:58] | OrdenID: 548 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-10 15:43:26] | OrdenID: 550 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-10 15:43:26] | OrdenID: 550 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-10 17:54:04] | OrdenID: 546 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-10 17:54:18] | OrdenID: 549 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-10 17:54:29] | OrdenID: 551 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-10 17:54:51] | OrdenID: 552 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-10 17:55:03] | OrdenID: 553 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-10 17:55:22] | OrdenID: 554 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-10 17:55:38] | OrdenID: 555 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-11 15:44:15] | OrdenID: 564 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-11 15:45:33] | OrdenID: 563 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-11 15:45:33] | OrdenID: 563 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-11 15:45:33] | OrdenID: 563 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-11 15:46:11] | OrdenID: 558 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-11 17:50:28] | OrdenID: 565 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-11 17:50:55] | OrdenID: 562 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-11 17:51:32] | OrdenID: 561 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-11 17:51:51] | OrdenID: 560 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-11 17:52:06] | OrdenID: 559 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-11 17:52:21] | OrdenID: 557 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-11 17:52:35] | OrdenID: 556 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-12 16:42:25] | OrdenID: 539 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-12 16:43:20] | OrdenID: 566 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-12 16:43:34] | OrdenID: 567 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-15 18:05:51] | OrdenID: 568 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-17 16:01:50] | OrdenID: 572 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-17 18:28:17] | OrdenID: 569 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-17 18:28:41] | OrdenID: 570 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-17 18:28:57] | OrdenID: 571 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-17 18:29:12] | OrdenID: 574 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-17 18:29:27] | OrdenID: 575 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-18 11:18:30] | OrdenID: 577 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-18 17:33:21] | OrdenID: 578 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-18 17:33:54] | OrdenID: 580 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-18 17:34:25] | OrdenID: 581 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-18 17:35:17] | OrdenID: 582 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-18 17:36:37] | OrdenID: 579 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-18 17:42:27] | OrdenID: 583 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 15:02:41] | OrdenID: 585 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-19 17:03:30] | OrdenID: 576 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:03:50] | OrdenID: 573 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:46:34] | OrdenID: 584 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:46:51] | OrdenID: 586 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:47:03] | OrdenID: 587 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:47:30] | OrdenID: 588 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:47:48] | OrdenID: 589 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:56:20] | OrdenID: 593 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:56:46] | OrdenID: 592 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:57:07] | OrdenID: 591 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-19 17:57:28] | OrdenID: 590 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-22 15:55:03] | OrdenID: 600 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-22 15:56:05] | OrdenID: 599 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-22 15:56:05] | OrdenID: 599 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-22 15:56:54] | OrdenID: 595 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-22 15:56:54] | OrdenID: 595 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-22 15:57:42] | OrdenID: 594 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-22 18:17:04] | OrdenID: 598 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-22 18:17:22] | OrdenID: 597 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-22 18:17:37] | OrdenID: 596 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-23 13:44:07] | OrdenID: 601 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-23 13:44:35] | OrdenID: 602 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-23 13:44:35] | OrdenID: 602 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-23 13:46:33] | OrdenID: 604 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-23 18:20:34] | OrdenID: 605 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-23 18:20:52] | OrdenID: 603 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-23 18:21:22] | OrdenID: 606 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-24 17:33:59] | OrdenID: 607 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-25 15:58:51] | OrdenID: 614 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-25 17:45:24] | OrdenID: 613 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-25 17:46:52] | OrdenID: 612 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-25 17:47:16] | OrdenID: 611 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-25 17:48:02] | OrdenID: 610 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-25 17:49:33] | OrdenID: 609 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-25 17:49:49] | OrdenID: 608 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-26 10:28:46] | OrdenID: 616 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-26 18:15:21] | OrdenID: 623 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-26 18:15:59] | OrdenID: 621 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-26 18:16:16] | OrdenID: 620 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-26 18:16:31] | OrdenID: 619 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-26 18:16:47] | OrdenID: 617 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-26 18:17:00] | OrdenID: 615 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-29 13:59:06] | OrdenID: 626 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-29 19:17:56] | OrdenID: 628 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-29 19:37:43] | OrdenID: 618 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-30 09:27:37] | OrdenID: 624 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-30 09:28:49] | OrdenID: 627 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-30 09:29:07] | OrdenID: 625 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-30 12:35:20] | OrdenID: 630 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-09-30 13:46:51] | OrdenID: 629 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-09-30 17:25:06] | OrdenID: 632 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-01 19:01:18] | OrdenID: 634 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-01 19:01:50] | OrdenID: 633 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-02 16:25:07] | OrdenID: 638 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-02 16:25:07] | OrdenID: 638 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-02 16:25:48] | OrdenID: 636 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-02 16:25:48] | OrdenID: 636 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-02 16:26:28] | OrdenID: 635 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-02 16:35:42] | OrdenID: 637 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-02 16:35:42] | OrdenID: 637 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-02 18:18:02] | OrdenID: 639 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-03 14:45:10] | OrdenID: 631 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-03 15:16:18] | OrdenID: 648 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-03 15:29:32] | OrdenID: 642 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-03 15:29:59] | OrdenID: 640 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-03 15:31:33] | OrdenID: 644 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-03 15:31:33] | OrdenID: 644 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-03 15:31:33] | OrdenID: 644 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-03 17:38:29] | OrdenID: 641 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-03 17:38:46] | OrdenID: 645 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-03 17:39:08] | OrdenID: 646 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-03 17:40:18] | OrdenID: 643 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-07 10:33:31] | OrdenID: 649 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-07 10:33:45] | OrdenID: 650 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-07 11:45:00] | OrdenID: 647 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-07 14:50:56] | OrdenID: 653 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-07 14:51:39] | OrdenID: 651 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-07 14:51:39] | OrdenID: 651 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-07 17:47:30] | OrdenID: 652 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-08 17:23:14] | OrdenID: 654 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-08 17:23:34] | OrdenID: 655 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-08 17:24:02] | OrdenID: 656 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-10 10:29:24] | OrdenID: 657 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-10 10:29:40] | OrdenID: 658 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-10 16:16:05] | OrdenID: 660 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-10 17:11:24] | OrdenID: 661 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-10 17:11:43] | OrdenID: 659 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-12 11:34:15] | OrdenID: 662 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-13 12:01:14] | OrdenID: 664 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-13 12:01:14] | OrdenID: 664 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-13 17:57:52] | OrdenID: 663 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-14 12:24:36] | OrdenID: 666 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-14 17:06:36] | OrdenID: 665 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-14 17:21:43] | OrdenID: 667 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-14 17:22:01] | OrdenID: 670 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-14 17:22:23] | OrdenID: 669 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-14 17:22:43] | OrdenID: 668 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 15:31:49] | OrdenID: 672 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 18:02:32] | OrdenID: 671 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 18:02:59] | OrdenID: 673 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 18:03:17] | OrdenID: 674 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 18:03:45] | OrdenID: 675 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 18:04:07] | OrdenID: 676 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 18:04:29] | OrdenID: 677 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-15 18:04:58] | OrdenID: 678 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-16 16:42:13] | OrdenID: 680 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-16 17:56:47] | OrdenID: 681 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-16 17:57:07] | OrdenID: 682 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-16 17:57:32] | OrdenID: 683 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-16 17:57:51] | OrdenID: 684 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-16 17:58:14] | OrdenID: 685 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-16 18:23:02] | OrdenID: 686 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-17 16:11:57] | OrdenID: 687 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-17 16:12:29] | OrdenID: 689 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-17 16:12:29] | OrdenID: 689 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-17 16:13:35] | OrdenID: 694 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-17 17:47:18] | OrdenID: 688 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-17 17:47:39] | OrdenID: 690 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-17 17:48:18] | OrdenID: 693 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-17 17:49:29] | OrdenID: 695 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-17 17:50:04] | OrdenID: 696 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-17 17:50:28] | OrdenID: 697 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-20 16:34:58] | OrdenID: 698 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 09:28:47] | OrdenID: 700 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-21 13:19:12] | OrdenID: 699 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 13:19:33] | OrdenID: 691 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 13:20:13] | OrdenID: 692 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 14:57:31] | OrdenID: 702 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-21 15:40:55] | OrdenID: 705 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-21 15:40:55] | OrdenID: 705 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-21 16:25:48] | OrdenID: 702 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-21 16:26:02] | OrdenID: 705 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-21 16:26:02] | OrdenID: 705 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-21 18:08:54] | OrdenID: 707 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 18:09:16] | OrdenID: 706 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 18:09:37] | OrdenID: 704 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 18:09:55] | OrdenID: 703 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-21 18:10:18] | OrdenID: 701 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 12:21:41] | OrdenID: 708 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 12:22:03] | OrdenID: 709 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 13:25:20] | OrdenID: 711 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-22 17:16:23] | OrdenID: 713 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-22 17:16:23] | OrdenID: 713 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-22 17:16:50] | OrdenID: 718 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-22 18:15:20] | OrdenID: 721 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:15:46] | OrdenID: 720 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:16:38] | OrdenID: 719 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:17:05] | OrdenID: 717 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:17:30] | OrdenID: 716 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:17:53] | OrdenID: 715 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:18:13] | OrdenID: 714 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:18:31] | OrdenID: 712 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-22 18:18:50] | OrdenID: 710 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-23 11:58:08] | OrdenID: 722 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 16:07:43] | OrdenID: 730 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 16:07:43] | OrdenID: 730 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 16:12:29] | OrdenID: 731 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 16:12:29] | OrdenID: 731 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 16:12:29] | OrdenID: 731 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 18:12:48] | OrdenID: 726 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 18:22:14] | OrdenID: 723 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-24 18:28:34] | OrdenID: 725 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-24 18:28:47] | OrdenID: 724 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-25 10:13:37] | OrdenID: 728 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-25 10:14:26] | OrdenID: 727 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-25 10:15:25] | OrdenID: 734 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-25 10:16:08] | OrdenID: 733 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-25 10:16:44] | OrdenID: 732 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 08:28:59] | OrdenID: 729 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 15:35:41] | OrdenID: 738 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:36:29] | OrdenID: 743 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:36:29] | OrdenID: 743 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:37:57] | OrdenID: 748 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:37:57] | OrdenID: 748 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:38:25] | OrdenID: 750 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:38:25] | OrdenID: 750 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:38:53] | OrdenID: 757 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:38:53] | OrdenID: 757 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:38:53] | OrdenID: 757 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:38:53] | OrdenID: 757 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:38:53] | OrdenID: 757 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 15:46:44] | OrdenID: 751 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-27 17:25:53] | OrdenID: 742 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:26:19] | OrdenID: 740 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:26:35] | OrdenID: 739 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:26:57] | OrdenID: 741 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:28:42] | OrdenID: 745 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:29:00] | OrdenID: 747 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:29:17] | OrdenID: 746 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:29:39] | OrdenID: 744 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:30:10] | OrdenID: 756 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:30:28] | OrdenID: 755 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:30:54] | OrdenID: 754 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:31:22] | OrdenID: 737 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:31:46] | OrdenID: 735 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-27 17:32:16] | OrdenID: 736 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-28 09:45:38] | OrdenID: 758 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-28 09:46:14] | OrdenID: 759 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-28 09:47:02] | OrdenID: 760 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-28 10:45:49] | OrdenID: 761 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-28 15:55:57] | OrdenID: 749 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-29 14:06:02] | OrdenID: 762 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-29 14:07:05] | OrdenID: 763 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-29 16:56:02] | OrdenID: 765 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-29 16:57:03] | OrdenID: 764 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-29 17:51:28] | OrdenID: 753 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-30 15:19:59] | OrdenID: 769 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-30 15:19:59] | OrdenID: 769 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-30 15:19:59] | OrdenID: 769 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-30 15:19:59] | OrdenID: 769 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-30 17:01:47] | OrdenID: 768 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-30 17:02:08] | OrdenID: 770 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-30 17:03:02] | OrdenID: 766 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-30 17:30:02] | OrdenID: 771 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-31 12:17:27] | OrdenID: 773 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-31 13:02:37] | OrdenID: 780 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-31 13:02:37] | OrdenID: 780 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-31 13:02:37] | OrdenID: 780 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-31 13:07:58] | OrdenID: 779 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-31 13:09:03] | OrdenID: 777 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-31 13:09:52] | OrdenID: 775 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-10-31 13:12:09] | OrdenID: 752 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-31 13:12:40] | OrdenID: 767 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-10-31 13:13:06] | OrdenID: 772 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-01 09:38:55] | OrdenID: 778 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-01 09:39:34] | OrdenID: 776 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-01 09:40:11] | OrdenID: 774 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-03 10:04:15] | OrdenID: 781 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-03 12:27:16] | OrdenID: 783 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-04 09:11:34] | OrdenID: 782 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-04 14:05:19] | OrdenID: 792 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-04 14:05:19] | OrdenID: 792 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-04 14:09:06] | OrdenID: 790 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-04 14:09:06] | OrdenID: 790 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-04 14:09:06] | OrdenID: 790 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-04 17:24:14] | OrdenID: 785 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-04 17:24:37] | OrdenID: 784 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-04 17:24:55] | OrdenID: 786 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-04 17:25:13] | OrdenID: 787 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-04 17:25:32] | OrdenID: 788 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-04 17:26:03] | OrdenID: 789 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-05 12:07:19] | OrdenID: 795 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-05 15:50:23] | OrdenID: 791 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-05 15:50:52] | OrdenID: 793 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-05 15:51:11] | OrdenID: 794 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-06 14:27:19] | OrdenID: 805 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-06 14:27:19] | OrdenID: 805 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-07 08:14:45] | OrdenID: 804 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 08:15:45] | OrdenID: 803 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 08:16:08] | OrdenID: 802 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 08:16:49] | OrdenID: 800 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 08:17:32] | OrdenID: 799 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 08:18:00] | OrdenID: 798 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 08:18:32] | OrdenID: 797 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 08:18:57] | OrdenID: 796 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 11:33:14] | OrdenID: 806 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 14:25:58] | OrdenID: 809 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-07 14:25:58] | OrdenID: 809 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-07 14:26:24] | OrdenID: 812 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-07 16:15:09] | OrdenID: 814 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 16:16:09] | OrdenID: 813 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 16:16:30] | OrdenID: 811 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 16:16:55] | OrdenID: 810 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 16:18:22] | OrdenID: 808 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-07 16:18:52] | OrdenID: 807 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-11 08:09:19] | OrdenID: 815 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-11 14:44:13] | OrdenID: 821 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-11 15:24:18] | OrdenID: 816 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-11 16:09:33] | OrdenID: 820 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-11 16:10:39] | OrdenID: 819 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-11 16:11:00] | OrdenID: 818 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-11 16:11:19] | OrdenID: 817 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-12 15:41:56] | OrdenID: 826 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-12 15:42:20] | OrdenID: 825 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-12 15:42:38] | OrdenID: 824 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-12 15:43:06] | OrdenID: 823 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-12 15:43:23] | OrdenID: 822 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-14 09:39:50] | OrdenID: 827 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-14 09:40:07] | OrdenID: 828 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-14 09:40:30] | OrdenID: 829 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-14 14:32:52] | OrdenID: 830 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-14 15:18:22] | OrdenID: 832 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-14 15:18:48] | OrdenID: 831 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-15 18:08:25] | OrdenID: 835 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-15 18:09:12] | OrdenID: 834 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-15 18:09:35] | OrdenID: 833 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-18 16:40:19] | OrdenID: 836 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-18 16:40:41] | OrdenID: 837 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-19 10:27:07] | OrdenID: 838 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-19 12:58:23] | OrdenID: 839 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-19 16:54:54] | OrdenID: 842 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-19 16:55:17] | OrdenID: 841 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-19 16:55:40] | OrdenID: 843 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-19 16:56:01] | OrdenID: 840 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-20 14:13:54] | OrdenID: 844 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-20 14:28:20] | OrdenID: 848 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-20 16:54:53] | OrdenID: 845 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-20 16:55:19] | OrdenID: 846 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-20 16:55:45] | OrdenID: 847 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-20 16:56:17] | OrdenID: 850 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-20 16:56:34] | OrdenID: 849 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-21 12:28:55] | OrdenID: 851 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-21 12:30:01] | OrdenID: 854 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-21 12:31:46] | OrdenID: 853 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-21 14:16:23] | OrdenID: 857 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2025-11-21 15:29:53] | OrdenID: 856 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-21 17:01:30] | OrdenID: 855 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-21 17:01:48] | OrdenID: 852 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-24 17:17:59] | OrdenID: 860 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-24 17:18:36] | OrdenID: 859 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-24 17:37:25] | OrdenID: 861 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-24 17:38:08] | OrdenID: 858 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-24 17:38:43] | OrdenID: 861 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-24 17:40:04] | OrdenID: 861 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-24 17:41:17] | OrdenID: 861 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2025-11-25 08:27:30] | OrdenID: 861 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA

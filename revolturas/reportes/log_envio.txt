@@ -1,0 +1,493 @@
+[2025-04-21 11:33:41] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:33:41] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:33:41] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 11:35:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:35:01] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:35:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 11:51:23] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:51:23] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:52:20] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:52:20] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:52:20] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 11:52:45] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:52:45] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:52:45] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 11:53:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:53:02] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:53:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 11:58:41] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:58:41] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:58:41] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 11:58:51] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 11:58:51] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 11:58:51] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 12:18:16] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 12:18:16] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 12:18:16] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 12:20:48] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 12:20:48] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 12:20:48] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-21 12:28:51] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 12:28:51] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 12:29:40] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-21 12:29:40] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-21 12:29:40] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-04-22 10:04:05] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-22 10:04:05] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-22 10:04:05] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 0.00, Salida = 0.00
+[2025-04-22 10:48:09] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-22 10:48:09] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-22 10:48:09] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 0.00, Salida = 0.00
+[2025-04-22 10:48:55] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-04-22 10:48:55] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-04-22 10:48:55] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 0.00, Salida = 0.00
+[2025-05-21 11:40:54] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-05-21 11:40:54] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-05-21 11:40:54] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 5000.00, Salida = 0.00
+[2025-07-01 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-01 09:30:02] [enviar_correo.php] Modo prueba activado. Correo no enviado.
+[2025-07-01 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 12000.00, Salida = 50426.00
+[2025-07-02 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-02 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-02 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 14775.00
+[2025-07-03 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-03 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-03 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 1135.00
+[2025-07-04 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-04 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-04 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 10000.00, Salida = 3519.00
+[2025-07-05 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-05 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-05 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 21397.00
+[2025-07-06 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-06 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-06 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 0.00
+[2025-07-07 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-07 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-07 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-07-08 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-08 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-08 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 24237.00
+[2025-07-09 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-09 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-09 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 22060.00
+[2025-07-10 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-10 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-10 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 45197.00
+[2025-07-11 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-11 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-11 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 11000.00, Salida = 26000.00
+[2025-07-12 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-12 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-12 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 3344.00
+[2025-07-13 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-13 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-13 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-07-14 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-14 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-14 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 0.00
+[2025-07-15 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-15 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-15 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 11000.00, Salida = 46525.00
+[2025-07-16 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-16 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-16 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 20100.00
+[2025-07-17 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-17 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-17 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 22488.00
+[2025-07-18 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-18 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-18 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 12000.00, Salida = 5200.00
+[2025-07-19 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-19 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-19 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 24383.00
+[2025-07-20 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-20 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-20 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 0.00
+[2025-07-21 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-21 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-21 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-07-22 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-22 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-22 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 26925.00
+[2025-07-23 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-23 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-23 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 23568.00
+[2025-07-24 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-24 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-24 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 10000.00, Salida = 9015.00
+[2025-07-25 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-25 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-25 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 1068.00
+[2025-07-26 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-26 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-26 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 37688.00
+[2025-07-27 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-27 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-27 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-07-28 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-28 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-28 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 0.00
+[2025-07-29 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-29 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-29 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 6545.00
+[2025-07-30 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-30 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-30 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 5122.00
+[2025-07-31 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-07-31 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-07-31 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 30150.00
+[2025-08-01 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-01 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-01 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 26645.00
+[2025-08-02 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-02 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-02 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 12000.00, Salida = 99.00
+[2025-08-03 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-03 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-03 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 0.00
+[2025-08-04 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-04 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-04 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 0.00
+[2025-08-05 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-05 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-05 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 2181.00
+[2025-08-06 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-06 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-06 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 10000.00, Salida = 40000.00
+[2025-08-07 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-07 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-07 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 24840.00
+[2025-08-08 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-08 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-08 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 19527.00
+[2025-08-09 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-09 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-09 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 46504.00
+[2025-08-10 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-10 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-10 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 0.00
+[2025-08-11 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-11 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-11 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 11000.00, Salida = 0.00
+[2025-08-12 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-12 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-12 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 11000.00, Salida = 21275.00
+[2025-08-13 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-13 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-13 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 10082.00
+[2025-08-14 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-14 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-14 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 22256.00
+[2025-08-15 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-15 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-15 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 5206.00
+[2025-08-16 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-16 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-16 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 21484.00
+[2025-08-17 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-17 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-17 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 20500.00
+[2025-08-18 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-18 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-18 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 0.00
+[2025-08-19 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-19 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-19 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 32410.00
+[2025-08-20 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-20 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-20 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 29061.00
+[2025-08-21 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-21 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-21 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 40000.00
+[2025-08-22 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-22 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-22 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 3000.00
+[2025-08-23 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-23 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-23 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 1490.00
+[2025-08-24 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-24 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-24 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 0.00
+[2025-08-25 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-25 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-25 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 0.00
+[2025-08-26 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-26 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-26 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 12000.00, Salida = 50000.00
+[2025-08-27 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-27 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-27 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 11000.00, Salida = 2794.00
+[2025-08-28 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-28 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-28 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 24220.00
+[2025-08-29 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-29 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-29 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 25.00
+[2025-08-30 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-30 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-30 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 71796.00
+[2025-08-31 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-08-31 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-08-31 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 0.00
+[2025-09-01 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-01 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-01 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 0.00
+[2025-09-02 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-02 09:30:01] [enviar_correo.php] Error al enviar el correo.
+[2025-09-02 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 5110.00
+[2025-09-02 09:57:36] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-02 09:57:36] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-02 09:57:36] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 5110.00
+[2025-09-03 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-03 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-03 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 15095.00
+[2025-09-04 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-04 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-04 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 10000.00, Salida = 20600.00
+[2025-09-05 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-05 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-05 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 0.00
+[2025-09-06 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-06 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-06 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 42772.00
+[2025-09-07 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-07 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-07 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-09-08 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-08 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-08 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 0.00
+[2025-09-09 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-09 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-09 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 23275.00
+[2025-09-10 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-10 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-10 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 30125.00
+[2025-09-11 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-11 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-11 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 29348.00
+[2025-09-12 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-12 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-12 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 13257.00
+[2025-09-13 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-13 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-13 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 25250.00
+[2025-09-14 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-14 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-14 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 0.00
+[2025-09-15 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-15 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-15 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 0.00
+[2025-09-16 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-16 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-16 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 25000.00
+[2025-09-17 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-17 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-17 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 0.00
+[2025-09-18 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-18 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-18 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 8000.00, Salida = 26000.00
+[2025-09-19 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-19 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-19 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 12000.00, Salida = 24875.00
+[2025-09-20 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-20 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-20 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 17388.00
+[2025-09-21 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-21 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-21 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 0.00
+[2025-09-22 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-22 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-22 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 0.00
+[2025-09-23 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-23 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-23 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 13808.00
+[2025-09-24 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-24 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-24 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 21000.00, Salida = 24832.00
+[2025-09-25 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-25 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-25 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 1000.00
+[2025-09-26 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-26 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-26 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 33284.75
+[2025-09-27 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-27 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-27 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 22000.00, Salida = 47345.00
+[2025-09-28 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-28 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-28 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 0.00
+[2025-09-29 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-29 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-29 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 12000.00, Salida = 0.00
+[2025-09-30 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-09-30 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-09-30 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 8000.00, Salida = 23179.00
+[2025-10-01 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-01 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-01 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 10000.00, Salida = 25037.00
+[2025-10-02 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-02 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-02 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 23000.00, Salida = 20025.00
+[2025-10-03 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-03 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-03 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 10000.00, Salida = 5280.00
+[2025-10-04 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-04 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-04 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 9000.00, Salida = 28650.00
+[2025-10-05 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-05 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-05 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 0.00
+[2025-10-06 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-06 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-06 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 0.00
+[2025-10-07 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-07 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-07 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 11000.00, Salida = 0.00
+[2025-10-08 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-08 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-08 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 22366.00
+[2025-10-09 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-09 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-09 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 15075.00
+[2025-10-10 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-10 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-10 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-10-11 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-11 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-11 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 30670.00
+[2025-10-12 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-12 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-12 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-10-13 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-13 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-13 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 10000.00
+[2025-10-14 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-14 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-14 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 20100.00
+[2025-10-15 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-15 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-15 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 13000.00, Salida = 20725.00
+[2025-10-16 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-16 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-16 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 32032.00
+[2025-10-17 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-17 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-17 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 28816.00
+[2025-10-18 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-18 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-18 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 13097.00
+[2025-10-19 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-19 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-19 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 0.00
+[2025-10-20 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-20 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-20 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 0.00
+[2025-10-21 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-21 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-21 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 10000.00
+[2025-10-22 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-22 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-22 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 21000.00, Salida = 17462.00
+[2025-10-23 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-23 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-23 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 59629.00
+[2025-10-24 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-24 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-24 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 50.00
+[2025-10-25 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-25 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-25 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 13121.00
+[2025-10-26 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-26 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-26 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 20000.00, Salida = 5298.00
+[2025-10-27 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-27 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-27 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 20000.00, Salida = 0.00
+[2025-10-28 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-28 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-28 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 41986.00
+[2025-10-29 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-29 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-29 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 20000.00, Salida = 2425.00
+[2025-10-30 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-30 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-30 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 20000.00, Salida = 25192.00
+[2025-10-31 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-10-31 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-10-31 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 12000.00, Salida = 43012.00
+[2025-11-01 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-01 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-01 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 22548.00
+[2025-11-02 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-02 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-02 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 21824.00
+[2025-11-03 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-03 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-03 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 0.00
+[2025-11-04 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-04 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-04 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 1033.00
+[2025-11-05 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-05 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-05 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 29816.00
+[2025-11-06 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-06 09:30:02] [enviar_correo.php] Error al enviar el correo.
+[2025-11-06 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 30775.00
+[2025-11-07 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-07 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-07 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 60.00
+[2025-11-08 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-08 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-08 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 74617.00
+[2025-11-09 09:30:01] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-09 09:30:01] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-09 09:30:01] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 14000.00, Salida = 0.00
+[2025-11-10 17:42:46] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-10 17:42:46] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-10 17:42:46] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 16000.00, Salida = 0.00
+[2025-11-11 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-11 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-11 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 1000.00, Salida = 0.00
+[2025-11-12 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-12 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-12 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 9000.00, Salida = 35873.00
+[2025-11-13 09:30:03] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-13 09:30:03] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-13 09:30:03] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 14261.00
+[2025-11-14 09:30:06] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-14 09:30:06] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-14 09:30:06] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 21000.00, Salida = 0.00
+[2025-11-15 09:30:03] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-15 09:30:03] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-15 09:30:03] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 42625.00
+[2025-11-16 09:30:03] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-16 09:30:03] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-16 09:30:03] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 20000.00, Salida = 11403.00
+[2025-11-17 09:30:06] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-17 09:30:06] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-17 09:30:06] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 0.00
+[2025-11-18 09:30:03] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-18 09:30:03] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-18 09:30:03] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 0.00
+[2025-11-19 09:30:18] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-19 09:30:18] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-19 09:30:18] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 18000.00, Salida = 15025.00
+[2025-11-20 09:30:03] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-20 09:30:03] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-20 09:30:03] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 1105.00
+[2025-11-21 09:30:14] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-21 09:30:14] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-21 09:30:14] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 28300.00
+[2025-11-22 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-22 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-22 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 17000.00, Salida = 22443.00
+[2025-11-23 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-23 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-23 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 0.00
+[2025-11-24 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-24 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-24 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 15000.00, Salida = 0.00
+[2025-11-25 09:30:02] [enviar_correo.php] Los PDFs se generaron correctamente.
+[2025-11-25 09:30:02] [enviar_correo.php] Correo enviado con éxito.
+[2025-11-25 09:30:02] [enviar_correo.php] Registro insertado en rev_kardex: Entrada = 19000.00, Salida = 31000.00

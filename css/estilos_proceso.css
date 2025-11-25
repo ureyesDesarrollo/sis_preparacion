@@ -1,0 +1,139 @@
+/*Desarrollado por: Ca & Ce Technologies */
+/*Contacto: mc.munoz.rz@gmail.com */
+/*21 - Agosto - 2018*/
+.imagen-header {
+  background-image: url("../imagenes/banner_progel2.png");
+  height: 80px;
+  background-repeat: no-repeat;
+  width: 101%;
+}
+
+.text-header {
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  padding-top: 30px
+}
+
+.container:not(.encabezado) {
+	border-bottom-left-radius:  5px;
+	border-bottom-right-radius:  5px;
+	border-left: 2px solid #F399B1;
+	border-right: 2px solid #F399B1;
+	border-bottom:  2px solid #F399B1;
+}
+
+.divProcesos{
+	border:2px solid #B9B8B8;
+	border-radius: 15px;
+	margin-top: 20px
+}
+
+.headerdivProcesos{
+	background: #FCEFF2;
+	border-top-left-radius:  15px;
+	border-top-right-radius:  15px;
+	height: 40px;
+	font-weight: bold;
+	border-left: 1px solid #e6e6e6;
+	border-right: 1px solid #e6e6e6;
+	border-bottom:  1px solid #e6e6e6;
+	margin-bottom: 20px;
+	font-size: 12px;
+	padding: 0px
+	
+}
+
+.footerdivProcesos{
+	margin-top: 30px;
+	border-radius: 5px
+}
+
+.form-control{
+	height: 27px;
+	padding: 0px;
+	margin-bottom: 2px;
+}
+
+label{
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+
+.row{
+	margin-left: 0px;
+}
+
+/*tiempos*/
+.tiempos{margin-left: -30px}
+
+/*estapas*/
+.divEtapas{border-radius: 5px;border:1px solid #e6e6e6;height: 140px;float: right;margin-right: 40px;width: 300px}
+.divEtapas3{border-radius: 5px;border:1px solid #e6e6e6;float: right;margin-right: 40px;margin-top: 20px;width: 270px;height: 170px}
+.divEtapas3b{border-radius: 5px;border:1px solid #e6e6e6;float: right;margin-right: 40px;margin-top: 20px;width: 285px;height: 100px}
+.divEtapas4{border-radius: 5px;border:1px solid #e6e6e6;height: 140px;float: right;margin-right: 40px;margin-top: 20px;width: 370px;height: 230px}
+.divEtapas6{border-radius: 5px;border:1px solid #e6e6e6;height: 140px;float: right;margin-right: 40px;margin-top: -170px;height: 160px}
+.divEtapas7{border-radius: 5px;border:1px solid #e6e6e6;height: 140px;float: right;margin-right: 40px;margin-top: -170px;height: 220px}
+.divEtapas7_mod{border-radius: 5px;border:1px solid #e6e6e6;height: auto;}
+.divEtapas8{border-radius: 5px;border:1px solid #e6e6e6;height: 140px;float: right;margin-right: 40px;margin-top: -170px;height: 220px;width: 320px;}
+.etapa{height: 140px;border-radius: 5px;border:1px solid #e6e6e6;width: 80px;margin-left:-15px}
+.etapa3{height: 170px;border-radius: 5px;border:1px solid #e6e6e6;width: 60px;margin-left:-15px}
+.etapa3b{height: 100px;border-radius: 5px;border:1px solid #e6e6e6;width: 75px;margin-left:-15px}
+.etapa6{height: 160px;border-radius: 5px;border:1px solid #e6e6e6;width: 60px;margin-left:-15px}
+.etapa4{height: 230px;border-radius: 5px;border:1px solid #e6e6e6;width: 75px;margin-left:-15px}
+.numEtapa{font-size: 50px;margin-top: 30px}
+.numEtapa_mod{font-size: 50px;margin-top: 140px}
+.divEtapasInput{width: 190px;height:25px;padding: 0px;background: #e6e6e6}
+.divEtapasInput4{width: 273px;height:25px;padding: 0px;background: #e6e6e6}
+.divEtapasInput6{width: 200px;height:25px;padding: 0px;background: #e6e6e6}
+.divEtapasInput7{width: 190px;height:25px;padding: 0px;background: #e6e6e6}
+.divEtapasInput7_mod{width: 280px;height:25px;padding: 0px;}
+.divEtapasInput8{width: 220px;height:25px;padding: 0px;background: #e6e6e6;background: #e6e6}
+
+.etiquetaEtapa{border:1px solid #e6e6e6; margin-bottom: 3px; font-weight:bold; background-color:#e6e6e6;}
+.etiquetaEtapa_mod{border:1px solid #e6e6e6; margin-bottom: 3px; font-weight:bold; background-color:#e6e6e6;width: 350px}
+
+/*textareaobservaciones*/
+.textareaObservaciones{margin: 5px;margin-top: -80px}
+.textareaObservaciones3{margin: -5px;margin-top: -130px}
+.textareaObservaciones6{margin: 5px;margin-top: 20px}
+
+/*responsivo*/
+@media only screen and (max-width: 800px) {
+	.divEtapas{margin: 20px;float: left;width: 93%}
+	.divEtapas4{margin: 20px;float: left;width: 93%;height: 230px}
+	.divEtapas6{height: 160px;margin-top: -250px}
+	.divEtapas7{margin: 20px;float: left;width: 93%}
+	.divEtapas7_mod{margin: 20px;float: left;width: 93%;}
+    .divEtapasInput{margin-top: -140px;margin-bottom: 150px;margin-left:50px}
+    .divEtapasInput4{margin-top: -230px;margin-bottom: 150px;margin-left:50px}
+    .divEtapasInput6{margin-top: -160px;margin-bottom: 150px;margin-left:50px}
+    .divEtapasInput7{margin-top: -220px;margin-bottom: 150px;margin-left:50px}
+    .divEtapasInput7_mod{margin-top: -220px;margin-bottom: 150px;margin-left:50px}
+
+    .headerdivProcesos{height: 65px;}
+    .textareaObservaciones{margin-top: 0px;}
+    .textareaObservaciones6{margin: 5px;margin-top: 20px}
+    .tiempos{margin-left: 0px;width: 200px;}
+
+}
+
+@media only screen and (max-width: 1200px) {
+	.imagen-header{width: 102%}
+	.text-header {font-size: 14px;text-align: right;}
+}
+
+@media only screen and (max-width:1000px) {
+	.imagen-header{width: 102%}
+	.text-header {font-size: 10px;text-align: right;}
+}
+
+@media only screen and (max-width:700px) {
+	.text-header {font-size: 10px;text-align: center;padding-top:50px;background: #E12642}
+}
+
+.etiqueta_tbl{
+	font-size:14px;
+	font-weight:bold;
+}

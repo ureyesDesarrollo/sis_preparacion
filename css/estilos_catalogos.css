@@ -1,0 +1,48 @@
+/*Desarrollado por: Ca & Ce Technologies */
+/*Contacto: mc.munoz.rz@gmail.com */
+/*21 - Agosto - 2018*/
+a{color: #000;}
+
+a:hover { 
+text-decoration: none; 
+color: #585858; 
+} 
+
+.iconos{
+	display: inline-block;text-align: center;
+}
+
+.diviconos{
+	margin-bottom: 80px;
+}
+
+.diviconosInve{
+	margin-bottom: 80px;
+}
+
+
+ /* para 480px o menos */
+@media screen and (max-width:480px) 
+{ 
+.col-sm-1{
+	display: inline-block;width: 90px;margin: -15px
+}
+
+.diviconos{
+	font-size: 12px;margin-top: 20px;margin-bottom: -30px;margin-left: -60px
+}
+
+.diviconosInve{
+	font-size: 12px;margin-top: 20px;margin-bottom: 50px;margin-left: -60px
+}
+
+a{
+	font-size: 12px
+}
+}
+
+.requerido
+{
+	color:#FF0000; 
+	font-weight:bold;
+}

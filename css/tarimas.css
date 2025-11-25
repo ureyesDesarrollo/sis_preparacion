@@ -1,0 +1,108 @@
+body{
+	overflow: hidden;
+}
+
+.header{
+	background: #F2F3F4;
+	height: 80px;
+}
+
+.rol{
+	background: ;
+	border-radius: 10px;
+	height: 430px;
+	display: flex;
+	overflow-x: auto;
+}
+
+thead{
+	background: ;
+	border-radius: 10px;
+	height: 430px;
+	display: flex;
+	overflow-x: auto;	
+}
+
+table{
+	font-size: 12px;
+}
+
+th {
+	background: white;
+	position: sticky;
+	top: 0px;
+	box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+	border: 1px solid#C6C5C5;
+}
+
+
+.verticalText {
+	writing-mode: vertical-lr;
+	transform: rotate(180deg);
+	margin-top: 10px
+	margin-bottom:10px; 
+	text-align: center;
+}
+
+#encabezado{
+	height: 100px
+}
+
+#cuerpo{
+	border: 1px solid#C6C5C5;
+	height: 20px
+}
+
+.camposfecha{
+	width: 120px;
+	border-radius: 5px;
+	border: 2px solid#e6e6e6;
+	margin: 5px;
+	margin-top: -30px;
+	margin-bottom: 0px;
+	height: 25px
+}
+
+.campos{
+	width: 50px;
+	border-radius: 5px;
+	border: 2px solid#e6e6e6;
+	margin: 5px;
+	margin-top: -30px;
+	margin-bottom: 0px;
+	height: 25px
+}
+
+#bloque1{
+	/*background:#EBF5FB ;*/
+	background: #08DFF9;
+	color: #5F5E5E;
+	font-weight: bold;
+
+}
+
+#bloque2{
+	/*background:#FDF2E9;*/
+	background: #FCE5F7;
+	color: #5F5E5E;
+	font-weight: bold;
+
+}
+
+#bloque3{
+	/*background:#EAFAF1 ;	*/
+	background: #EBFC74;
+	color: #5F5E5E;
+	font-weight: bold;
+	text-align: center;
+
+}
+
+#bloque4{
+	/*background: #F5EEF8;*/	
+	background: #EAB7FD;
+	color: #5F5E5E;
+	font-weight: bold;
+
+}
+
