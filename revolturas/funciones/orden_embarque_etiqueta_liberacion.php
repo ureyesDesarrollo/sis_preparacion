@@ -39,7 +39,8 @@ try {
                 WHEN rr.rr_id IS NOT NULL THEN 'GENERAL'
                 WHEN rrc.rrc_id IS NOT NULL THEN 'CLIENTE'
                 ELSE 'GENERAL'
-            END AS tipo_revoltura
+            END AS tipo_revoltura,
+            cte.cte_tipo_bloom
             FROM 
                 rev_orden_embarque oe
             INNER JOIN 
@@ -73,9 +74,10 @@ try {
 
     $rev_folio = $datos_detalle_embarque[0]['rev_folio'];
     $libero_calidad = strtoupper($_SESSION['nombre']);
-    $calidad = obtenerBloomPorCalidad($datos_detalle_embarque[0]['rev_calidad']);
+    //$calidad1 = obtenerBloomPorCalidad($datos_detalle_embarque[0]['rev_calidad']);
+    $calidad = $datos_detalle_embarque[0]['cte_tipo_bloom'] . ' BLOOM';
     // Diseño del código ZPL
-    $zpl = <<<ZPL
+    /* $zpl = <<<ZPL
 
     CT~~CD,~CC^~CT~
     ^XA~TA000~JSN^LT0^MNW^MTT^PON^PMN^LH0,0^JMA^PR4,4~SD15^JUS^LRN^CI0^XZ
@@ -93,6 +95,41 @@ try {
     ^FT606,1407^A0B,62,62^FH\^FDINTEGRIDAD TARIMA: CUMPLE^FS
     ^FT677,1407^A0B,62,62^FH\^FDLIBERO CALIDAD: $libero_calidad^FS
     ^PQ1,0,1,Y^XZ
+    ZPL; */
+
+    $zpl = <<<ZPL
+    CT~~CD,~CC^~CT~
+    ^XA
+    ~TA000
+    ~JSN
+    ^LT0
+    ^MNW
+    ^MTT
+    ^PON
+    ^PMN
+    ^LH0,0
+    ^JMA
+    ^PR4,4
+    ~SD15
+    ^JUS
+    ^LRN
+    ^CI27
+    ^PA0,1,1,0
+    ^XZ
+    ^XA
+    ^MMT
+    ^PW799
+    ^LL1319
+    ^LS0
+    ^FO8,528^GFA,2833,5580,20,:Z64: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:5EF7
+    ^FT225,1191^A0B,57,94^FH\^CI28^FDLIBERACION DE PRODUCTO - P^FS^CI27
+    ^FT310,1191^A0B,54,53^FH\^CI28^FDPRODUCTO: $calidad^FS^CI27
+    ^FT390,1191^A0B,54,53^FH\^CI28^FDLOTE: $rev_folio^FS^CI27
+    ^FT478,1191^A0B,54,53^FH\^CI28^FDINTEGRIDAD EMPLAYADO: CUMPLE^FS^CI27
+    ^FT573,1191^A0B,54,53^FH\^CI28^FDINTEGRIDAD TARIMA: CUMPLE^FS^CI27
+    ^FT661,1191^A0B,54,53^FH\^CI28^FDLIBERO CALIDAD: $libero_calidad^FS^CI27
+    ^PQ1,0,1,Y
+    ^XZ
     ZPL;
 
 

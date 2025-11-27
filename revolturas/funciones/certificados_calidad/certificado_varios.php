@@ -6,7 +6,39 @@ ob_start();
 $oe_id = intval($_GET['oe_id']);
 $empaque_id = intval($_GET['empaque_id']);
 
+function obtenerBloomClienteCoreFood(int $revBloom)
+{
+    if ($revBloom >= 270 && $revBloom <= 290) return 280;
+    if ($revBloom >= 290 && $revBloom <= 310) return 300;
+    if ($revBloom >= 240 && $revBloom <= 260) return 250;
+    return null;
+}
+
+function obtenerBloomClienteSantosLugo(int $revBloom)
+{
+    if ($revBloom >= 300 && $revBloom <= 320) return 315;
+    if ($revBloom >= 255 && $revBloom <= 275) return 265;
+    return null;
+}
+
+function obtenerBloomClienteGrupoFrudi(int $revBloom)
+{
+    if ($revBloom >= 300 && $revBloom <= 320) return 315;
+    if ($revBloom >= 290 && $revBloom <= 310) return 300;
+    if ($revBloom >= 255 && $revBloom <= 275) return 265;
+    return null;
+}
+
+function obtenerBloomClienteProductosDiez(int $revBloom)
+{
+    if ($revBloom >= 290 && $revBloom <= 310) return 300;
+    if ($revBloom >= 255 && $revBloom <= 275) return 265;
+    return null;
+}
+
 require_once 'revoltura_consulta.php';
+
+var_dump($datos_detalle_embarque);
 
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
@@ -30,6 +62,7 @@ $section = $phpWord->addSection([
 $header = $section->addHeader();
 
 // CONTENIDO DEL CERTIFICADO
+$section->addTextBreak(2);
 $section->addText('CERTIFICADO DE ANALISIS', ['name' => 'Lucida Handwriting', 'bold' => true, 'size' => 14], ['alignment' => 'center']);
 $section->addTextBreak(1);
 $tableStyle = [
@@ -46,23 +79,82 @@ $borderBottomStyle = [
     'cellMarginLeft' => 300,   // 300 twips (~0.53 cm)
 ];
 
+$clienteId = (string)$revoltura['cliente_id'];
+$revBloom = (int)$revoltura['rev_bloom'];
 
+// Mapeo de cliente → función que debe ejecutarse
+$reglasBloom = [
+    '30' => 'obtenerBloomClienteCoreFood',
+    '22' => 'obtenerBloomClienteSantosLugo',
+    '39' => 'obtenerBloomClienteGrupoFrudi',
+    '87' => 'obtenerBloomClienteProductosDiez',
+];
 
+// Si el cliente tiene regla especial, se aplica
+if (isset($reglasBloom[$clienteId])) {
+    $funcion = $reglasBloom[$clienteId];
+    $calidad = $funcion($revBloom);
+}
+
+$section->addTextBreak(1);
 $phpWord->addTableStyle('TablaEncabezado', $tableStyle);
 $table = $section->addTable('TablaEncabezado');
+
+////////////////////////////////////////////////////////
+// 1) PRIMERA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$table->addCell(5670, $borderBottomStyle)->addText("$cliente");
-$table->addCell(4000, $borderBottomStyle)->addText("UBICACIÓN: $cliente_ubicacion");
+
+// Celda 1
+$cell = $table->addCell(5812, array_merge($borderBottomStyle, [
+    'width' => 5812,
+    'gridSpan' => 2
+]));
+$cell->addText($cliente);
+
+// Celda 2
+$cell = $table->addCell(3946, array_merge($borderBottomStyle, [
+    'width' => 3946
+]));
+$cell->addText("UBICACIÓN: $cliente_ubicacion");
+
+////////////////////////////////////////////////////////
+// 2) SEGUNDA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$table->addCell(5670, $borderBottomStyle)->addText("LOTE: {$revoltura['rev_folio']}");
-$cell = $table->addCell(4000, $borderBottomStyle);
+
+$cell = $table->addCell(4710, array_merge($borderBottomStyle, [
+    'width' => 4710
+]));
+$cell->addText("LOTE: {$revoltura['rev_folio']}");
+
+// Celda 2 (gridSpan = 2)
+$cell = $table->addCell(5048, array_merge($borderBottomStyle, [
+    'width' => 5048,
+    'gridSpan' => 2
+]));
 $cell->addText("FECHA DE PRODUCCIÓN: $fecha_elaboracion_formateada");
-$cell->addText("FECHA DE CADUCIDAD: $fecha_caducidad_formateada");
+$cell->addText("FECHA DE CADUCIDAD:    $fecha_caducidad_formateada");
+
+////////////////////////////////////////////////////////
+// 3) TERCERA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$cell2 = $table->addCell(5670, $borderBottomStyle);
-$cell2->addText('DESCRIPCIÓN:');
-$cell2->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE $calidad");
-$table->addCell(4000, $borderBottomStyle)->addText("CANTIDAD:  $cantidad KG");
+
+$cell = $table->addCell(5812, array_merge($borderBottomStyle, [
+    'width' => 5812,
+    'gridSpan' => 2
+]));
+$cell->addText('DESCRIPCIÓN:');
+$cell->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE $calidad BLOOM");
+
+$cell = $table->addCell(3946, array_merge($borderBottomStyle, [
+    'width' => 3946
+]));
+$cell->addText("CANTIDAD:  $cantidad KG");
 
 $section->addTextBreak(1);
 
@@ -107,13 +199,13 @@ foreach ($datos as $fila) {
 
 // Firma
 $section->addTextBreak(2);
-$section->addText('ING. NANCY BARREDA', ['bold' => true, 'underline' => 'single']);
-$section->addText('GERENTE DE CALIDAD');
+$section->addText('ING. M. LUZ REA RIOS', ['bold' => true, 'underline' => 'single']);
+$section->addText('JEFATURA DE ASEGURAMIENTO DE CALIDAD');
 
 // Limpiar buffer y forzar descarga
 ob_clean();
 header("Content-Description: File Transfer");
-header('Content-Disposition: attachment; filename="certificado_varios.docx"');
+header('Content-Disposition: attachment; filename="certificado_' . $cliente . '.docx"');
 header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 $writer = IOFactory::createWriter($phpWord, 'Word2007');

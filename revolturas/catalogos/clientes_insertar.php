@@ -14,6 +14,8 @@ try {
     $ubicacion     = mysqli_real_escape_string($cnx, trim($_POST['cte_ubicacion'] ?? ''));
     $tipo          = mysqli_real_escape_string($cnx, trim($_POST['cte_tipo'] ?? ''));
     $clasificacion = mysqli_real_escape_string($cnx, trim($_POST['cte_clasificacion'] ?? ''));
+    $tipo_bloom    = mysqli_real_escape_string($cnx, trim($_POST['cte_tipo_bloom'] ?? ''));
+    $bloom_min     = mysqli_real_escape_string($cnx, trim($_POST['cte_bloom_min'] ?? ''));
 
     // Validaciones
     if ($nombre === '' || $rfc === '' || $razonSocial === '' || $tipo === '' || $clasificacion === '') {
@@ -48,9 +50,9 @@ try {
     // Insertar nuevo cliente
     $sql = "
       INSERT INTO rev_clientes
-        (cte_nombre, cte_rfc, cte_razon_social, cte_ubicacion, cte_tipo, cte_clasificacion)
+        (cte_nombre, cte_rfc, cte_razon_social, cte_ubicacion, cte_tipo, cte_clasificacion, cte_tipo_bloom, cte_bloom_min)
       VALUES
-        ('$nombre', '$rfc', '$razonSocial', '$ubicacion', '$tipo', '$clasificacion')
+        ('$nombre', '$rfc', '$razonSocial', '$ubicacion', '$tipo', '$clasificacion','$tipo_bloom', '$bloom_min')
     ";
     if (!mysqli_query($cnx, $sql)) {
         throw new Exception('Error al registrar el cliente: ' . mysqli_error($cnx));

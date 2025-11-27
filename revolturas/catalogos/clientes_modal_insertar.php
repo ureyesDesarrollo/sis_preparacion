@@ -49,6 +49,16 @@ include "../../seguridad/user_seguridad.php";
                         </select>
                     </div>
 
+                    <div class="col-md-3">
+                        <label for="cte_tipo_bloom" class="form-label">Tipo bloom</label>
+                        <input type="text" name="cte_tipo_bloom" id="cte_tipo_bloom" class="form-control" onkeypress="return isNumberKey(event, this);">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="cte_bloom_min" class="form-label">Bloom min</label>
+                        <input type="text" name="cte_bloom_min" id="cte_bloom_min" class="form-control" onkeypress="return isNumberKey(event, this);">
+                    </div>
+
                 </div>
             </form>
         </div>

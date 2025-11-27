@@ -30,6 +30,7 @@ $section = $phpWord->addSection([
 $header = $section->addHeader();
 
 // CONTENIDO DEL CERTIFICADO
+$section->addTextBreak(2);
 $section->addText('CERTIFICADO DE ANALISIS', ['name' => 'Lucida Handwriting', 'bold' => true, 'size' => 14], ['alignment' => 'center']);
 $section->addTextBreak(1);
 $tableStyle = [
@@ -47,22 +48,65 @@ $borderBottomStyle = [
 ];
 
 
-
+$section->addTextBreak(1);
 $phpWord->addTableStyle('TablaEncabezado', $tableStyle);
 $table = $section->addTable('TablaEncabezado');
+
+////////////////////////////////////////////////////////
+// 1) PRIMERA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$table->addCell(5670, $borderBottomStyle)->addText("$cliente");
-$table->addCell(4000, $borderBottomStyle)->addText("UBICACIÓN: $cliente_ubicacion");
+
+// Celda 1
+$cell = $table->addCell(5812, array_merge($borderBottomStyle, [
+    'width' => 5812,
+    'gridSpan' => 2
+]));
+$cell->addText($cliente);
+
+// Celda 2
+$cell = $table->addCell(3946, array_merge($borderBottomStyle, [
+    'width' => 3946
+]));
+$cell->addText("UBICACIÓN: $cliente_ubicacion");
+
+////////////////////////////////////////////////////////
+// 2) SEGUNDA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$table->addCell(5670, $borderBottomStyle)->addText("LOTE: {$revoltura['rev_folio']}");
-$cell = $table->addCell(4000, $borderBottomStyle);
+
+$cell = $table->addCell(4710, array_merge($borderBottomStyle, [
+    'width' => 4710
+]));
+$cell->addText("LOTE: {$revoltura['rev_folio']}");
+
+// Celda 2 (gridSpan = 2)
+$cell = $table->addCell(5048, array_merge($borderBottomStyle, [
+    'width' => 5048,
+    'gridSpan' => 2
+]));
 $cell->addText("FECHA DE PRODUCCIÓN: $fecha_elaboracion_formateada");
-$cell->addText("FECHA DE CADUCIDAD: $fecha_caducidad_formateada");
+$cell->addText("FECHA DE CADUCIDAD:    $fecha_caducidad_formateada");
+
+////////////////////////////////////////////////////////
+// 3) TERCERA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$cell2 = $table->addCell(5670, $borderBottomStyle);
-$cell2->addText('DESCRIPCIÓN:');
-$cell2->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE $calidad");
-$table->addCell(4000, $borderBottomStyle)->addText("CANTIDAD:  $cantidad KG");
+
+$cell = $table->addCell(5812, array_merge($borderBottomStyle, [
+    'width' => 5812,
+    'gridSpan' => 2
+]));
+$cell->addText('DESCRIPCIÓN:');
+$cell->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE 300 BLOOM");
+
+$cell = $table->addCell(3946, array_merge($borderBottomStyle, [
+    'width' => 3946
+]));
+$cell->addText("CANTIDAD:  $cantidad KG");
 
 $section->addTextBreak(1);
 
@@ -108,13 +152,13 @@ foreach ($datos as $fila) {
 
 // Firma
 $section->addTextBreak(2);
-$section->addText('ING. NANCY BARREDA', ['bold' => true, 'underline' => 'single']);
-$section->addText('GERENTE DE CALIDAD');
+$section->addText('ING. M. LUZ REA RIOS', ['bold' => true, 'underline' => 'single']);
+$section->addText('JEFATURA DE ASEGURAMIENTO DE CALIDAD');
 
 // Limpiar buffer y forzar descarga
 ob_clean();
 header("Content-Description: File Transfer");
-header('Content-Disposition: attachment; filename="certificado_danone.docx"');
+header('Content-Disposition: attachment; filename="certificado_' . $cliente . '.docx"');
 header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 $writer = IOFactory::createWriter($phpWord, 'Word2007');

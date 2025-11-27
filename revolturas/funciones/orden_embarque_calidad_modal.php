@@ -140,6 +140,9 @@ $oe_id = isset($_POST['oe_id']) ? json_decode($_POST['oe_id']) : null;
                 2: {
                     url: 'certificado_danone.php'
                 },
+                88: {
+                    url: 'certificado_danone.php'
+                },
                 116: {
                     url: 'certificado_dgari.php'
                 }

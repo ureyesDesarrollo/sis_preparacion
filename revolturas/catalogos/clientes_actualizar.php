@@ -18,6 +18,8 @@ try {
     $cte_tipo = isset($_POST['cte_tipo']) ? mysqli_real_escape_string($cnx, $_POST['cte_tipo']) : '';
     $cte_clasificacion = isset($_POST['cte_clasificacion']) ? mysqli_real_escape_string($cnx, $_POST['cte_clasificacion']) : '';
     $cte_estatus = isset($_POST['chk_estatus']) ? 'A' : 'B';
+    $cte_tipo_bloom = mysqli_real_escape_string($cnx, trim($_POST['cte_tipo_bloom'] ?? ''));
+    $cte_bloom_min = mysqli_real_escape_string($cnx, trim($_POST['cte_bloom_min'] ?? ''));
 
     // Verifica existencia del cliente actual
     $existingClientSql = "SELECT cte_nombre, cte_rfc, cte_razon_social FROM rev_clientes WHERE cte_id = '$cte_id'";
@@ -44,12 +46,17 @@ try {
         cte_estatus = '$cte_estatus', 
         cte_ubicacion = '$cte_ubicacion', 
         cte_tipo = '$cte_tipo', 
-        cte_clasificacion = '$cte_clasificacion'
+        cte_clasificacion = '$cte_clasificacion',
+        cte_tipo_bloom = '$cte_tipo_bloom',
+        cte_bloom_min = '$cte_bloom_min'
         WHERE cte_id = '$cte_id'";
 
+        write_log("UPDATE SQL: $updateSql;");
+
+
     if (mysqli_query($cnx, $updateSql)) {
-        $mensaje = (mysqli_affected_rows($cnx) > 0) ? 
-            "Cliente actualizado exitosamente." : 
+        $mensaje = (mysqli_affected_rows($cnx) > 0) ?
+            "Cliente actualizado exitosamente." :
             "No se modificó ningún dato (quizás ya estaba igual).";
         ins_bit_acciones($_SESSION['idUsu'], 'E', $cte_id, '49');
         echo json_encode(["success" => $mensaje]);
@@ -61,4 +68,10 @@ try {
 } finally {
     mysqli_close($cnx);
 }
-?>
+
+function write_log($message)
+{
+    $logFile = __DIR__ . '/update_clientes.log';
+    $date = date("Y-m-d H:i:s");
+    file_put_contents($logFile, "[$date] $message\n", FILE_APPEND);
+}

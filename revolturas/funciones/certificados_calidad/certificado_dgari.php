@@ -30,6 +30,7 @@ $section = $phpWord->addSection([
 $header = $section->addHeader();
 
 // CONTENIDO DEL CERTIFICADO
+$section->addTextBreak(2);
 $section->addText('CERTIFICADO DE ANALISIS', ['name' => 'Lucida Handwriting', 'bold' => true, 'size' => 14], ['alignment' => 'center']);
 $section->addTextBreak(1);
 $tableStyle = [
@@ -47,22 +48,67 @@ $borderBottomStyle = [
 ];
 
 
-
+$section->addTextBreak(1);
 $phpWord->addTableStyle('TablaEncabezado', $tableStyle);
 $table = $section->addTable('TablaEncabezado');
+
+////////////////////////////////////////////////////////
+// 1) PRIMERA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$table->addCell(5670, $borderBottomStyle)->addText("$cliente");
-$table->addCell(4000, $borderBottomStyle)->addText("UBICACIÓN: $cliente_ubicacion");
+
+// Celda 1
+$cell = $table->addCell(5812, array_merge($borderBottomStyle, [
+    'width' => 5812,
+    'gridSpan' => 2
+]));
+$cell->addText($cliente);
+
+// Celda 2
+$cell = $table->addCell(3946, array_merge($borderBottomStyle, [
+    'width' => 3946
+]));
+$cell->addText("UBICACIÓN: $cliente_ubicacion");
+
+////////////////////////////////////////////////////////
+// 2) SEGUNDA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$table->addCell(5000, $borderBottomStyle)->addText("LOTE: {$revoltura['rev_folio']}");
-$cell = $table->addCell(4500, $borderBottomStyle);
+
+$cell = $table->addCell(4710, array_merge($borderBottomStyle, [
+    'width' => 4710
+]));
+$cell->addText("LOTE: {$revoltura['rev_folio']}");
+
+// Celda 2 (gridSpan = 2)
+$cell = $table->addCell(5048, array_merge($borderBottomStyle, [
+    'width' => 5048,
+    'gridSpan' => 2
+]));
 $cell->addText("FECHA DE PRODUCCIÓN: $fecha_elaboracion_formateada");
-$cell->addText("FECHA DE CADUCIDAD: $fecha_caducidad_formateada");
+$cell->addText("FECHA DE CADUCIDAD:    $fecha_caducidad_formateada");
+
+////////////////////////////////////////////////////////
+// 3) TERCERA FILA
+////////////////////////////////////////////////////////
+
 $table->addRow();
-$cell2 = $table->addCell(5670, $borderBottomStyle);
-$cell2->addText('DESCRIPCIÓN:');
-$cell2->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE $calidad");
-$table->addCell(4000, $borderBottomStyle)->addText("CANTIDAD:  $cantidad KG");
+
+$cell = $table->addCell(5812, array_merge($borderBottomStyle, [
+    'width' => 5812,
+    'gridSpan' => 2
+]));
+$cell->addText('DESCRIPCIÓN:');
+$cell->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE 300 BLOOM");
+
+$cell = $table->addCell(3946, array_merge($borderBottomStyle, [
+    'width' => 3946
+]));
+$cell->addText("CANTIDAD:  $cantidad KG");
+
+
 
 $section->addTextBreak(1);
 
@@ -85,15 +131,15 @@ $datos = [
     ['CENIZAS', "{$revoltura['rev_cenizas']} %"],
     ['ASPECTO', 'POLVO GRANULAR'],
     ['GRANULOMETRIA', 'MALLA 30'],
-    ['MALLA 30', "{$revoltura['rev_malla_30']}"],
-    ['MALLA 45', "{$revoltura['rev_malla_45']}"],
-    ['MALLA 60', "{$revoltura['rev_malla_60']}"],
-    ['MALLA 100', "{$revoltura['rev_malla_100']}"],
-    ['MALLA 200', "{$revoltura['rev_malla_200']}"],
-    ['SABOR (RESABIO)','APROBADO'],
-    ['TRANSMITANCIA (60°C)',"{$revoltura['rev_porcentaje_t']}"],
-    ['PERDIDA DE BLOOM (GELATINA LECHE)','APROBADO'],
-    ['PERDIDA DE BLOOM ( GELATINA DE AGUA)','APROBADO'],
+    ['MALLA 30', "{$revoltura['rev_malla_30']}%"],
+    ['MALLA 45', "{$revoltura['rev_malla_45']}%"],
+    ['MALLA 60', "{$revoltura['rev_malla_60']}%"],
+    ['MALLA 100', "{$revoltura['rev_malla_100']}%"],
+    ['MALLA 200', "{$revoltura['rev_malla_200']}%"],
+    ['SABOR (RESABIO)', 'APROBADO'],
+    ['TRANSMITANCIA (60°C)', "{$revoltura['rev_porcentaje_t']}"],
+    ['PERDIDA DE BLOOM (GELATINA LECHE)', 'APROBADO'],
+    ['PERDIDA DE BLOOM (GELATINA DE AGUA)', 'APROBADO'],
     ['OLOR', 'CARACTERÍSTICO'],
     ['COLOR', 'AMARILLO CLARO'],
     ['CTA. TOTAL BACTERIANA', '<500 UFC/G'],
@@ -116,8 +162,8 @@ foreach ($datos as $fila) {
 
 // Firma
 $section->addTextBreak(2);
-$section->addText('ING. NANCY BARREDA', ['bold' => true, 'underline' => 'single']);
-$section->addText('GERENTE DE CALIDAD');
+$section->addText('ING. M. LUZ REA RIOS', ['bold' => true, 'underline' => 'single']);
+$section->addText('JEFATURA DE ASEGURAMIENTO DE CALIDAD');
 
 // Limpiar buffer y forzar descarga
 ob_clean();
