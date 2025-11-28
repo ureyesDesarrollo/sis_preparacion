@@ -94,9 +94,12 @@ include "../../seguridad/user_seguridad.php";
                 {
                     data: null,
                     render: function(data, type, row) {
-                        if(row.estado === 'PROCESO' || row.estado === 'COMPLETADA'){
+                        if (row.estado === 'PROCESO' || row.estado === 'COMPLETADA') {
                             return `<button class="btn btn-outline-success btn-liberar" data-id='${JSON.stringify(row.orden_id)}' title="Liberar"><i class="fa-solid fa-check"></i></button>`;
-                        }else{
+
+                        } else if (parseInt(row.cliente_id) === 30) {
+                            return `<button class="btn btn-outline-success btn-liberar" data-id='${JSON.stringify(row.orden_id)}' title="Liberar"><i class="fa-solid fa-check"></i></button>`;
+                        } else {
                             return `<button class="btn btn-outline-secondary" title="Orden aun no comenzada"><i class="fa-solid fa-check"></i></button>`;
                         }
                     }

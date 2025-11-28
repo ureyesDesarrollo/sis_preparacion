@@ -43,7 +43,8 @@ try {
         oe.oe_estado AS estado, 
 
         oed.oed_id, 
-        oed.cantidad AS cantidad_solicitada, 
+        oed.cantidad AS cantidad_solicitada,
+        oed.bloom_vendido,
 
         CASE 
             WHEN rr.rev_id IS NOT NULL THEN rev.rev_folio
@@ -136,7 +137,7 @@ try {
     $fecha_elaboracion_formateada = formatear_fecha_espanol($fecha_elaboracion, $meses);
     $fecha_caducidad_formateada  = formatear_fecha_espanol($fecha_caducidad, $meses);
 
-    $calidad = $datos_detalle_embarque[0]['cte_tipo_bloom'];
+    $calidad = $datos_detalle_embarque[0]['bloom_vendido'];
 
 } catch (Exception $e) {
     echo 'Error: ' . $e->getMessage();

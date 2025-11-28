@@ -44,6 +44,7 @@ $fechaActual = date("Y-m-d");
                                     <th>Empaque</th>
                                     <th>Existencias</th>
                                     <th>Existencias a tomar</th>
+                                    <th>Bloom</th>
                                     <th>Quitar</th>
                                 </tr>
                             </thead>
@@ -76,17 +77,18 @@ $fechaActual = date("Y-m-d");
 </div>
 
 <script>
+    let arrayClientes = [];
     $(document).ready(function() {
-        let arrayClientes = [];
         let typingTimer;
         const typingDelay = 500; // Milisegundos de espera después de dejar de escribir
-        cargarDatosEmpaques();
         obtenerClientes();
         setTimeout(() => {
             $('#cte_id').val(localStorage.getItem('cliente_id') || '');
             if ($('#cte_id').val() != '') {
                 $('#cambiar_cliente').removeClass('d-none');
             }
+
+            cargarDatosEmpaques();
 
         }, 100);
 
@@ -128,9 +130,13 @@ $fechaActual = date("Y-m-d");
                     });
             } else {
                 // Si no hay filtro, muestra todos los clientes
+                let cliente = {};
                 arrayClientes.forEach(cliente => {
                     opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
+
                 });
+
+
             }
 
             $('#cte_id').html(opciones);
@@ -147,7 +153,8 @@ $fechaActual = date("Y-m-d");
                         if (cte.cte_estatus === 'A') {
                             arrayClientes.push({
                                 cte_id: cte.cte_id,
-                                cte_nombre: cte.cte_nombre
+                                cte_nombre: cte.cte_nombre,
+                                cte_bloom: cte.cte_tipo_bloom
                             });
                         }
                     });
@@ -191,6 +198,18 @@ $fechaActual = date("Y-m-d");
         const tbody = document.querySelector("#table tbody");
         tbody.innerHTML = ""; // Limpia el contenido actual de la tabla
 
+        // Tomar cliente seleccionado
+        const cteId = $('#cte_id').val();
+        console.log(cteId);
+
+        // Buscar bloom del cliente
+        let bloomCliente = null;
+        if (cteId) {
+            const clienteSel = arrayClientes.find(c => c.cte_id === cteId);
+            bloomCliente = clienteSel?.cte_bloom || null;
+        }
+
+        console.log(bloomCliente);
         if (empaquesArray.length > 0) {
             // Itera sobre el arreglo y agrega cada elemento como una nueva fila en la tabla
             empaquesArray.forEach((empaque, index) => {
@@ -203,6 +222,17 @@ $fechaActual = date("Y-m-d");
                 <td>${empaque.pres_descrip}</td>
                 <td>${cantidad}</td>
                 <td><input type="text" class="form-control" id="cantidad_${index}"  onclick="$(this).val('')" onkeypress="return isNumberKey(event, this);" maxlength="7" required></td>
+                <td>
+                    <input type="text" 
+                        class="form-control" 
+                        id="bloom_${index}"  
+                        value="${bloomCliente ? bloomCliente : ''}"
+                        onclick="$(this).val('')" 
+                        onkeypress="return isNumberKey(event, this);" 
+                        maxlength="3" 
+                        required>
+                </td>
+
                 <td><a href="#" onclick="eliminarEmpaque(${index})"><i class="fas fa-times-circle text-danger"></i></a></td>
             `;
                 tbody.appendChild(row);
@@ -249,6 +279,7 @@ $fechaActual = date("Y-m-d");
 
         empaquesArray.forEach((empaque, index) => {
             let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val());
+            let bloomAsig = $(`#bloom_${index}`).val();
 
             if (cantidadIngresada > parseFloat(empaque.rr_ext_real)) {
                 validacion = false;
@@ -263,7 +294,8 @@ $fechaActual = date("Y-m-d");
             empaquesProcesados.push({
                 rr_id: empaque.rr_id || null,
                 rrc_id: empaque.rrc_id || null,
-                cantidad: cantidadIngresada
+                cantidad: cantidadIngresada,
+                bloom: bloomAsig
             });
         });
 

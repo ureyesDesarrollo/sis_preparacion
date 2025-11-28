@@ -101,7 +101,7 @@ $cell = $table->addCell(5812, array_merge($borderBottomStyle, [
     'gridSpan' => 2
 ]));
 $cell->addText('DESCRIPCIÓN:');
-$cell->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE 300 BLOOM");
+$cell->addText("GRENETINA ALIMENTICIA PROGEL DIAMANTE $calidad BLOOM");
 
 $cell = $table->addCell(3946, array_merge($borderBottomStyle, [
     'width' => 3946

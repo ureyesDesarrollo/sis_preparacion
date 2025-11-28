@@ -27,13 +27,14 @@ try {
         $rr_id = isset($empaque['rr_id']) ? $empaque['rr_id'] : 'NULL';
         $rrc_id = isset($empaque['rrc_id']) ? $empaque['rrc_id'] : 'NULL';
         $cantidad = $empaque['cantidad'];
+        $bloom = $empaque['bloom'];
 
         if (($rr_id === 'NULL' && $rrc_id === 'NULL') || ($rr_id !== 'NULL' && $rrc_id !== 'NULL')) {
             throw new Exception('Cada empaque debe tener solo rr_id o rrc_id, no ambos.');
         }
 
-        $queryDetalle = "INSERT INTO rev_orden_embarque_detalle (oe_id, rr_id, rrc_id, cantidad) 
-                         VALUES ('$oe_id', $rr_id, $rrc_id, '$cantidad')";
+        $queryDetalle = "INSERT INTO rev_orden_embarque_detalle (oe_id, rr_id, rrc_id, cantidad,bloom_vendido) 
+                         VALUES ('$oe_id', $rr_id, $rrc_id, '$cantidad','$bloom')";
 
         if (!mysqli_query($cnx, $queryDetalle)) {
             throw new Exception('Error al insertar detalle: ' . mysqli_error($cnx));
