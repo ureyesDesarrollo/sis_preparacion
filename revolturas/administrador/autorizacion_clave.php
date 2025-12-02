@@ -10,7 +10,7 @@ try {
     $usu_clave_auth = isset($_POST['usu_clave_auth']) ? mysqli_real_escape_string($cnx, $_POST['usu_clave_auth']) : '';
 
 
-    $query = "SELECT usu_id FROM usuarios WHERE usu_clave_auth = '$usu_clave_auth'";
+    $query = "SELECT usu_id FROM usuarios WHERE usu_est = 'A' AND usu_clave_auth = '$usu_clave_auth'";
     $result = mysqli_query($cnx, $query);
 
     if (!$result) {

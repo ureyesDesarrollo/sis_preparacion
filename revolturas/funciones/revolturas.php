@@ -10,6 +10,7 @@ include "../../conexion/conexion.php";
 
 <script>
     $(document).ready(function() {
+        const gerenteCalidad = <?= $_SESSION['idUsu'] === '187' ? 1 : 0 ?>;
         $('#dataTableRevolturas').DataTable({
             responsive: true,
             bDestroy: true,
@@ -93,7 +94,8 @@ include "../../conexion/conexion.php";
                         <?php } else { ?>
                             return '';
                         <?php } ?>
-                    }
+                    },
+                    visible: gerenteCalidad === 0
                 },
                 {
                     data: 'usu_nombre'
@@ -145,7 +147,8 @@ include "../../conexion/conexion.php";
                         <?php } else { ?>
                             return '';
                         <?php } ?>
-                    }
+                    },
+                    visible: gerenteCalidad === 0
                 },
                 {
                     data: 'rev_fe_param',
@@ -166,7 +169,28 @@ include "../../conexion/conexion.php";
                         <?php } else { ?>
                             return '';
                         <?php } ?>
-                    }
+                    },
+                    visible: gerenteCalidad === 0
+                },
+                //EMPAQUE PRIORITARIO
+                {
+                    data: 'rev_estatus',
+                    render: function(data, type, row) {
+                        if (data == '2' && (row.cal_id == null || row.cal_id == '0')) {
+                            return `<a href="#" data-rev="${row.rev_id}" style="text-decoration:none; color: gray; pointer-events: none;" data-bs-toggle="tooltip" data-bs-placement="top" title="Falta captura de parametros">
+                                    <i class="fas fa-exclamation-circle"></i> Prioridad
+                                </a>`;
+                        } else if (data == '2') {
+                            return `<a href="#" class="btn-prioridad" data-rev="${row.rev_id}" style="text-decoration:none;">
+                                    <i class="fas fa-exclamation-circle"></i> Prioridad
+                                </a>`;
+                        }
+
+                        return '';
+
+
+                    },
+                    visible: gerenteCalidad === 1
                 },
                 //Empacar
                 {
@@ -174,15 +198,39 @@ include "../../conexion/conexion.php";
                     render: function(data, type, row) {
                         <?php if ((fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) || ($_SESSION['privilegio'] == 21 || $_SESSION['privilegio'] == 22 || $_SESSION['privilegio'] == 23)) { ?>
                             if ((data == '2' || data == '3') && row.cal_id != null && row.cal_id != '0') {
-                                return '<a href="#"><i class="btn-empacar fa-solid fa-boxes-packing" data-rev="' + row.rev_id + '"data-fol="' + row.rev_folio + '"></i></a>';
+                                console.log(typeof row.rev_prioritario)
+                                if (row.rev_prioritario == '1') {
+                                    return '<a href="#"><i class="btn-empacar fa-solid fa-boxes-packing" ' +
+                                        'data-rev="' + row.rev_id + '" data-fol="' + row.rev_folio + '"></i></a>';
+                                } else {
+
+                                    // Calcular días transcurridos DIRECTO (sin validar rev_fecha)
+                                    let dias = (new Date() - new Date(row.rev_fecha)) / 86400000;
+
+                                    if (dias >= 5) {
+                                        // ✔ Han pasado 5 días
+                                        return '<a href="#"><i class="btn-empacar fa-solid fa-boxes-packing" ' +
+                                            'data-rev="' + row.rev_id + '" data-fol="' + row.rev_folio + '"></i></a>';
+                                    } else {
+                                        // ❌ No han pasado 5 días
+                                        return '<a href="#" style="color: gray" data-bs-toggle="tooltip" data-bs-placement="top" ' +
+                                            'title="Aún no cumple 5 días desde su fabricación">' +
+                                            '<i class="fa-solid fa-boxes-packing"></i></a>';
+                                    }
+                                }
 
                             } else {
-                                return '<a href="#" style="color: gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Revoltura en proceso"><i class="fa-solid fa-boxes-packing"></i></a>';
+
+                                return '<a href="#" style="color: gray" ' +
+                                    'data-bs-toggle="tooltip" data-bs-placement="top" title="Revoltura en proceso">' +
+                                    '<i class="fa-solid fa-boxes-packing"></i></a>';
                             }
+
                         <?php } else { ?>
                             return '';
                         <?php } ?>
-                    }
+                    },
+                    visible: gerenteCalidad === 0
                 },
                 //Consulta qr
                 /* {
@@ -262,8 +310,8 @@ include "../../conexion/conexion.php";
                         } else if (data == '3') {
                             return `<span>Empacada</span>`;
                         } else if (data == '9') {
-						return `<span>Cancelada</span>`;
-						}
+                            return `<span>Cancelada</span>`;
+                        }
                     }
                 }
             ]
@@ -328,9 +376,108 @@ include "../../conexion/conexion.php";
             link.click();
         });
 
-        
+
+
+        $('#dataTableRevolturas').on('click', '.btn-prioridad', function() {
+            let rev_id = $(this).data('rev');
+            autorizar_prioritario(rev_id);
+        });
+
+
     });
 
+    async function autorizar_prioritario(rev_id) {
+        const {
+            value: clave
+        } = await Swal.fire({
+            title: "Ingresa tu clave de autorización",
+            input: "password",
+            inputAttributes: {
+                autocapitalize: "off"
+            },
+            showCancelButton: true,
+            confirmButtonText: "Autorizar",
+            cancelButtonText: "Cancelar",
+            showLoaderOnConfirm: true,
+            preConfirm: async (clave) => {
+                if (!clave) {
+                    Swal.showValidationMessage("Por favor ingresa una clave de autorización.");
+                    return false;
+                }
+
+                try {
+                    let response = await fetch("administrador/autorizacion_clave.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `usu_clave_auth=${encodeURIComponent(clave)}`
+                    });
+
+                    if (!response.ok) throw new Error("Error de conexión con el servidor");
+                    let data = await response.json();
+
+                    if (!data.success) {
+                        throw new Error(data.error || "Error en la validación de la clave");
+                    }
+
+                    return data;
+
+                } catch (error) {
+                    Swal.showValidationMessage(error.message);
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        });
+
+        if (!clave) return;
+
+        // 🔵 Mostrar loading durante el proceso de marcar prioritario
+        Swal.fire({
+            title: "Procesando...",
+            text: "Marcando como prioritario...",
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
+
+        try {
+            let response = await fetch("funciones/revolturas_marcar_prioridad.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `rev_id=${encodeURIComponent(rev_id)}`
+            });
+
+            if (!response.ok) throw new Error("Error al marcar como prioritario");
+            let res = await response.json();
+
+            if (res.success) {
+                Swal.fire({
+                    title: "Clave autorizada",
+                    text: res.success,
+                    icon: "success"
+                });
+
+                $('#dataTableRevolturas').DataTable().ajax.reload();
+
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: res.error,
+                    icon: "error"
+                });
+            }
+
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: "Error",
+                text: "Hubo un problema al procesar la solicitud",
+                icon: "error"
+            });
+        }
+    }
 </script>
 
 <div class="container-fluid">
@@ -372,6 +519,7 @@ include "../../conexion/conexion.php";
                     <th>Fecha parametros</th>
                     <th>Calidad</th>
                     <th>Orden</th>
+                    <th>Prioritario</th>
                     <th>Orden de Empaque</th>
                     <!-- <th>QR Presentaciones</th> -->
                     <th>Cliente Teorico</th>
