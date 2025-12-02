@@ -176,18 +176,31 @@ include "../../conexion/conexion.php";
                 {
                     data: 'rev_estatus',
                     render: function(data, type, row) {
-                        if (data == '2' && (row.cal_id == null || row.cal_id == '0')) {
-                            return `<a href="#" data-rev="${row.rev_id}" style="text-decoration:none; color: gray; pointer-events: none;" data-bs-toggle="tooltip" data-bs-placement="top" title="Falta captura de parametros">
-                                    <i class="fas fa-exclamation-circle"></i> Prioridad
-                                </a>`;
-                        } else if (data == '2') {
-                            return `<a href="#" class="btn-prioridad" data-rev="${row.rev_id}" style="text-decoration:none;">
-                                    <i class="fas fa-exclamation-circle"></i> Prioridad
-                                </a>`;
+                        // 1️⃣ Si ya es prioritario
+                        if (row.rev_prioritario == '1') {
+                            return `<span class="text-success"><i class="fas fa-check-circle"></i> Ya es prioritario</span>`;
                         }
 
-                        return '';
+                        // 2️⃣ Si está en estado 2 pero NO tiene captura de parámetros
+                        if (data == '2' && (row.cal_id == null || row.cal_id == '0')) {
+                            return `
+                            <a href="#" style="text-decoration:none; color: gray; pointer-events: none;" 
+                            data-bs-toggle="tooltip" data-bs-placement="top" 
+                            title="Falta captura de parámetros">
+                                <i class="fas fa-exclamation-circle"></i> Prioridad
+                            </a>`;
+                        }
 
+                        // 3️⃣ Si está en estado 2 y SÍ puede priorizar
+                        if (data == '2') {
+                            return `
+                            <a href="#" class="btn-prioridad" data-rev="${row.rev_id}" style="text-decoration:none;">
+                                <i class="fas fa-exclamation-circle"></i> Prioridad
+                            </a>`;
+                        }
+
+                        // 4️⃣ Cualquier otro caso
+                        return '';
 
                     },
                     visible: gerenteCalidad === 1
@@ -432,7 +445,7 @@ include "../../conexion/conexion.php";
 
         if (!clave) return;
 
-        // 🔵 Mostrar loading durante el proceso de marcar prioritario
+        // 🔵 Loading visible
         Swal.fire({
             title: "Procesando...",
             text: "Marcando como prioritario...",
@@ -452,7 +465,11 @@ include "../../conexion/conexion.php";
             if (!response.ok) throw new Error("Error al marcar como prioritario");
             let res = await response.json();
 
+            // 🔥 El loading se cierra aquí ANTES del Swal final
+            Swal.close();
+
             if (res.success) {
+
                 Swal.fire({
                     title: "Clave autorizada",
                     text: res.success,
@@ -462,15 +479,20 @@ include "../../conexion/conexion.php";
                 $('#dataTableRevolturas').DataTable().ajax.reload();
 
             } else {
+
                 Swal.fire({
                     title: "Error",
                     text: res.error,
                     icon: "error"
                 });
+
             }
 
         } catch (error) {
             console.error(error);
+
+            Swal.close();
+
             Swal.fire({
                 title: "Error",
                 text: "Hubo un problema al procesar la solicitud",
