@@ -9,8 +9,10 @@ $cnx =  Conectarse();
 try {
     $listado_revolturas = mysqli_query(
         $cnx,
-        "SELECT r.rev_id, r.rev_folio, DATE(r.rev_fecha) as rev_fecha, r.rev_estatus,c.cal_descripcion,r.cal_id,
-        u.usu_nombre,r.rev_factura, r.rev_kilos, cl.cte_nombre, r.rev_fecha_procesamiento, r.rev_fe_param
+        "SELECT r.rev_id, r.rev_folio, DATE(r.rev_fecha) as rev_fecha, 
+        r.rev_estatus,c.cal_descripcion,r.cal_id,
+        u.usu_nombre,r.rev_factura, r.rev_kilos, cl.cte_nombre, 
+        r.rev_fecha_procesamiento, r.rev_fe_param, r.rev_prioritario
          FROM rev_revolturas r
          INNER JOIN usuarios u ON r.usu_id = u.usu_id
          LEFT JOIN rev_clientes cl ON r.rev_teo_cliente = cl.cte_id
