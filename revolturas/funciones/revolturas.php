@@ -400,6 +400,8 @@ include "../../conexion/conexion.php";
     });
 
     async function autorizar_prioritario(rev_id) {
+
+        // 1️⃣ Validar clave de autorización
         const {
             value: clave
         } = await Swal.fire({
@@ -419,7 +421,7 @@ include "../../conexion/conexion.php";
                 }
 
                 try {
-                    let response = await fetch("administrador/autorizacion_clave.php", {
+                    const r = await fetch("administrador/autorizacion_clave.php", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/x-www-form-urlencoded"
@@ -427,25 +429,22 @@ include "../../conexion/conexion.php";
                         body: `usu_clave_auth=${encodeURIComponent(clave)}`
                     });
 
-                    if (!response.ok) throw new Error("Error de conexión con el servidor");
-                    let data = await response.json();
+                    const data = await r.json();
 
-                    if (!data.success) {
-                        throw new Error(data.error || "Error en la validación de la clave");
-                    }
+                    if (!data.success) throw new Error(data.error || "Clave incorrecta");
 
-                    return data;
+                    return true;
 
-                } catch (error) {
-                    Swal.showValidationMessage(error.message);
+                } catch (e) {
+                    Swal.showValidationMessage(e.message);
+                    return false;
                 }
-            },
-            allowOutsideClick: () => !Swal.isLoading()
+            }
         });
 
-        if (!clave) return;
+        if (clave === undefined) return;
 
-        // 🔵 Loading visible
+        // 2️⃣ Loading general de proceso
         Swal.fire({
             title: "Procesando...",
             text: "Marcando como prioritario...",
@@ -454,7 +453,9 @@ include "../../conexion/conexion.php";
         });
 
         try {
-            let response = await fetch("funciones/revolturas_marcar_prioridad.php", {
+
+            // 3️⃣ MARCAR PRIORIDAD
+            const r1 = await fetch("funciones/revolturas_marcar_prioridad.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
@@ -462,42 +463,55 @@ include "../../conexion/conexion.php";
                 body: `rev_id=${encodeURIComponent(rev_id)}`
             });
 
-            if (!response.ok) throw new Error("Error al marcar como prioritario");
-            let res = await response.json();
+            const res1 = await r1.json();
 
-            // 🔥 El loading se cierra aquí ANTES del Swal final
-            Swal.close();
-
-            if (res.success) {
-
-                Swal.fire({
-                    title: "Clave autorizada",
-                    text: res.success,
-                    icon: "success"
-                });
-
-                $('#dataTableRevolturas').DataTable().ajax.reload();
-
-            } else {
-
-                Swal.fire({
+            if (!res1.success) {
+                Swal.close();
+                return Swal.fire({
                     title: "Error",
-                    text: res.error,
+                    text: res1.error || "No se pudo marcar como prioritario",
                     icon: "error"
                 });
-
             }
 
-        } catch (error) {
-            console.error(error);
+            // 4️⃣ ENVIAR CORREO DESPUÉS DE MARCAR PRIORIDAD
+            const r2 = await fetch("funciones/revolturas_prioritarias_correo.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `rev_id=${encodeURIComponent(rev_id)}`
+            });
+
+            const res2 = await r2.json();
 
             Swal.close();
 
+            if (!res2.success) {
+                return Swal.fire({
+                    title: "Advertencia",
+                    text: "La prioridad se marcó, pero el correo no pudo enviarse.",
+                    icon: "warning"
+                });
+            }
+
+            // 5️⃣ Todo OK
+            Swal.fire({
+                title: "Éxito",
+                text: "Revoltura marcada como prioritaria y correo enviado.",
+                icon: "success"
+            });
+
+            $("#dataTableRevolturas").DataTable().ajax.reload();
+
+        } catch (error) {
+            Swal.close();
             Swal.fire({
                 title: "Error",
-                text: "Hubo un problema al procesar la solicitud",
+                text: "Falló la comunicación con el servidor.",
                 icon: "error"
             });
+            console.error(error);
         }
     }
 </script>

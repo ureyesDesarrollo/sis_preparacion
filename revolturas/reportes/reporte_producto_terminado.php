@@ -190,6 +190,69 @@ foreach ($cliente_data as $cliente => $presentaciones) {
     }
 }
 
+
+// ==========================================
+//   NUEVA SECCIÓN: EXISTENCIA PRODUCTO EXTERNO
+// ==========================================
+
+// Consulta para obtener producto externo con su presentación
+$query_externo = "
+    SELECT 
+        pe.pe_id,
+        pe.pres_id,
+        pres.pres_descrip,
+        pres.pres_kg,
+        pe.pe_lote,
+        pe.pe_existenica_inicial,
+        pe.pe_existencia_real
+    FROM producto_externo pe
+    INNER JOIN rev_presentacion pres ON pres.pres_id = pe.pres_id
+    ORDER BY pres.pres_descrip, pe.pe_lote
+";
+
+$res_externo = mysqli_query($cnx, $query_externo);
+
+$producto_externo_data = [];
+$totales_producto_externo = [];
+
+while ($row = mysqli_fetch_assoc($res_externo)) {
+
+    $presentacion = $row['pres_descrip'];
+    $kg_por_unidad = $row['pres_kg'];
+    $ext_real = $row['pe_existencia_real'];
+
+    // Calcular KG totales
+    $kg_totales = $ext_real * $kg_por_unidad;
+
+    // Si no existe la presentación, inicializarla
+    if (!isset($producto_externo_data[$presentacion])) {
+        $producto_externo_data[$presentacion] = [];
+    }
+
+    $producto_externo_data[$presentacion][] = [
+        'pe_id' => $row['pe_id'],
+        'pres_id' => $row['pres_id'],
+        'presentacion' => $presentacion,
+        'lote' => $row['pe_lote'],
+        'ext_inicial' => $row['pe_existenica_inicial'],
+        'ext_real' => $ext_real,
+        'kg' => $kg_totales
+    ];
+
+    // Totales por presentación
+    if (!isset($totales_producto_externo[$presentacion])) {
+        $totales_producto_externo[$presentacion] = [
+            'ext_real' => 0,
+            'kg' => 0
+        ];
+    }
+
+    $totales_producto_externo[$presentacion]['ext_real'] += $ext_real;
+    $totales_producto_externo[$presentacion]['kg'] += $kg_totales;
+}
+
+
+
 // Obtener la fecha actual en formato español
 $meses = array(
     1 => 'enero',
@@ -231,6 +294,15 @@ foreach ($totales_clientes as $cliente => $presentaciones) {
         $total_global['cliente'] += $datos['kg'];
     }
 }
+
+// Sumar existencias de producto externo
+$total_global['externo'] = 0;
+
+foreach ($totales_producto_externo as $presentacion => $datos) {
+    $total_global['kg'] += $datos['kg'];
+    $total_global['externo'] += $datos['kg'];
+}
+
 
 //Obtener los datos de barredura
 $query_barredura = "SELECT SUM(tar_kilos) AS barredura FROM rev_tarimas WHERE pro_id <= 3 AND tar_estatus  = 8";
@@ -501,6 +573,55 @@ file_put_contents('datos_existencias.json', json_encode(['kg' => $total]));
                     <?php endforeach; ?>
                 </div>
             </div>
+            <!-- Sección de existencias de producto externo -->
+            <div class="container mb-4">
+                <div class="print-area">
+                    <h3 style="color: #007bff;">GRENETINA HIDROLIZADA</h3>
+                    <div class="container table-container">
+
+                        <?php foreach ($producto_externo_data as $presentacion => $items): ?>
+                            <h2 class="titulo">
+                                Presentación: <?= htmlspecialchars($presentacion) ?>
+                                (<?= htmlspecialchars($items[0]['kg'] / $items[0]['ext_real']) ?> kg)
+                            </h2>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Lote</th>
+                                        <th>Empaques Inicial</th>
+                                        <th>Empaques Real</th>
+                                        <th>Kilos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($items as $row): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($row['lote']) ?></td>
+                                            <td><?= htmlspecialchars($row['ext_inicial']) ?></td>
+                                            <td><?= htmlspecialchars($row['ext_real']) ?></td>
+                                            <td><?= htmlspecialchars(number_format($row['kg'], 2)) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+
+                                    <!-- Fila de totales -->
+                                    <tr>
+                                        <td colspan="2" class="text-end fw-bold" style="font-size: 20px">Total</td>
+                                        <td style="font-size: 20px" class="fw-bold">
+                                            <?= number_format($totales_producto_externo[$presentacion]['ext_real']) ?>
+                                        </td>
+                                        <td style="font-size: 20px" class="fw-bold">
+                                            <?= number_format($totales_producto_externo[$presentacion]['kg']) ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <?php endforeach; ?>
+
+                    </div>
+                </div>
+            </div>
+
             <div style="display: flex; align-items: center;">
                 <h2 style="color: #007bff; margin: 0;">Total empacado: <?php echo number_format($total_global['kg']); ?></h2>
                 <span class="text-danger" style="margin-left: 10px;">*</span>
@@ -562,6 +683,13 @@ file_put_contents('datos_existencias.json', json_encode(['kg' => $total]));
                                 <sup class="text-danger">*</sup><sup>1</sup>
                             </span>
                             <span id="total-kilos-clientes-resumen" class="fw-semibold"><?= number_format($total_global['cliente']); ?></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>
+                                <strong>Grenetina Hidrolizada:</strong>
+                                <sup class="text-danger">*</sup><sup>1</sup>
+                            </span>
+                            <span id="total-kilos-clientes-resumen" class="fw-semibold"><?= number_format($total_global['externo']); ?></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <strong>Total general:</strong>
