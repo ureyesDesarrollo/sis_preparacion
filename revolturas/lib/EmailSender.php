@@ -311,4 +311,26 @@ class MailSender
             return false;
         }
     }
+
+    public function sendMailPrioritario($asunto, $body)
+    {
+        try {
+            // Configurar destinatario
+            $this->mail->addAddress("desarrollo@progel.com.mx");
+            //$this->mail->addAddress("gerentedecalidad@progel.com.mx");
+            //$this->mail->addCC("fjmuro@progel.com.mx");
+            //$this->mail->addCC('');
+            // Configurar asunto y cuerpo del correo
+            $this->mail->isHTML(true);
+            $this->mail->Subject = $asunto;
+            $this->mail->Body = $body;
+            
+            // Enviar correo
+            $this->mail->send();
+            return true;
+        } catch (Exception $e) {
+            // Manejar errores de envío
+            return false;
+        }
+    }
 }
