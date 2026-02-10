@@ -1,0 +1,131 @@
+/* Estilos generales */
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+#cajon {
+  color: #000;
+}
+
+td {
+  width: 10%;
+  border: 1px solid#e6e6e6;
+  vertical-align: top;
+}
+
+th {
+  font-size: 14px;
+  border: 1px solid#e6e6e6;
+}
+
+
+#cajones {
+  font-size: 24px;
+}
+table {
+  text-align: center;
+  font-size: 12px;
+  width: 100%;
+}
+
+#separacion {
+  height: 3rem;
+  border: none;
+}
+
+#opciones_menu {
+  text-align: right;
+}
+
+.alert {
+  padding: 0.5rem;
+  margin-bottom: 0px;
+}
+
+/* color de boton */
+.btn-primary {
+  --bs-btn-bg: #337ab7;
+  --bs-btn-border-color: #337ab7;
+  --bs-btn-hover-bg: #2e6da4;
+}
+
+.btn-secondary {
+  --bs-btn-bg: #e8e9eb;
+  --bs-btn-border-color: #e8e9eb;
+  --bs-btn-hover-bg: #e8e9eb;
+  --bs-btn-color: #2e2c2c;
+  --bs-btn-hover-color: none;
+  --bs-btn-hover-border-color: #e8e9eb;
+}
+
+#encabezado {
+  padding-top: 1rem;
+  box-shadow: 10px 5px 5px #e6e6e6;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  background-color: red;
+  color: #fff;
+  box-shadow: 5px 3px 5px #908f8f;
+}
+
+.navbar-brand,
+.nav-link,
+.navbar-text {
+  color: #fff;
+}
+
+.navbar-text a,
+.navbar-text a:focus,
+.navbar-text a:hover {
+  color: #fff;
+}
+
+.navbar-text {
+  padding-left: 1rem;
+}
+
+#indicadores {
+  text-align: center;
+  margin-bottom: 1rem;
+  /* color: #bdbdbd; */
+}
+
+/* vertical */
+@media only screen and (max-width: 768px) and (orientation: portrait) {
+  /*  #encabezado,
+  footer {
+      display: none;
+  } */
+  #indicadores {
+    text-align: center;
+  }
+}
+
+/* horizontal */
+@media only screen and (max-width: 768px) and (orientation: landscape) {
+  #indicadores {
+    text-align: center;
+  }
+
+  th {
+    font-size: 14px;
+    border: 1px solid#e6e6e6;
+  }
+
+  /*   #encabezado,
+  footer {
+      display: none;
+  }
+
+  table {
+      width: 100%;
+      height: 75vh;
+      border-collapse: collapse;
+  } */
+}

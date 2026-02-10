@@ -1,0 +1,48 @@
+/*Desarrollado por: Ca & Ce Technologies */
+/*Contacto: mc.munoz.rz@gmail.com */
+/*21 - Agosto - 2018*/
+/*estilos submenu catalogos*/
+ul li a{
+	color: #F1F0EF;
+	/* opacity: 0.7; */
+	font-size: 18px;
+	padding-left: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding-top: 10px;
+    z-index: 10px
+}
+
+.navbar-right{
+	margin-top: 5px;
+}
+
+.navbar-nav{
+    margin-top: 2rem;
+}
+
+li a {
+    text-decoration: none;
+
+}
+
+/* Change the link color on hover */
+li a:hover {
+    color: #fff;
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+#img{
+	opacity: 0.6
+}
+
+/*migas*/
+.breadcrumb{
+    display:inline-block;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+}

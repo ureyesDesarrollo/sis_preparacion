@@ -1,0 +1,25 @@
+.indicador {
+  /* margin: 10px; */
+  font-size: 14px;
+}
+
+.titulo_indicadores {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.detalle_indicadores {
+  border: 1px solid#e6e6e6;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2); /* Agrega una sombra con desplazamiento de 4px en horizontal, 4px en vertical, 8px de difuminado y un color de sombra con un 20% de opacidad */
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    pointer-events: none;
+    border: 0;
+  }

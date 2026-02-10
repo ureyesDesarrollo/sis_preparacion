@@ -1,0 +1,56 @@
+/*Desarrollado por: Ca & Ce Technologies */
+/*Contacto: mc.munoz.rz@gmail.com */
+/*21 - Agosto - 2018*/
+/* CSS Indicadores */
+h1 {color:#333333; font-weight:bold; font-family:Geneva, Arial, Helvetica, sans-serif;}
+
+/*body {
+	background-color: #000000;
+}*/
+
+.stitulo {
+	color: #CCCCCC;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 18px;
+	letter-spacing: 10pt;
+}
+
+.sbtitulo {
+	color: #CCCCCC;
+	font-style: italic;
+	font-weight: bold;
+	font-size: 18px;
+	letter-spacing: 2pt;
+}
+
+.numero {
+	color: #000;
+	font-weight: bold;
+	font-size: 13px;
+}
+
+.eblanca{
+	color: #ffffff;
+	font-weight: bold;
+}
+
+#divFecha{ text-align:right;
+	font-style:italic;
+	margin-right:40px;
+}
+
+/* estilos v_1
+.lavadores{
+	width: 85px; height: 85px; background:<?php echo $strColor; ?>; margin: 10px;display: inline-block;
+	 border-radius: 100px;  border: 2px solid #000000;margin-bottom: 50px;
+}*/
+
+.lavadores{
+	width: 85px; background:<?php echo $strColor; ?>; margin: 5px;display: inline-block;
+	margin-bottom: 50px;
+}
+
+h1{
+	margin-left: -5px
+}

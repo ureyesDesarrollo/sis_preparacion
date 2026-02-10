@@ -1,0 +1,154 @@
+[2025-11-28 08:30:45] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'PROCESADORA DE ALIMENTOS CALE, SA DE CV', 
+        cte_razon_social = 'PROCESADORA DE ALIMENTOS CALE, SA DE CV', 
+        cte_rfc = 'PAC981109SJ0 ', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'TLAQUEPAQUE, JALISCO ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AAA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = ''
+        WHERE cte_id = '83';
+[2025-11-28 08:33:14] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'K-BOTANAS', 
+        cte_razon_social = 'K-BOTANAS', 
+        cte_rfc = 'KBO190917TK7 ', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'PACHUCA, HGO ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = ''
+        WHERE cte_id = '104';
+[2025-12-01 11:16:08] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'BKRY SA DE CV', 
+        cte_razon_social = 'BKRY', 
+        cte_rfc = 'BKR050805IG2', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'GUADALAJARA, JAL ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = ''
+        WHERE cte_id = '3';
+[2025-12-01 11:17:40] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'GELATINAS NIEVE SA DE CV', 
+        cte_razon_social = 'GELATINAS NIEVE', 
+        cte_rfc = 'GNI050314RFA', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'ESTADO DE MEXICO ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = ''
+        WHERE cte_id = '28';
+[2025-12-01 11:17:57] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'PALATTI S. DE R.L. DE C.V.', 
+        cte_razon_social = 'PALATTI', 
+        cte_rfc = 'PAL160427TW9', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'CIUDAD DE MEXICO ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '265',
+        cte_bloom_min = ''
+        WHERE cte_id = '32';
+[2025-12-01 11:18:09] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'DANIEL SOLIS VALLES', 
+        cte_razon_social = 'DANIEL SOLIS VALLES', 
+        cte_rfc = 'SOVD810906JK5', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'PUEBLA ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '315',
+        cte_bloom_min = ''
+        WHERE cte_id = '38';
+[2025-12-01 11:18:19] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'GRUPO FRUDI, SA DE CV', 
+        cte_razon_social = 'GRUPO FRUDI', 
+        cte_rfc = 'GFR050620MI5', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'CD JUAREZ, CHIHUAHUA ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '315',
+        cte_bloom_min = ''
+        WHERE cte_id = '39';
+[2025-12-01 11:19:05] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'LA SUIZA, S.A. DE C.V.', 
+        cte_razon_social = 'LA SUIZA', 
+        cte_rfc = 'SUI750409N96', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'CIUDAD DE MEXICO ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = ''
+        WHERE cte_id = '53';
+[2025-12-01 11:19:29] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'OSCAR DIAZ CASTILLO', 
+        cte_razon_social = 'OSCAR DIAZ CASTILLO', 
+        cte_rfc = 'DICO810105M90', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'CIUDAD DE MEXICO ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '265',
+        cte_bloom_min = ''
+        WHERE cte_id = '68';
+[2026-01-09 10:43:02] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'LIZBETH BARRAGAN', 
+        cte_razon_social = 'LIZBETH BARRAGAN', 
+        cte_rfc = 'XAXX010101000', 
+        cte_estatus = 'A', 
+        cte_ubicacion = ' GUADALAJARA, JAL', 
+        cte_tipo = 'Comercial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '',
+        cte_bloom_min = ''
+        WHERE cte_id = '180';
+[2026-01-12 15:27:53] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'EL XALAPEÑO', 
+        cte_razon_social = 'EL XALAPEÑO', 
+        cte_rfc = 'XAXX010101000', 
+        cte_estatus = 'A', 
+        cte_ubicacion = ' CIUDAD DE MEXICO', 
+        cte_tipo = 'Comercial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '',
+        cte_bloom_min = ''
+        WHERE cte_id = '175';
+[2026-01-27 13:56:02] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'METALURGICA MET-MEX PEÑOLES, S.A. DE C.V.', 
+        cte_razon_social = 'METALURGICA MET-MEX PEÑOLES', 
+        cte_rfc = 'MMP1312017FA', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'TORREON, COAHUILA  ', 
+        cte_tipo = 'Industrial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '215',
+        cte_bloom_min = '0'
+        WHERE cte_id = '7';
+[2026-02-04 08:52:54] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'BERTHA VILLASEÑOR', 
+        cte_razon_social = 'BERTHA VILLASEÑOR', 
+        cte_rfc = 'XAXX010101000', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'CIUDAD DE MEXICO ', 
+        cte_tipo = 'Comercial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '',
+        cte_bloom_min = ''
+        WHERE cte_id = '139';
+[2026-02-04 08:53:17] UPDATE SQL: UPDATE rev_clientes SET 
+        cte_nombre = 'DOÑA GELA', 
+        cte_razon_social = 'DOÑA GELA', 
+        cte_rfc = 'XAXX010101000', 
+        cte_estatus = 'A', 
+        cte_ubicacion = 'LEON,GTO ', 
+        cte_tipo = 'Comercial', 
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '0',
+        cte_bloom_min = '0'
+        WHERE cte_id = '440';
