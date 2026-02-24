@@ -21,7 +21,7 @@ try {
     }
 </style>
 <script type="text/javascript" src="../js/alerta.js"></script>
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-xl">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Revoltura: <?= $_POST['rev_folio'] ?> / <?= $res['rev_kilos'] ?> kg</h5>
@@ -85,18 +85,22 @@ try {
     $(document).ready(function() {
         let detalle_ids = [];
         const fieldHTML = `
-    <div class="row"> 
-        <div class="col-md-5 mb-3">
+    <div class="row">
+        <div class="col-md-2 mb-3">
             <label for="" class="form-label">Cantidad</label>
             <input type="text" name="cantidad[]" class="form-control" required value="" onkeypress="return isNumberKey(event, this);"/>
         </div>
-        <div class="col-md-5 mb-3">
+        <div class="col-md-4 mb-3">
             <label for="presentacion" class="form-label">Presentación</label>
             <select name="presentacion[]" class="form-select"></select>
         </div>
         <div class="col-md-2 mb-3">
             <label for="total" class="form-label">Total</label>
             <input name="total[]" class="form-control total" readonly />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="notas" class="form-label">Notas</label>
+          <input type="text" name="notas[]" class="form-control" />
         </div>
     </div>`;
 
@@ -143,19 +147,23 @@ try {
         // Evento para agregar campos dinámicos
         $('#agregarCampo').click(function() {
             const fieldHTML = `
-            <div class="row"> 
-            <div class="col-md-5 mb-3">
-                <label for="" class="form-label">Cantidad</label>
-                <input type="text" name="cantidad[]" class="form-control" required value="" onkeypress="return isNumberKey(event, this);"/>
-            </div>
-            <div class="col-md-5 mb-3">
-                <label for="presentacion" class="form-label">Presentación</label>
-                <select name="presentacion[]" class="form-select"></select>
-            </div>
+            <div class="row">
             <div class="col-md-2 mb-3">
-                <label for="total" class="form-label">Total</label>
-                <input name="" class="form-control total" readonly />
-            </div>
+            <label for="" class="form-label">Cantidad</label>
+            <input type="text" name="cantidad[]" class="form-control" required value="" onkeypress="return isNumberKey(event, this);"/>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="presentacion" class="form-label">Presentación</label>
+            <select name="presentacion[]" class="form-select"></select>
+        </div>
+        <div class="col-md-2 mb-3">
+            <label for="total" class="form-label">Total</label>
+            <input name="total[]" class="form-control total" readonly />
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="notas" class="form-label">Notas</label>
+          <input type="text" name="notas[]" class="form-control" />
+        </div>
             </div>`;
 
             $('#campos_dinamicos').append(fieldHTML);
@@ -231,8 +239,8 @@ try {
                                 let row = `<tr>
                                 <td>${index + 1}</td>
                                 <td>${
-                                    item.estado === 'PENDIENTE' 
-                                    ? `<input class="form-control cantidad-input" data-detalle-id="${item.detalle_id}" value="${item.cantidad_solicitada}"/>` 
+                                    item.estado === 'PENDIENTE'
+                                    ? `<input class="form-control cantidad-input" data-detalle-id="${item.detalle_id}" value="${item.cantidad_solicitada}"/>`
                                     : item.cantidad_solicitada
                                 }</td>
                                 <td>${item.nombre_presentacion}</td>

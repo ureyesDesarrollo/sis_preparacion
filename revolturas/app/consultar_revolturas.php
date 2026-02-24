@@ -5,7 +5,9 @@ include '../../conexion/conexion.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     try {
         $cnx = Conectarse();
-        $sql = "SELECT rev_id,rev_folio,rev_fecha FROM rev_revolturas WHERE rev_estatus = 0 ORDER BY rev_fecha ASC";
+        $sql = "SELECT r.rev_id,r.rev_folio,r.rev_fecha,c.cte_nombre
+        FROM rev_revolturas r INNER JOIN rev_clientes c ON r.rev_teo_cliente = c.cte_id
+        WHERE r.rev_estatus = 0 ORDER BY r.rev_fecha ASC";
         $result = mysqli_query($cnx, $sql);
         $revolturas = [];
 

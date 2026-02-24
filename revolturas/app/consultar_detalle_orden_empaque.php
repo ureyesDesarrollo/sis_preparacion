@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        $sql = "SELECT 
+        $sql = "SELECT
         roed.roed_id AS detalle_id,
         roed.roe_id AS orden_id,
         rev.rev_id AS revoltura_id,
@@ -31,7 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         pres.pres_kg AS kilos_por_unidad,
         roed.roed_cantidad AS cantidad_solicitada,
         roed.roed_cantidad_capturada AS cantidad_capturada,
-        (roed.roed_cantidad * pres.pres_kg) AS kilos_totales
+        (roed.roed_cantidad * pres.pres_kg) AS kilos_totales,
+        roed.roed_notas AS notas
         FROM rev_orden_empaque_detalle roed
         JOIN rev_revolturas rev ON roed.rev_id = rev.rev_id
         JOIN rev_presentacion pres ON roed.pres_id = pres.pres_id

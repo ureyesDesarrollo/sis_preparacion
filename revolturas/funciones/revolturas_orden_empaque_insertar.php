@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $rev_id = $_POST['rev_id'];
         $cantidades = $_POST['cantidad']; // Array de cantidades
         $presentaciones = $_POST['presentacion']; // Array de presentaciones
+        $notas = $_POST['notas']; //Array de notas
 
         // Validar que no haya cantidades en 0
         foreach ($cantidades as $cantidad) {
@@ -48,8 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Insertar los detalles de la orden de empaque
         foreach ($cantidades as $index => $cantidad) {
             $pres_id = htmlspecialchars($presentaciones[$index]);
-            $sql_insert_detalle = "INSERT INTO rev_orden_empaque_detalle (roe_id, rev_id, pres_id, roed_cantidad) 
-                                   VALUES ('$roe_id', '$rev_id', '$pres_id', '$cantidad')";
+            $notas_detalle = htmlspecialchars($notas[$index]);
+            $sql_insert_detalle = "INSERT INTO rev_orden_empaque_detalle (roe_id, rev_id, pres_id, roed_cantidad, roed_notas)
+                                   VALUES ('$roe_id', '$rev_id', '$pres_id', '$cantidad','$notas_detalle')";
             if (!mysqli_query($cnx, $sql_insert_detalle)) {
                 throw new Exception("Error al insertar detalle de la orden: " . $cnx->error);
             }
@@ -57,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $cnx->commit();
         echo json_encode(["success" => "Orden de empaque creada con éxito", "roe_id" => $roe_id]);
-
     } catch (Exception $e) {
         $cnx->rollback();
         echo json_encode(["error" => $e->getMessage()]);

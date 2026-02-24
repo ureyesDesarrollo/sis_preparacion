@@ -6,20 +6,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     try {
         $cnx = Conectarse();
-        $sql = "SELECT 
+        $sql = "SELECT
         re.rev_id,
         re.rev_folio,
         re.rev_fecha,
-        re.rev_estatus
-        FROM rev_revolturas_tarimas rt 
+        re.rev_estatus,
+        c.cte_nombre
+        FROM rev_revolturas_tarimas rt
         INNER JOIN rev_tarimas t ON rt.tar_id = t.tar_id
-        INNER JOIN rev_nivel_posicion_detalle npd ON npd.tar_id = t.tar_id 
+        INNER JOIN rev_nivel_posicion_detalle npd ON npd.tar_id = t.tar_id
         INNER JOIN rev_nivel_posicion np ON np.niv_id = npd.niv_id
         INNER JOIN rev_racks r ON r.rac_id = np.rac_id
         INNER JOIN rev_revolturas re ON re.rev_id = rt.rev_id
+        INNER JOIN rev_clientes c ON re.rev_teo_cliente = c.cte_id
         WHERE (re.rev_estatus = 0 OR re.rev_estatus = 1) AND r.rac_id = 2
         GROUP BY re.rev_id, re.rev_folio, re.rev_fecha, re.rev_estatus";
-        
+
         $result = mysqli_query($cnx, $sql);
         $revolturas = [];
 
