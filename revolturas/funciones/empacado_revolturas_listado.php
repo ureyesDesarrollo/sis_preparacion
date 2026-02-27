@@ -4,6 +4,7 @@
 /*Actualizado: Agosto-2024*/
 include "../../seguridad/user_seguridad.php";
 include "../../conexion/conexion.php";
+
 include "../../funciones/funciones.php";
 
 $cnx = Conectarse();

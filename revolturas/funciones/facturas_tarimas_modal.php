@@ -1,3 +1,54 @@
+<?php
+include "../../conexion/conexion.php";
+if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
+    $cnx = Conectarse();
+    $fe_factura = $_POST['fe_factura'];
+    $fe_tipo = $_POST['fe_tipo'];
+
+    $tipos = [
+        'F' => 'Factura',
+        'R' => 'Remisión',
+        'V' => 'Vale de salida'
+    ];
+
+    $msg = $tipos[$fe_tipo] ?? 'Documento';
+
+    // Verificación de existencia de la factura
+    if ($fe_tipo == 'V') {
+        $checkSql = "SELECT COUNT(*) AS count FROM rev_tarimas_facturas WHERE ft_vale_salida = '$fe_factura' AND ft_tipo = '$fe_tipo'";
+        $checkResult = mysqli_query($cnx, $checkSql);
+        $checkRow = mysqli_fetch_assoc($checkResult);
+
+        if ($checkRow['count'] > 0) {
+            // Si el vale de salida ya existe, devolver un mensaje de error
+            $res = "El $msg $fe_factura ya está registrado.";
+            echo json_encode(["error" => $res]);
+            exit;
+        } else {
+            echo json_encode(["success" => "$msg válido"]);
+            exit;
+        }
+    }
+
+    $checkSql = "SELECT COUNT(*) AS count FROM rev_revolturas_pt_facturas WHERE fe_factura = '$fe_factura' AND fe_tipo = '$fe_tipo'";
+    $checkResult = mysqli_query($cnx, $checkSql);
+    $checkRow = mysqli_fetch_assoc($checkResult);
+
+    $checkSql_2 = "SELECT COUNT(*) AS count FROM rev_tarimas_facturas WHERE ft_factura = '$fe_factura' AND ft_tipo = '$fe_tipo'";
+    $checkResult_2 = mysqli_query($cnx, $checkSql_2);
+    $checkRow_2 = mysqli_fetch_assoc($checkResult_2);
+
+    if ($checkRow['count'] > 0 || $checkRow_2['count'] > 0) {
+        // Si la factura ya existe, devolver un mensaje de error
+        $res = "La $msg $fe_factura ya está registrada.";
+        echo json_encode(["error" => $res]);
+    } else {
+        echo json_encode(["success" => "Factura válida"]);
+    }
+    exit;
+}
+?>
+
 <script type="text/javascript" src="../js/alerta.js"></script>
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -17,6 +68,10 @@
                         <input class="form-check-input" type="radio" name="tipo" id="remision" value="R" required>
                         <label class="form-check-label" for="remision">Remisión</label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipo" id="vale_salida" value="V" required>
+                        <label class="form-check-label" for="vale_salida">Vale de salida</label>
+                    </div>
                 </div>
                 <hr>
                 <div class="row">
@@ -24,7 +79,7 @@
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label for="factura" class="form-label" id="tipo_documento">Factura</label>
-                                <input type="text" class="form-control" name="ft_factura" id="ft_factura" required>
+                                <input type="text" class="form-control" name="ft_factura" id="ft_factura" required autocomplete="off">
                             </div>
                             <div class="col-md-4">
                                 <label for="fecha" class="form-label">Fecha</label>
@@ -32,7 +87,7 @@
                             </div>
                             <div class="col-md-5">
                                 <label for="cliente" class="form-label">Cliente</label>
-                                <input type="text" id="search_clientes" class="form-control mb-2" placeholder="Buscar cliente">
+                                <input type="text" id="search_clientes" class="form-control mb-2" placeholder="Buscar cliente" autocomplete="off">
                                 <select name="cte_id_f" id="cte_id_f" class="form-select" required></select>
                             </div>
                         </div>
@@ -89,7 +144,7 @@
             const factura = $(this).val();
 
             typingTimer = setTimeout(function() {
-                if (factura) { 
+                if (factura) {
                     validar_factura(factura);
                 }
             }, typingDelay);
@@ -100,7 +155,14 @@
 
         $('input[name="tipo"]').on('change', function() {
             let tipoDocumento = $('input[name="tipo"]:checked').val();
-            let label = tipoDocumento == 'F' ? 'Factura' : 'Remisión';
+            let tipos = {
+                'F': 'Factura',
+                'R': 'Remisión',
+                'V': 'Vale de salida'
+            };
+
+            let label = tipos[tipoDocumento] || '';
+
             $('#tipo_documento').text(label);
             $('#title').text(`Capturar ${label}`);
         });
@@ -126,7 +188,7 @@
         });
 
 
-        $('#form_factura_tar').submit(function(e){
+        $('#form_factura_tar').submit(function(e) {
             e.preventDefault();
             insertarRegistros();
         });
@@ -210,7 +272,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'funciones/facturas_empacado_modal.php',
+                url: 'funciones/facturas_tarimas_modal.php',
                 data: {
                     action: 'validar_factura',
                     fe_factura: factura,
@@ -218,7 +280,7 @@
                 },
                 success: function(data) {
                     let res = JSON.parse(data);
-                    if(res.error){
+                    if (res.error) {
                         $('#fe_factura').val('');
                         alertas_v5("#alerta-factura-tar", 'Error!', res.error, 3, true, 5000);
                     }
@@ -226,15 +288,15 @@
             });
         }
 
-        function insertarRegistros(){
+        function insertarRegistros() {
             let tarimasArray = JSON.parse(localStorage.getItem('tarimas')) || [];
             let tipo = $('input[name="tipo"]:checked').val();
             let factura = $('#ft_factura').val();
             let fecha = $('#fecha').val();
             let cliente = $('#cte_id_f').val();
 
-            if(tarimasArray.length > 0){
-                tarimasArray.forEach(tarima =>{
+            if (tarimasArray.length > 0) {
+                tarimasArray.forEach(tarima => {
                     $.ajax({
                         type: 'POST',
                         url: 'funciones/facturas_tarimas_insertar.php',
@@ -245,15 +307,15 @@
                             cte_id_f: cliente,
                             tar_id: tarima.tar_id
                         },
-                        success: function(data){
+                        success: function(data) {
                             let res = JSON.parse(data);
-                            if(res.success){
+                            if (res.success) {
                                 alertas_v5("#alerta-factura-tar", 'Correcto!', res.success, 1, true, 5000);
                                 localStorage.removeItem('tarimas');
                                 $('#form_factura_tar')[0].reset();
-                                $('#dataTableTarimasAlmacenVentas').DataTable().ajax.reload();
+                                $('#dataTableTarimasAlmacenVenta').DataTable().ajax.reload();
                                 obtenerTarimas();
-                            }else if(res.error){
+                            } else if (res.error) {
                                 alertas_v5("#alerta-factura-tar", 'Error!', res.error, 3, true, 5000);
                             }
                         }

@@ -11,12 +11,19 @@ try {
     }
 
     $ft_factura = mysqli_real_escape_string($cnx, $_POST['ft_factura']);
-    $fecha = mysqli_real_escape_string($cnx, $_POST['fecha']);
+    $fecha = date('Y-m-d H:i:s');
     $cte_id_f = mysqli_real_escape_string($cnx, $_POST['cte_id_f']);
     $tar_id = mysqli_real_escape_string($cnx, $_POST['tar_id']);
     $ft_tipo = mysqli_real_escape_string($cnx, $_POST['ft_tipo']);
-    $sql = "INSERT INTO rev_tarimas_facturas (tar_id,ft_factura,ft_tipo,ft_fecha,cte_id) 
+
+    $sql = "";
+    if ($ft_tipo == 'V') {
+        $sql = "INSERT INTO rev_tarimas_facturas (tar_id,ft_vale_salida, ft_tipo,ft_fecha,cte_id)
     VALUES ('$tar_id','$ft_factura','$ft_tipo','$fecha','$cte_id_f')";
+    } else {
+        $sql = "INSERT INTO rev_tarimas_facturas (tar_id,ft_factura,ft_tipo,ft_fecha,cte_id)
+    VALUES ('$tar_id','$ft_factura','$ft_tipo','$fecha','$cte_id_f')";
+    }
 
     $sql_update = "UPDATE rev_tarimas SET tar_estatus = '9' WHERE tar_id = '$tar_id'"; # 9 estatus de facturado
     if (mysqli_query($cnx, $sql)) {

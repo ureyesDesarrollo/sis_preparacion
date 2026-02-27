@@ -218,10 +218,10 @@ include "../../conexion/conexion.php";
                      data: 'rev_estatus',
                      render: function(data, type, row) {
                          if (data == '3') {
-                             <?php //if (fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) { 
+                             <?php //if (fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) {
                                 ?>
                                  return '<a href="#"><i class="btn-vale fa-solid fa-arrow-right-from-bracket" data-rev="' + row.rev_id + '"></i></a>';
-                             <?php //} 
+                             <?php //}
                                 ?>
                          } else {
                              return '<a href="#" style="color: gray" data-bs-toggle="tooltip" data-bs-placement="top" title="Revoltura en proceso"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>';
@@ -262,11 +262,28 @@ include "../../conexion/conexion.php";
                         } else if (data == '3') {
                             return `<span>Empacada</span>`;
                         } else if (data == '9') {
-						return `<span>Cancelada</span>`;
-						}
+                            return `<span>Cancelada</span>`;
+                        }
                     }
+                },
+                {
+                    data: 'rev_id',
+                    render: function(data, type, row) {
+                        if (row.rev_estatus == '2' && row.cal_id != null && row.cal_id != '0') {
+                            return '<a href="#"><i class="btn-convertir fa-solid fa-shuffle" data-rev="' + row.rev_id + '"></i></a>';
+                        } else {
+                            return '';
+                        }
+                    },
+                    visible: <?php if ((fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) || ($_SESSION['privilegio'] == 21 || $_SESSION['privilegio'] == 22 || $_SESSION['privilegio'] == 23)) { ?>true<?php } else { ?>false<?php } ?>
                 }
             ]
+        });
+
+
+        $('#dataTableRevolturas').on('click', '.btn-convertir', function() {
+            let rev_id = $(this).data('rev');
+            abrir_modal_convertir_revoltura(rev_id);
         });
 
         $('#dataTableRevolturas').on('click', '.btn-revolver', function() {
@@ -328,9 +345,8 @@ include "../../conexion/conexion.php";
             link.click();
         });
 
-        
-    });
 
+    });
 </script>
 
 <div class="container-fluid">
@@ -378,6 +394,7 @@ include "../../conexion/conexion.php";
                     <!-- <th>Vale de salida</th> -->
                     <!-- <th>Factura</th> -->
                     <th>Estatus</th>
+                    <th>Convertir</th>
                 </tr>
             </thead>
             <tbody>
@@ -396,10 +413,30 @@ include "../../conexion/conexion.php";
 </div>
 <div class="modal fade" id="modal_muestreo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 </div>
-
 <div class="modal fade" id="modal_factura" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 </div>
+<div class="modal fade" id="modal_convertir_revolturas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+</div>
+
 <script>
+    function abrir_modal_convertir_revoltura(rev_id) {
+        let dataForm = {
+            'rev_id': rev_id
+        };
+
+        console.log(dataForm);
+        $.ajax({
+            type: 'POST',
+            data: dataForm,
+            url: 'funciones/revolturas_modal_convertir.php',
+            success: function(result) {
+                $('#modal_convertir_revolturas').html(result);
+                $('#modal_convertir_revolturas').modal('show');
+            }
+        });
+    }
+
+
     function abrir_modal_revoltura(rev_id, rev_folio) {
         let dataForm = {
             'rev_id': rev_id,

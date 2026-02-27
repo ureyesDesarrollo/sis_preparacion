@@ -1,9 +1,10 @@
 <script>
     $(document).ready(function() {
         const formatter = new Intl.NumberFormat('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-    });
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+
         function inicializarSegunSeleccion() {
             let valor = $('input[name="tabla"]:checked').val();
 
@@ -16,20 +17,38 @@
                             data: 'ft_fecha'
                         },
                         {
-                            data: 'ft_factura'
+                            data: 'ft_tipo',
+                            render: function(data, type, row) {
+                                let tipos = {
+                                    'F': row.ft_factura,
+                                    'R': row.ft_factura,
+                                    'V': row.ft_vale_salida
+                                };
+
+                                return tipos[data] || 'Desconocido';
+                            }
                         },
-						{
-							data: 'tar_id'
-						},
-						{
-							data: 'pro_id'
-						},
+                        {
+                            data: 'tar_id'
+                        },
+                        {
+                            data: 'pro_id',
+                            render: function(data, type, row) {
+                                let procesos = {
+                                    '1': 'FINOS A',
+                                    '2': 'FINOS B',
+                                    '3': 'FINOS C',
+                                };
+
+                                return procesos[data] || data;
+                            }
+                        },
                         {
                             data: 'tar_folio'
                         },
-						{
-							data: 'tar_kilos'
-						},
+                        {
+                            data: 'tar_kilos'
+                        },
                         {
                             data: 'cte_nombre',
                             render: function(data) {
@@ -39,8 +58,38 @@
                         {
                             data: 'ft_tipo',
                             render: function(data) {
-                                return data === 'F' ? 'Factura' : 'Remisión';
+                                let tipos = {
+                                    'F': 'Factura',
+                                    'R': 'Remisión',
+                                    'V': 'Vale de salida'
+                                }
+
+                                return tipos[data] || 'Desconocido';
                             }
+                        },
+                        {
+                            data: 'ft_kilos_facturados',
+                            render: function(data) {
+                                return data ? `${parseFloat(data).toFixed(2)} kg` : '0.00 kg';
+                            }
+                        },
+                        {
+                            data: 'ft_factura',
+                            render: function(data) {
+                                return data ? data : 'Sin factura';
+                            }
+                        },
+                        {
+                            data: null,
+                            render: function(data, type, row) {
+                                if (row.ft_tipo === 'V') {
+                                    return `<button class="btn btn-primary btn-actualizar" data-id='${row.ft_vale_salida}' data-tipo='${row.ft_tipo}' title="Actualizar"><i class="fa-solid fa-file-invoice"></i></button>`;
+                                } else if (row.ft_tipo === 'F' || row.ft_tipo === 'R') {
+                                    return `<button class="btn btn-primary btn-actualizar" data-id='${row.ft_factura}' data-tipo='${row.ft_tipo}' title="Actualizar"><i class="fa-solid fa-file-invoice"></i></button>`;
+                                }
+                                return '';
+                            },
+
                         }
                     ], 'Facturas_tarimas_listado');
                     break;
@@ -190,6 +239,164 @@
             console.log(factura);
             ingresar_cartaporte(factura);
         });
+
+        $(document).on('click', '.btn-actualizar', function() {
+
+            let valor = $(this).data('id');
+            let tipo = $(this).data('tipo');
+
+            let modal = new bootstrap.Modal(document.getElementById('modalActualizarFactura'));
+            modal.show();
+
+            $('#modalValeSalida').text(valor);
+
+            $('#tablaTarimasBody').html(`
+        <tr>
+            <td colspan="6" class="text-center">
+                Cargando...
+            </td>
+        </tr>
+    `);
+
+            $.ajax({
+                url: 'reportes/consultar_tarimas_por_tipo.php',
+                method: 'POST',
+                data: {
+                    ft_tipo: tipo,
+                    valor: valor
+                },
+                dataType: 'json',
+                success: function(response) {
+
+                    if (response.status !== 'success') {
+                        alert(response.message);
+                        return;
+                    }
+
+                    let html = '';
+
+                    if (response.total === 0) {
+                        html = `
+                            <tr>
+                                <td colspan="6" class="text-center text-danger">
+                                    No se encontraron tarimas.
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+
+                        response.data.forEach(function(tarima, index) {
+
+                            html += `
+        <tr>
+            <td class="text-center">
+                ${index + 1}
+            </td>
+
+            <td class="text-center fw-bold">
+                ${tarima.tar_folio}
+                <input type="hidden"
+                       class="tar-id"
+                       value="${tarima.tar_id}">
+            </td>
+
+            <td class="text-end">
+                ${parseFloat(tarima.tar_kilos).toFixed(2)} kg
+            </td>
+
+            <td>
+                <input type="number"
+                       step="0.01"
+                       min="0"
+                       max="${tarima.tar_kilos}"
+                       class="form-control form-control-sm input-kilos-facturados"
+                       placeholder="0.00">
+            </td>
+
+            <td>
+                <input type="text"
+                       class="form-control form-control-sm input-factura"
+                       value="${tarima.ft_factura ?? ''}"
+                       ${response.tipo === 'V' ? '' : 'readonly'}>
+            </td>
+
+            <td class="text-center">
+                ${tarima.tar_fecha ?? ''}
+            </td>
+        </tr>
+    `;
+                        });
+                    }
+
+                    $('#tablaTarimasBody').html(html);
+                },
+                error: function() {
+                    alert("Error al consultar las tarimas.");
+                }
+            });
+        });
+
+        $(document).on('input', '.input-factura', function() {
+
+            let nuevaFactura = $(this).val();
+
+            // Copiar a todos los inputs de factura
+            $('.input-factura').val(nuevaFactura);
+
+        });
+
+        $(document).on('click', '#btnGuardarCambios', function() {
+
+            let datos = [];
+            let error = false;
+
+            $('#tablaTarimasBody tr').each(function() {
+
+                let tar_id = $(this).find('.tar-id').val();
+                let kilosInput = $(this).find('.input-kilos-facturados');
+                let facturaInput = $(this).find('.input-factura');
+
+                let kilos = parseFloat(kilosInput.val());
+                let factura = facturaInput.val().trim();
+                let kilosTarima = parseFloat(
+                    $(this).find('td:eq(2)').text()
+                );
+
+                if (!kilos || kilos <= 0) {
+                    kilosInput.addClass('is-invalid');
+                    error = true;
+                    return;
+                }
+
+                datos.push({
+                    tar_id: tar_id,
+                    ft_kilos_facturados: kilos,
+                    ft_factura: factura
+                });
+
+            });
+
+            if (error) {
+                alert("Verifica los kilos capturados.");
+                return;
+            }
+
+            $.ajax({
+                url: 'reportes/actualizar_tarimas_facturas.php',
+                method: 'POST',
+                data: {
+                    tarimas: JSON.stringify(datos)
+                },
+                success: function(response) {
+                    alert("Actualización correcta.");
+                    location.reload();
+                },
+                error: function() {
+                    alert("Error al guardar.");
+                }
+            });
+
+        });
     });
 </script>
 <div class="container-fluid">
@@ -227,12 +434,15 @@
                         <tr>
                             <th>Fecha</th>
                             <th>Factura</th>
-							<th>T. Clave</th>
-							<th>Proceso</th>
+                            <th>T. Clave</th>
+                            <th>Proceso</th>
                             <th>Tarima</th>
-							<th>Kilos</th>
+                            <th>Kilos</th>
                             <th>Cliente</th>
                             <th>Tipo</th>
+                            <th>Kilos Facturados</th>
+                            <th>Factura</th>
+                            <th>Actualizar</th>
                         </tr>
                     </thead>
                 </table>
@@ -240,6 +450,58 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalActualizarFactura" tabindex="-1"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Actualizar Tarimas - Vale:
+                    <span id="modalValeSalida" class="fw-bold"></span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="text-center">
+                            <tr>
+                                <th>#</th>
+                                <th>Folio</th>
+                                <th>Kilos Tarima</th>
+                                <th>Kilos Facturados</th>
+                                <th>Factura</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaTarimasBody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button class="btn btn-primary"
+                    id="btnGuardarCambios">
+                    Guardar Cambios
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 
 <script>
     async function ingresar_cartaporte(factura) {

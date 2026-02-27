@@ -299,21 +299,45 @@ $total_barredura['barredura'] = (float)($total_barredura['barredura'] ?? 0);
 // ==================================================
 //  SALIDAS (KILOS FACTURADOS) "DÍA ANTERIOR" 7:00-7:00
 // ==================================================
-$query_facturas = "SELECT
-  SUM(
-    CASE
-      WHEN rp.pres_kg IS NOT NULL THEN f.fe_cantidad * rp.pres_kg
-      WHEN rpc.pres_kg IS NOT NULL THEN f.fe_cantidad * rpc.pres_kg
-      ELSE 0
-    END
-  ) AS total_kilos_facturados
-FROM rev_revolturas_pt_facturas f
-LEFT JOIN rev_revolturas_pt rr ON f.rr_id = rr.rr_id
-LEFT JOIN rev_presentacion rp ON rr.pres_id = rp.pres_id
-LEFT JOIN rev_revolturas_pt_cliente rrc ON f.rrc_id = rrc.rrc_id
-LEFT JOIN rev_presentacion rpc ON rrc.pres_id = rpc.pres_id
-WHERE f.fe_fecha >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) + INTERVAL 7 HOUR
-  AND f.fe_fecha <  CURDATE() + INTERVAL 7 HOUR";
+$query_facturas = "SELECT SUM(total_kilos) AS total_kilos_facturados
+FROM (
+
+    /* ===========================
+       1️⃣ Revolturas facturadas
+       =========================== */
+    SELECT
+        SUM(
+            CASE
+                WHEN rp.pres_kg IS NOT NULL THEN f.fe_cantidad * rp.pres_kg
+                WHEN rpc.pres_kg IS NOT NULL THEN f.fe_cantidad * rpc.pres_kg
+                ELSE 0
+            END
+        ) AS total_kilos
+    FROM rev_revolturas_pt_facturas f
+    LEFT JOIN rev_revolturas_pt rr
+        ON f.rr_id = rr.rr_id
+    LEFT JOIN rev_presentacion rp
+        ON rr.pres_id = rp.pres_id
+    LEFT JOIN rev_revolturas_pt_cliente rrc
+        ON f.rrc_id = rrc.rrc_id
+    LEFT JOIN rev_presentacion rpc
+        ON rrc.pres_id = rpc.pres_id
+    WHERE f.fe_fecha >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) + INTERVAL 7 HOUR
+      AND f.fe_fecha <  CURDATE() + INTERVAL 7 HOUR
+
+    UNION ALL
+
+    /* ===========================
+       2️⃣ Tarimas que salieron con Vale
+       =========================== */
+    SELECT
+    SUM(t.tar_kilos) AS total_kilos
+FROM rev_tarimas_facturas tf
+INNER JOIN rev_tarimas t
+    ON t.tar_id = tf.tar_id
+WHERE tf.ft_fecha >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) + INTERVAL 7 HOUR
+  AND tf.ft_fecha <  CURDATE() + INTERVAL 7 HOUR
+) AS total_kilos_facturados";
 $res_facturas = q($cnx, $query_facturas);
 $fila = mysqli_fetch_assoc($res_facturas);
 $total_salidas = (float)($fila['total_kilos_facturados'] ?? 0);

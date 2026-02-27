@@ -368,9 +368,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 lastFactura = factura;
 
                 if (tipoDocumento === 'F') {
-                   
-                        consultarFactura();
-                
+
+                    consultarFactura();
+
                 } else {
                     validar_factura(lastFactura);
                 }
@@ -527,22 +527,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         $('#table').on('input', '.costo-unitario', function() {
             let $actual = $(this).closest('tr');
             let costo = $(this).val();
-            let bloom = $actual.find('td').eq(2).text().trim();
+            let empaque = $actual.find('td').eq(3).text().trim();
 
             $('#table tbody tr').each(function() {
                 let $fila = $(this);
-                let bloomFila = $fila.find('td').eq(2).text().trim();
+                let empaqueFila = $fila.find('td').eq(3).text().trim();
 
-                if (bloomFila === bloom) {
+                if (empaqueFila === empaque) {
                     $fila.find('.costo-unitario').val(costo);
                 }
             });
 
             recalcularTotalRemision();
         });
-
-
-
     });
 
     // Función para insertar registros de SAI
@@ -601,7 +598,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 <td>${item.existencia_inicial}</td>
                 <td>${item.cantidad_solicitada}</td>
                 <td>${item.pres_kg * item.cantidad_solicitada}</td>
-                <td><input type="number" class="form-control costo-unitario" 
+                <td><input type="number" class="form-control costo-unitario"
                 value="${item.costo_unitario || ''}" step="0.01" min="0" ${readonlyAttr}></td>
                 <td class="promocion d-none"><input type="number" class="form-control" min="0" placeholder="Cantidad en kilos"/></td>
                 </tr>`;
@@ -1081,7 +1078,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         };
 
         console.log('Generando datos de remisión:', jsonData);
-
+        1
         $('#table tbody tr').each(function() {
             let $fila = $(this);
             let empaqueId = $fila.data('empaque-id');
