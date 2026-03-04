@@ -112,7 +112,7 @@ include "../../seguridad/user_seguridad.php";
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
-                        Ordenes de embarque
+                        Ordenes de embarque - Facturación
                     </li>
                 </ol>
             </nav>

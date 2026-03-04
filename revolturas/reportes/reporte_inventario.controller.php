@@ -204,25 +204,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             throw new Exception("Error en la conexión a la base de datos: " . mysqli_connect_error());
         }
 
-        $sql = "SELECT r.rev_folio,
-        ROUND(r.rev_bloom) AS rev_bloom,
-        r.rev_viscosidad,
-        ROUND(r.rev_kilos) AS rev_kilos,
-        DATE_FORMAT(r.rev_fecha, '%d/%m/%y') AS rev_fecha,
-        r.rev_ph, r.rev_humedad, r.rev_cenizas,
-        ROUND(r.rev_trans) AS rev_trans, ROUND(r.rev_color) AS rev_color,
-        r.rev_malla_30, ROUND(r.rev_malla_45) AS rev_malla_45,
-        ROUND(r.rev_pe_1kg) AS rev_pe_1kg, ROUND(r.rev_par_extr) AS rev_par_extr, r.rev_redox,
-        ROUND(r.rev_teo_bloom) AS rev_teo_bloom, r.rev_teo_viscosidad,
-        ca.cal_descripcion AS rev_teo_calidad, cte.cte_nombre AS rev_teo_cliente,
-        ca.cal_color AS rev_teo_color_cal,
-        c.cal_descripcion, c.cal_color
-        FROM rev_revolturas r
-        LEFT JOIN rev_calidad c ON c.cal_id = r.cal_id
-        LEFT JOIN rev_calidad ca ON ca.cal_id = r.rev_teo_calidad
-        LEFT JOIN rev_clientes cte ON cte.cte_id = r.rev_teo_cliente
-        WHERE r.rev_estatus = 2 AND r.rev_count_etiquetado > 0
-        ORDER BY r.rev_bloom DESC;";
+        $sql = "SELECT
+    r.rev_folio,
+    ROUND(r.rev_bloom) AS rev_bloom,
+    r.rev_viscosidad,
+    ROUND(r.rev_kilos) AS rev_kilos,
+
+    -- 🔹 NUEVO: Kilos ya empacados
+    IFNULL(SUM(roed.roed_cantidad_capturada * p.pres_kg),0) AS kilos_empacados,
+
+    -- 🔹 NUEVO: Kilos disponibles reales
+    ROUND(r.rev_kilos -
+        IFNULL(SUM(roed.roed_cantidad_capturada * p.pres_kg),0)
+    ) AS kilos_disponibles,
+
+    DATE_FORMAT(r.rev_fecha, '%d/%m/%y') AS rev_fecha,
+    r.rev_ph,
+    r.rev_humedad,
+    r.rev_cenizas,
+    ROUND(r.rev_trans) AS rev_trans,
+    ROUND(r.rev_color) AS rev_color,
+    r.rev_malla_30,
+    ROUND(r.rev_malla_45) AS rev_malla_45,
+    ROUND(r.rev_pe_1kg) AS rev_pe_1kg,
+    ROUND(r.rev_par_extr) AS rev_par_extr,
+    r.rev_redox,
+    ROUND(r.rev_teo_bloom) AS rev_teo_bloom,
+    r.rev_teo_viscosidad,
+    ca.cal_descripcion AS rev_teo_calidad,
+    cte.cte_nombre AS rev_teo_cliente,
+    ca.cal_color AS rev_teo_color_cal,
+    c.cal_descripcion,
+    c.cal_color
+
+FROM rev_revolturas r
+
+LEFT JOIN rev_calidad c
+    ON c.cal_id = r.cal_id
+
+LEFT JOIN rev_calidad ca
+    ON ca.cal_id = r.rev_teo_calidad
+
+LEFT JOIN rev_clientes cte
+    ON cte.cte_id = r.rev_teo_cliente
+
+-- 🔹 JOIN para calcular lo empacado
+LEFT JOIN rev_orden_empaque_detalle roed
+    ON roed.rev_id = r.rev_id
+
+LEFT JOIN rev_presentacion p
+    ON p.pres_id = roed.pres_id
+
+WHERE r.rev_estatus = 2
+AND r.rev_count_etiquetado > 0
+
+GROUP BY r.rev_id
+
+ORDER BY r.rev_bloom DESC;";
 
 
         $resultado = mysqli_query($cnx, $sql);

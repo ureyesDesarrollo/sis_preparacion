@@ -8,7 +8,8 @@ include "../../seguridad/user_seguridad.php";
 include "../../conexion/conexion.php";
 $cnx = Conectarse();
 
-function log_orden_embarque($oe_id, $accion, $estado_anterior, $estado_nuevo) {
+function log_orden_embarque($oe_id, $accion, $estado_anterior, $estado_nuevo)
+{
     $fecha = date("Y-m-d H:i:s");
     $mensaje = "[$fecha] | OrdenID: $oe_id | Acción: $accion | Estado anterior: $estado_anterior | Estado nuevo: $estado_nuevo" . PHP_EOL;
     file_put_contents(__DIR__ . '/log_ordenes.txt', $mensaje, FILE_APPEND);
@@ -31,11 +32,11 @@ try {
 
         // Tipo de cliente determina la columna a usar
         if ($_POST['cliente'] == 'CLIENTE') {
-            $sql = "INSERT INTO rev_revolturas_pt_facturas (rrc_id, fe_factura, fe_cantidad, cte_id, fe_tipo,fe_cartaporte) 
-                        VALUES ('$rr_id', '$fe_factura', '$fe_cantidad', '$cte_id', '$fe_tipo','$fe_cartaporte')";
+            $sql = "INSERT INTO rev_revolturas_pt_facturas (rrc_id, fe_factura, fe_cantidad, cte_id, fe_tipo,fe_cartaporte,orden_embarque_id)
+                        VALUES ('$rr_id', '$fe_factura', '$fe_cantidad', '$cte_id', '$fe_tipo','$fe_cartaporte','$oe_id')";
         } else {
-            $sql = "INSERT INTO rev_revolturas_pt_facturas (rr_id, fe_factura, fe_cantidad, cte_id, fe_tipo,fe_cartaporte) 
-                        VALUES ('$rr_id', '$fe_factura', '$fe_cantidad', '$cte_id', '$fe_tipo','$fe_cartaporte')";
+            $sql = "INSERT INTO rev_revolturas_pt_facturas (rr_id, fe_factura, fe_cantidad, cte_id, fe_tipo,fe_cartaporte, orden_embarque_id)
+                        VALUES ('$rr_id', '$fe_factura', '$fe_cantidad', '$cte_id', '$fe_tipo','$fe_cartaporte','$oe_id')";
         }
 
         // --- LOG Y ESTADO ---

@@ -696,10 +696,10 @@
                             <td>${revoltura.rev_teo_viscosidad  ?? ''}</td>
                             <td style="background-color:${revoltura.rev_teo_color_cal  ?? ''}; color: #FFFFFF">${revoltura.rev_teo_calidad  ?? ''}</td>
                             <td>${revoltura.rev_teo_cliente  ?? ''}</td>
-                            <td>${revoltura.rev_kilos  ?? ''}</td>
+                            <td>${revoltura.kilos_disponibles  ?? ''}</td>
                         </tr>
                     `);
-                        totalKilos += Number(revoltura.rev_kilos);
+                        totalKilos += Number(revoltura.kilos_disponibles);
                     });
 
                     $('#total-kilos-revolturas').text(formatter.format(totalKilos));

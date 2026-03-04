@@ -527,15 +527,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         $('#table').on('input', '.costo-unitario', function() {
             let $actual = $(this).closest('tr');
             let costo = $(this).val();
-            let empaque = $actual.find('td').eq(3).text().trim();
 
             $('#table tbody tr').each(function() {
                 let $fila = $(this);
-                let empaqueFila = $fila.find('td').eq(3).text().trim();
-
-                if (empaqueFila === empaque) {
-                    $fila.find('.costo-unitario').val(costo);
-                }
             });
 
             recalcularTotalRemision();

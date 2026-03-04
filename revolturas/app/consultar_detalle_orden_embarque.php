@@ -18,16 +18,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
 
-        $sql = "SELECT 
-    oe.oe_id AS orden_id, 
-    oe.oe_fecha AS fecha_creacion, 
+        $sql = "SELECT
+    oe.oe_id AS orden_id,
+    oe.oe_fecha AS fecha_creacion,
     oe.cte_id AS cliente_id,
     cte.cte_nombre AS cliente_nombre,
-    oe.oe_estado AS estado, 
-    oed.oed_id, 
-    oed.cantidad AS cantidad_solicitada, 
+    oe.oe_estado AS estado,
+    oed.oed_id,
+    oed.cantidad AS cantidad_solicitada,
+    oe.tarimas_liberadas AS tarimas_liberadas,
 
-    CASE 
+    CASE
         WHEN rr.rev_id IS NOT NULL THEN rev.rev_folio
         WHEN rrc.rev_id IS NOT NULL THEN rrc_rev.rev_folio
         ELSE 'Producto General'
@@ -42,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     COALESCE(rr_pres.pres_descrip, rrc_pres.pres_descrip) AS presentacion_descripcion,
     COALESCE(rr_pres.pres_kg, rrc_pres.pres_kg) AS pres_kg,
 
-    CASE 
+    CASE
         WHEN rr.rr_id IS NOT NULL THEN 'GENERAL'
         WHEN rrc.rrc_id IS NOT NULL THEN 'CLIENTE'
         ELSE 'GENERAL'
@@ -53,38 +54,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     r.rac_zona AS zona_rack,
     r.rac_descripcion AS descripcion_rack
 
-FROM 
+FROM
     rev_orden_embarque oe
 
-INNER JOIN 
+INNER JOIN
     rev_orden_embarque_detalle oed ON oe.oe_id = oed.oe_id
 
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas_pt rr ON rr.rr_id = oed.rr_id
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas rev ON rev.rev_id = rr.rev_id
-LEFT JOIN 
+LEFT JOIN
     rev_presentacion rr_pres ON rr_pres.pres_id = rr.pres_id
 
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas_pt_cliente rrc ON rrc.rrc_id = oed.rrc_id
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas rrc_rev ON rrc_rev.rev_id = rrc.rev_id
-LEFT JOIN 
+LEFT JOIN
     rev_presentacion rrc_pres ON rrc_pres.pres_id = rrc.pres_id
 
-LEFT JOIN 
+LEFT JOIN
     rev_nivel_posicion_detalle npd ON (npd.rr_id = rr.rr_id OR npd.rrc_id = rrc.rrc_id)
-LEFT JOIN 
+LEFT JOIN
     rev_nivel_posicion np ON np.niv_id = npd.niv_id
 
-LEFT JOIN 
+LEFT JOIN
     rev_racks r ON np.rac_id = r.rac_id
 
-LEFT JOIN 
+LEFT JOIN
     rev_clientes cte ON oe.cte_id = cte.cte_id
 
-WHERE 
+WHERE
         oe.oe_id = '$oe_id'";
 
         $listado_detalle_embarque = mysqli_query($cnx, $sql);

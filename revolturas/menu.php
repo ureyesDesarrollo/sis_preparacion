@@ -64,9 +64,9 @@ include "../funciones/funciones.php";
                     <?php if (fnc_permiso($_SESSION['privilegio'], 50, 'upe_listar') == 1) { ?>
                         <li><a class="menu-item dropdown-item" href="catalogos/recetas.php">Recetas</a></li>
                     <?php } ?>
-					<?php if($_SESSION['privilegio'] == 2){ ?>
-                    <li><a class="menu-item dropdown-item" href="catalogos/vendedores.php">Vendedores</a></li>
-					<?php } ?>
+                    <?php if ($_SESSION['privilegio'] == 2) { ?>
+                        <li><a class="menu-item dropdown-item" href="catalogos/vendedores.php">Vendedores</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php if (($_SESSION['privilegio'] == 1) || ($_SESSION['privilegio'] == 2)) { ?>
@@ -98,7 +98,7 @@ include "../funciones/funciones.php";
                         <li><a class="menu-item dropdown-item" href="funciones/cliente_empacado.php">Empaques Clientes</a></li>
                     <?php } ?>
                     <?php if (($_SESSION['privilegio'] == 1 || $_SESSION['privilegio'] == 2 || $_SESSION['privilegio'] == 26 || $_SESSION['privilegio'] == 22)) { ?>
-                        <li><a class="menu-item dropdown-item" href="funciones/orden_embarque.php">Ordenes de embarque</a></li>
+                        <li><a class="menu-item dropdown-item" href="funciones/orden_embarque.php">Ordenes de embarque - Facturar</a></li>
                     <?php } ?>
                     <?php if (($_SESSION['privilegio'] == 1 || $_SESSION['privilegio'] == 2 || $_SESSION['privilegio'] == 28 || $_SESSION['privilegio'] == 6 || $_SESSION['privilegio'] == 20 || $_SESSION['privilegio'] == 26 || $_SESSION['privilegio'] == 22)) { ?>
                         <li><a class="menu-item dropdown-item" href="funciones/orden_embarque_calidad.php"> Calidad - Ordenes de embarque</a></li>
@@ -107,7 +107,13 @@ include "../funciones/funciones.php";
                         <li><a class="menu-item dropdown-item" href="funciones/tarimas_almacen_venta.php">Tarimas para venta</a></li>
                     <?php } ?>
                     <?php if (($_SESSION['privilegio'] == 1 || $_SESSION['privilegio'] == 2 || $_SESSION['privilegio'] == 26 || $_SESSION['idUsu'] == 218 || $_SESSION['privilegio'] == 20 ||  $_SESSION['privilegio'] == 22)) { ?>
-                    <li><a class="menu-item dropdown-item" href="funciones/orden_devolucion.php">Devoluciones</a></li>
+                        <li><a class="menu-item dropdown-item" href="funciones/orden_devolucion.php">Devoluciones</a></li>
+                    <?php } ?>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <?php if (($_SESSION['privilegio'] == 1 || $_SESSION['privilegio'] == 2 || $_SESSION['privilegio'] == 26 || $_SESSION['privilegio'] == 22)) { ?>
+                        <li><a class="menu-item dropdown-item" href="funciones/ordenes_embarque.php">Ordenes de embarque - Listado</a></li>
                     <?php } ?>
                 </ul>
             </li>

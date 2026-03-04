@@ -858,7 +858,7 @@ mysqli_close($cnx);
                             reject(data.message);
                             return;
                         }
-                        data.forEach(r => totalKilos += Number(r.rev_kilos));
+                        data.forEach(r => totalKilos += Number(r.kilos_disponibles));
                         $('#total-kilos-revolturas-resumen').text(formatter.format(totalKilos));
                         resolve(totalKilos);
                     },

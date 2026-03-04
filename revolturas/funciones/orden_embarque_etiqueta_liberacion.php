@@ -16,9 +16,9 @@ $cantidad_etiquetas = intval($_POST['cantidad_etiquetas']);
 $cnx = Conectarse();
 
 
-function actualizar_estado_embarque($cnx, $oe_id)
+function actualizar_estado_embarque($cnx, $oe_id, $cantidad_etiquetas)
 {
-    $sql = "UPDATE rev_orden_embarque SET oe_estado = 'ETIQUETA LIBERADA' WHERE oe_id = $oe_id";
+    $sql = "UPDATE rev_orden_embarque SET oe_estado = 'ETIQUETA LIBERADA', tarimas_liberadas = $cantidad_etiquetas WHERE oe_id = $oe_id";
     $query = mysqli_query($cnx, $sql);
     if ($query) {
         return true;
@@ -27,41 +27,41 @@ function actualizar_estado_embarque($cnx, $oe_id)
     }
 }
 try {
-    $listado_orden = "SELECT 
-    CASE 
+    $listado_orden = "SELECT
+    CASE
         WHEN rr.rev_id IS NOT NULL THEN rev.rev_folio
         WHEN rrc.rev_id IS NOT NULL THEN rrc_rev.rev_folio
         ELSE 'Producto General'
     END AS rev_folio,
             COALESCE(rev.cal_id, rrc_rev.cal_id) AS rev_calidad,
-            CASE 
+            CASE
                 WHEN rr.rr_id IS NOT NULL THEN 'GENERAL'
                 WHEN rrc.rrc_id IS NOT NULL THEN 'CLIENTE'
                 ELSE 'GENERAL'
             END AS tipo_revoltura,
             cte.cte_tipo_bloom,
             oed.bloom_vendido
-            FROM 
+            FROM
                 rev_orden_embarque oe
-            INNER JOIN 
+            INNER JOIN
                 rev_orden_embarque_detalle oed ON oe.oe_id = oed.oe_id
-            LEFT JOIN 
+            LEFT JOIN
                 rev_revolturas_pt rr ON rr.rr_id = oed.rr_id
-            LEFT JOIN 
+            LEFT JOIN
                 rev_revolturas rev ON rev.rev_id = rr.rev_id
-            LEFT JOIN 
+            LEFT JOIN
                 rev_presentacion rr_pres ON rr_pres.pres_id = rr.pres_id
-            LEFT JOIN 
+            LEFT JOIN
                 rev_revolturas_pt_cliente rrc ON rrc.rrc_id = oed.rrc_id
-            LEFT JOIN 
+            LEFT JOIN
                 rev_revolturas rrc_rev ON rrc_rev.rev_id = rrc.rev_id
-            LEFT JOIN 
+            LEFT JOIN
                 rev_presentacion rrc_pres ON rrc_pres.pres_id = rrc.pres_id
-            LEFT JOIN 
+            LEFT JOIN
                 rev_clientes cte ON oe.cte_id = cte.cte_id
             LEFT JOIN
-                rev_calidad cal ON cal.cal_id = rev.cal_id 
-            WHERE 
+                rev_calidad cal ON cal.cal_id = rev.cal_id
+            WHERE
             oe.oe_id = '$oe_id' AND COALESCE(rr.rr_id, rrc.rrc_id) = '$empaque_id'";
 
     $listado_detalle_embarque = mysqli_query($cnx, $listado_orden);
@@ -74,7 +74,7 @@ try {
 
     $rev_folio = $datos_detalle_embarque[0]['rev_folio'];
     $libero_calidad = strtoupper($_SESSION['nombre']);
-    
+
     $calidad = $datos_detalle_embarque[0]['bloom_vendido'];
 
     // Diseño del código ZPL
@@ -165,7 +165,7 @@ try {
     }
 
     if ($impresiones_ok == intval($cantidad_etiquetas)) {
-        if (actualizar_estado_embarque($cnx, $oe_id)) {
+        if (actualizar_estado_embarque($cnx, $oe_id, $cantidad_etiquetas)) {
             echo json_encode(['success' => "Se imprimieron $impresiones_ok de $cantidad_etiquetas etiquetas."]);
         } else {
             echo json_encode(['error' => "Error al actualizar el estado del embarque."]);
