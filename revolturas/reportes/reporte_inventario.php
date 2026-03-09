@@ -105,11 +105,20 @@
 
 <body>
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                <div class="border rounded p-2 small">
+                    <div><span id="revision">REV F 008</span></div>
+                    <div><span id="codigoFormato">REV. 003</span></div>
+                    <div><span id="nombreFormato">Existencias de producto terminado</span></div>
+                </div>
+            </div>
+        </div>
         <div class="row align-items-center p-3">
             <div class="col-md-2 text-center">
                 <img src="../../imagenes/logo_progel_v3.png" alt="Logo Progel" class="img-fluid" style="max-height: 80px;">
             </div>
-            <div class="col-md-10 text-center">
+            <div class="col-md-7 text-center">
                 <h2 class="fw-bold m-0">Producto terminado (sin empacar)</h2>
                 <span id="fecha"></span>
             </div>
