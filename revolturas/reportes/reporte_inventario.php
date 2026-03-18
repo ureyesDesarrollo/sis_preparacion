@@ -116,7 +116,7 @@
         </div>
         <div class="row align-items-center p-3">
             <div class="col-md-2 text-center">
-                <img src="../../imagenes/logo_progel_v3.png" alt="Logo Progel" class="img-fluid" style="max-height: 80px;">
+                <img src="../../imagenes/logo_empresa.png" alt="Logo Progel" class="img-fluid" style="max-height: 80px;">
             </div>
             <div class="col-md-7 text-center">
                 <h2 class="fw-bold m-0">Producto terminado (sin empacar)</h2>

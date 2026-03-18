@@ -1,7 +1,4 @@
 <?php
-/* Desarrollado por: CCA Consultores TI */
-/* Contacto: contacto@ccaconsultoresti.com */
-/* Actualizado: Octubre-2024 */
 
 include "../../seguridad/user_seguridad.php";
 include "../../conexion/conexion.php";
@@ -10,39 +7,31 @@ include "../../funciones/funciones.php";
 $cnx = Conectarse();
 
 if (isset($_POST['action']) && $_POST['action'] == 'obtener_consecutivo') {
-    // Obtener la fecha actual y la hora actual
-    $fechaActual = new DateTime();
-    $primerDiaMes = new DateTime(date('Y-m-01 07:00:00')); // Primer día del mes a las 7:00:00
+    $fechaActual  = new DateTime();
+    $primerDiaMes = new DateTime(date('Y-m-01 07:00:00'));
 
-    // Verificar si la hora actual es antes o después de las 7:00:00
     if ($fechaActual < $primerDiaMes) {
-        // Si es antes de las 7:00:00, usar el primer día del mes anterior a las 7:00:00
         $primerDiaMesAnterior = new DateTime(date('Y-m-01 07:00:00', strtotime('-1 month')));
         $sql = "SELECT LPAD((COUNT(tar_id) + 1), 4, 0) AS total
                 FROM rev_tarimas
                 WHERE tar_fecha >= '" . $primerDiaMesAnterior->format('Y-m-d H:i:s') . "'";
     } else {
-        // Si es después de las 7:00:00, usar el primer día del mes actual a las 7:00:00
         $sql = "SELECT LPAD((COUNT(tar_id) + 1), 4, 0) AS total
                 FROM rev_tarimas
                 WHERE tar_fecha >= '" . $primerDiaMes->format('Y-m-d H:i:s') . "'";
     }
 
-    $result = mysqli_query($cnx, $sql);
-    $registros = mysqli_fetch_assoc($result);
-
-    // El siguiente consecutivo es el total más uno
+    $result     = mysqli_query($cnx, $sql);
+    $registros  = mysqli_fetch_assoc($result);
     $consecutivo = $registros['total'];
 
-    // Enviar el consecutivo como respuesta en formato JSON
     echo json_encode(['consecutivo' => $consecutivo]);
     exit;
 }
 
 if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
-    //Obtener fecha y hora de la ultima tarima
-    $sql = "SELECT tar_fecha FROM rev_tarimas ORDER BY tar_id DESC LIMIT 1";
-    $result = mysqli_query($cnx, $sql);
+    $sql      = "SELECT tar_fecha FROM rev_tarimas ORDER BY tar_id DESC LIMIT 1";
+    $result   = mysqli_query($cnx, $sql);
     $registros = mysqli_fetch_assoc($result);
     echo json_encode(['tar_fecha' => $registros['tar_fecha']]);
     exit;
@@ -64,6 +53,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
         </div>
         <div class="modal-body">
             <form id="form_tarima_agr" method="POST">
+
+                <!-- ─── TOKEN DE IDEMPOTENCIA (oculto, generado por JS) ─── -->
+                <input type="" name="tar_token" id="tar_token">
+                <!-- ──────────────────────────────────────────────────────── -->
+
                 <div class="row g-3">
 
                     <!-- Fila 1 -->
@@ -142,11 +136,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
                     <div id="alerta-tarima" class="alert alert-success m-0 d-none d-flex align-items-center">
                         <strong class="alert-heading me-2"></strong>
                         <span class="alert-body me-2"></span>
-                        <div id="loadingMessage" style="display: none;">
-
-                        </div>
+                        <div id="loadingMessage" style="display: none;"></div>
                     </div>
-
                 </div>
                 <div class="col-md-5 d-flex justify-content-end">
                     <?php if ($_SESSION['privilegio'] == 1 || $_SESSION['privilegio'] == 2 || $_SESSION['privilegio'] == 19 || $_SESSION['privilegio'] == 25) { ?>
@@ -166,18 +157,33 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
 </div>
 
 <script>
+    // ─── TOKEN DE IDEMPOTENCIA ────────────────────────────────────────────────
+    // Se genera un token único cada vez que el modal está listo para un nuevo registro.
+    // Solo rota después de un guardado exitoso, para permitir reintentos legítimos.
+    let tarimaToken = null;
+
+    function generarToken() {
+        return 'tkn_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
     $(document).ready(function() {
+
+        tarimaToken = generarToken(); // Generar token al cargar el modal
+
+        console.log(tarimaToken);
 
         $('#tar_kilos').val('1000.00');
         cargarProcesos();
         actualizarConsecutivo();
+
         $("#form_tarima_agr").submit(async function(e) {
             e.preventDefault();
 
             const ultima_tarima = await ultimaTarima();
             const diferenciaMs = new Date() - new Date(ultima_tarima);
 
-            if (diferenciaMs < 15 * 60 * 1000) { // 5 minutos en milisegundos
+            if (diferenciaMs < 15 * 60 * 1000) {
                 const alertaTarima = document.getElementById('alerta-tarima');
                 const alertBody = alertaTarima.querySelector('.alert-body');
                 const loadingMessage = alertaTarima.querySelector('#loadingMessage');
@@ -187,6 +193,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
                 return;
             }
 
+            // Asignar el token al campo hidden antes de serializar
+            $('#tar_token').val(tarimaToken);
             const dataForm = $(this).serialize();
             const proId = $('#pro_id').val();
 
@@ -194,7 +202,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
 
             try {
                 if (['1', '2', '3'].includes(proId)) {
-                    // Mostrar formulario de autorización
                     $('#formularioAutorizacionFinos').removeClass('d-none');
                     $('#claveFinos').focus();
 
@@ -245,7 +252,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
             cargarProcesos();
         });
 
-
         $('#btnCancelarFinos').on('click', function() {
             $('#formularioAutorizacionFinos').addClass('d-none');
         });
@@ -269,6 +275,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
                 alertaTarima.className = 'alert alert-success m-0 d-flex align-items-center';
                 alertBody.innerText = insertResult.success;
 
+                // ─── Rotar el token SOLO tras éxito ───────────────────────
+                tarimaToken = generarToken();
+                // ─────────────────────────────────────────────────────────
+
                 await delay(1000);
 
                 $('#dataTableTarimas').DataTable().ajax.reload();
@@ -281,6 +291,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
             } else {
                 alertaTarima.className = 'alert alert-danger m-0 d-flex align-items-center';
                 alertBody.innerText = insertResult.error;
+                // No rotar el token si falló, para permitir reintento legítimo del usuario
             }
         } catch (error) {
             alertaTarima.className = 'alert alert-danger m-0 d-flex align-items-center';
@@ -303,6 +314,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
             const qrResult = await generarQR(tar_id);
             alertBody.innerText = '';
             loadingMessage.style.display = 'none';
+
             if (qrResult.success) {
                 alertaTarima.className = 'alert alert-success m-0 d-flex align-items-center';
                 alertBody.innerText = qrResult.success;
@@ -346,7 +358,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
                     tar_id: tar_id,
                     opcion: 1
                 },
-                cache: false, // Evitar caché
+                cache: false,
                 headers: {
                     'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache',
@@ -366,98 +378,33 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-
-
-
-
-
-    /* function cargarRacks() {
-        $.ajax({
-            type: 'GET',
-            url: 'catalogos/racks_listado.php',
-            success: function(data) {
-                let racks = JSON.parse(data);
-                let options = '';
-                racks.forEach(function(rack) {
-                    if (rack.rac_estatus === 'A') {
-                        options += `<option value="${rack.rac_id}">${rack.rac_descripcion}</option>`;
-                    }
-                });
-                $('#rac_id').append(options);
-            },
-            error: function() {
-                alert('Error al cargar los racks.');
-            }
-        });
-    }
-
-    function cargarNivelPosicion(rac_id) {
-        rac_id = rac_id.value;
-
-        let dataForm = {
-            'rac_id': rac_id
-        };
-
-        $('#niv_id').empty();
-        $('#niv_id').append('<option value="">Seleccione</option>');
-
-
-        $.ajax({
-            type: 'POST',
-            url: 'catalogos/nivel_posicion_listado.php',
-            data: dataForm,
-            success: function(data) {
-                let niveles = JSON.parse(data);
-                let options = '';
-                niveles.forEach(function(niv) {
-                    if (niv.niv_ocupado !== '1') {
-                        options += `<option value="${niv.niv_id}">${niv.niv_nivel} - ${niv.niv_posicion}</option>`;
-                    }
-                });
-                $('#niv_id').append(options);
-            },
-            error: function() {
-                alert('Error al cargar niveles.');
-            }
-        });
-    }
-*/
     function cargarProcesos() {
         $.ajax({
             type: 'GET',
             url: 'funciones/tarimas_procesos_listado.php',
             success: function(data) {
                 let procesos = JSON.parse(data);
-
-                // Filtrar los procesos únicos basados en la lógica requerida
                 let procesosUnicos = filtrarProcesosUnicos(procesos);
-                //9288
-                // Crear las opciones para el select
+
                 let options = '<option value="">Seleccione</option>';
                 options += `<option value="1">FINOSA</option>`;
                 options += `<option value="2">FINOSB</option>`;
                 options += `<option value="3">FINOSC</option>`;
+
                 procesosUnicos.forEach(function(pro) {
-                    // Si `pro_id_pa` está vacío, mostramos el proceso
                     if (!pro.pro_id_pa) {
                         options += `<option value="${pro.pro_id}">${pro.pro_id} - ${pro.lote_folio}</option>`;
                     } else {
-                        // Si tiene `pro_id_pa`, necesitamos verificar si el primer proceso está presente
                         let firstProc = pro.pro_id_pa.split('/')[0];
-
-                        // Verificar si el primer proceso está en la lista
                         let primerProcesoEncontrado = procesos.some(function(p) {
                             return p.pro_id === firstProc;
                         });
-
-                        // Si el primer proceso está presente, mostramos el proceso con `pro_id_pa`
                         if (primerProcesoEncontrado) {
                             options += `<option value="${pro.pro_id_pa}">${pro.pro_id_pa} - ${pro.lote_folio}</option>`;
                         }
                     }
                 });
 
-                // Actualizar el select
                 $('#pro_id').empty().append(options);
             },
             error: function() {
@@ -466,13 +413,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
         });
     }
 
-    // Función para filtrar procesos únicos
     function filtrarProcesosUnicos(data) {
         let uniqueValues = [];
         return data.filter((pro) => {
-            // Usar `pro_id_pa` si no es NULL, de lo contrario usar `pro_id`
             let key = pro.pro_id_pa || pro.pro_id;
-
             if (!uniqueValues.includes(key)) {
                 uniqueValues.push(key);
                 return true;
@@ -497,8 +441,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
             }
         });
     }
-
-
 
     function autorizar(clave) {
         return new Promise((resolve, reject) => {
@@ -543,7 +485,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
             });
         });
     }
-
 
     function ultimaTarima() {
         return new Promise((resolve, reject) => {

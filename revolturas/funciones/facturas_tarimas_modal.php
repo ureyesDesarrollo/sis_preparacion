@@ -51,10 +51,30 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
 
 <script type="text/javascript" src="../js/alerta.js"></script>
 <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content" style="position: relative;">
         <div class="modal-header">
             <h5 class="modal-title" id="title">Capturar Factura</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <!-- Overlay de loader -->
+        <div id="modal-loader-overlay-tar" style="
+            display: none;
+            position: absolute;
+            z-index: 9999;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255,255,255,0.75);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 0.375rem;
+        ">
+            <div style="margin-top: 25%;">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <div class="mt-3 fs-5 text-dark">Consultando Factura...</div>
+            </div>
         </div>
         <div class="modal-body">
             <form id="form_factura_tar" method="POST">
@@ -134,17 +154,29 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
 <script>
     $(document).ready(function() {
         let typingTimer;
-        const typingDelay = 500;
+        const typingDelay = 800;
         let arrayClientes = [];
+        let jsonDataSai = null;
+        let clienteTipoVenta = '';
+        let clienteClasificacion = '';
         obtenerClientes();
         obtenerTarimas();
 
         $('#ft_factura').on('input', function() {
             clearTimeout(typingTimer);
-            const factura = $(this).val();
+            const tipo = $('input[name="tipo"]:checked').val();
+
+            // Mientras el usuario escribe: deshabilita guardar y limpia datos previos
+            $('#guardar').prop('disabled', true);
+            jsonDataSai = null;
+
+            const factura = $(this).val().trim();
+            if (!factura) return;
 
             typingTimer = setTimeout(function() {
-                if (factura) {
+                if (tipo === 'F') {
+                    consultarFactura(factura);
+                } else {
                     validar_factura(factura);
                 }
             }, typingDelay);
@@ -165,6 +197,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
 
             $('#tipo_documento').text(label);
             $('#title').text(`Capturar ${label}`);
+
+            // Limpia datos SAI al cambiar tipo
+            jsonDataSai = null;
+            $('#ft_factura').val('');
         });
 
         $('#search_clientes').on('input', function() {
@@ -190,7 +226,20 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
 
         $('#form_factura_tar').submit(function(e) {
             e.preventDefault();
-            insertarRegistros();
+            const tipo = $('input[name="tipo"]:checked').val();
+
+            if (tipo === 'F' && jsonDataSai) {
+                // Si es factura, primero inserta en SAI y luego en tarimas
+                insertarRegistrosSai(jsonDataSai)
+                    .then(function() {
+                        return insertarRegistros();
+                    })
+                    .catch(function(err) {
+                        alertas_v5("#alerta-factura-tar", 'Error!', err, 3, true, 5000);
+                    });
+            } else {
+                insertarRegistros();
+            }
         });
 
         function actualizarListadoClientes(filtro) {
@@ -205,7 +254,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
                 });
             }
-            $('#cte_id_f').html(opciones);
+            $('#cte_id_f').html(opciones).trigger('change');
         }
 
         function obtenerClientes() {
@@ -218,7 +267,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                         if (cte.cte_estatus === 'A') {
                             arrayClientes.push({
                                 cte_id: cte.cte_id,
-                                cte_nombre: cte.cte_nombre
+                                cte_nombre: cte.cte_nombre,
+                                cte_tipo: cte.cte_tipo,
+                                cte_clasificacion: cte.cte_clasificacion
                             });
                         }
                     });
@@ -229,6 +280,22 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 }
             });
         }
+
+        // Al cambiar el cliente, actualiza tipo_venta y clasificacion en memoria
+        $('#cte_id_f').on('change', function() {
+            let cteId = $(this).val();
+            let cliente = arrayClientes.find(c => c.cte_id == cteId);
+            if (cliente) {
+                clienteTipoVenta = cliente.cte_tipo;
+                clienteClasificacion = cliente.cte_clasificacion;
+            } else {
+                clienteTipoVenta = '';
+                clienteClasificacion = '';
+            }
+
+            console.log(clienteTipoVenta);
+            console.log(clienteClasificacion);
+        });
 
         function eliminarTarima(index) {
             let tarimasArray = JSON.parse(localStorage.getItem('tarimas')) || [];
@@ -266,6 +333,42 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             eliminarTarima(index);
         });
 
+        // Consulta la factura en SAI y luego valida que no esté duplicada en BD
+        function consultarFactura(factura) {
+            $('#modal-loader-overlay-tar').css('display', 'flex');
+            $('#guardar').prop('disabled', true);
+
+            $.ajax({
+                type: 'GET',
+                url: `lib/consultar_factura_sai.php?folio=${encodeURIComponent(factura)}`,
+                dataType: 'json',
+                success: function(response) {
+                    $('#modal-loader-overlay-tar').hide();
+
+                    if (response.success === false || response.error) {
+                        alertas_v5("#alerta-factura-tar", 'Error!', response.error || 'La factura no existe en SAI.', 3, true, 5000);
+                        jsonDataSai = null;
+                        return;
+                    }
+
+                    // Guarda los datos del SAI para usarlos al guardar
+                    jsonDataSai = response.data || response;
+
+                    // Una vez consultado SAI con éxito, valida duplicado en BD
+                    validar_factura(factura);
+                    alertas_v5("#alerta-factura-tar", 'Correcto!', 'Factura encontrada en SAI.', 1, true, 3000);
+                },
+                error: function(xhr, status, error) {
+                    $('#modal-loader-overlay-tar').hide();
+                    let msg = 'No se pudo consultar la factura en SAI. ';
+                    if (status === 'timeout') msg += 'La consulta tardó demasiado.';
+                    else if (xhr.responseJSON && xhr.responseJSON.error) msg += xhr.responseJSON.error;
+                    else msg += error;
+                    alertas_v5("#alerta-factura-tar", 'Error!', msg, 3, true, 5000);
+                    jsonDataSai = null;
+                }
+            });
+        }
 
         function validar_factura(factura) {
             let tipo = $('input[name="tipo"]:checked').val();
@@ -282,9 +385,36 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     let res = JSON.parse(data);
                     if (res.error) {
                         $('#fe_factura').val('');
+                        jsonDataSai = null;
                         alertas_v5("#alerta-factura-tar", 'Error!', res.error, 3, true, 5000);
+                    } else {
+                        $('#guardar').prop('disabled', false);
                     }
                 }
+            });
+        }
+
+        // Inserta la factura en SAI
+        function insertarRegistrosSai(data) {
+            return new Promise(function(resolve, reject) {
+                data.FACTURA_CABECERA.TIPO_VENTA = clienteTipoVenta;
+                data.FACTURA_CABECERA.TIPO_CLIENTE = clienteClasificacion;
+
+                console.log(clienteTipoVenta);
+                console.log(clienteClasificacion);
+
+                $.ajax({
+                    url: 'funciones/sai/insertar.php',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        resolve(response);
+                    },
+                    error: function(xhr) {
+                        reject(xhr.responseText || 'Error al registrar en SAI');
+                    }
+                });
             });
         }
 
@@ -315,6 +445,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                 $('#form_factura_tar')[0].reset();
                                 $('#dataTableTarimasAlmacenVenta').DataTable().ajax.reload();
                                 obtenerTarimas();
+                                jsonDataSai = null;
                             } else if (res.error) {
                                 alertas_v5("#alerta-factura-tar", 'Error!', res.error, 3, true, 5000);
                             }
@@ -322,7 +453,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     });
                 });
             }
-
         }
     });
 </script>

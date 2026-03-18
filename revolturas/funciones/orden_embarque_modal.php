@@ -13,22 +13,18 @@ $fechaActual = date("Y-m-d");
         <div class="modal-body">
             <form id="form_orden_embarque" method="POST">
                 <div class="row mb-3 align-items-end">
-                    <!-- Búsqueda y selección de cliente -->
                     <div class="col-md-5">
                         <input type="text" id="search_clientes" class="form-control mb-2" placeholder="Buscar cliente...">
                         <label for="cte_id" class="form-label">Cliente</label>
                         <select name="cte_id" id="cte_id" class="form-select" required>
-                            <!-- Opciones se cargarán dinámicamente -->
                         </select>
                     </div>
 
-                    <!-- Fecha -->
                     <div class="col-md-3">
                         <label for="fecha" class="form-label">Fecha</label>
                         <input type="date" name="fecha" id="fecha" class="form-control" required value="<?= $fechaActual ?>">
                     </div>
 
-                    <!-- Botón de Re-asignar -->
                     <div class="col-md-4 text-end mt-3 mt-md-0">
                         <button class="btn btn-secondary d-none" id="cambiar_cliente">Re-asignar cliente</button>
                     </div>
@@ -40,7 +36,8 @@ $fechaActual = date("Y-m-d");
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Revoltura</th>
+                                    <th>Tipo</th>
+                                    <th>Revoltura / Lote</th>
                                     <th>Empaque</th>
                                     <th>Existencias</th>
                                     <th>Existencias a tomar</th>
@@ -48,8 +45,7 @@ $fechaActual = date("Y-m-d");
                                     <th>Quitar</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
@@ -78,18 +74,16 @@ $fechaActual = date("Y-m-d");
 
 <script>
     let arrayClientes = [];
+
     $(document).ready(function() {
-        let typingTimer;
-        const typingDelay = 500; // Milisegundos de espera después de dejar de escribir
         obtenerClientes();
+
         setTimeout(() => {
             $('#cte_id').val(localStorage.getItem('cliente_id') || '');
-            if ($('#cte_id').val() != '') {
+            if ($('#cte_id').val() !== '') {
                 $('#cambiar_cliente').removeClass('d-none');
             }
-
             cargarDatosEmpaques();
-
         }, 100);
 
         $('#form_orden_embarque').submit(function(e) {
@@ -99,15 +93,15 @@ $fechaActual = date("Y-m-d");
 
         $('#search_clientes').on('input', function() {
             const inputValue = $(this).val().toLowerCase();
-            if (inputValue.length > 0) {
 
+            if (inputValue.length > 0) {
                 const filteredClientes = arrayClientes.filter(cliente =>
                     cliente.cte_nombre.toLowerCase().includes(inputValue)
                 );
 
-                // Actualiza el select con los clientes filtrados
                 const select = $('#cte_id');
-                select.empty(); // Limpia las opciones actuales
+                select.empty();
+
                 if (filteredClientes.length > 0) {
                     filteredClientes.forEach(cliente => {
                         select.append(`<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`);
@@ -120,23 +114,23 @@ $fechaActual = date("Y-m-d");
             }
         });
 
+        $('#cte_id').on('change', function() {
+            cargarDatosEmpaques();
+        });
+
         function actualizarListadoClientes(filtro) {
             let opciones = '<option value="">Seleccione un cliente</option>';
 
             if (filtro.length > 0) {
-                arrayClientes.filter(cliente => cliente.cte_nombre.toLowerCase().includes(filtro))
+                arrayClientes
+                    .filter(cliente => cliente.cte_nombre.toLowerCase().includes(filtro))
                     .forEach(cliente => {
                         opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
                     });
             } else {
-                // Si no hay filtro, muestra todos los clientes
-                let cliente = {};
                 arrayClientes.forEach(cliente => {
                     opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
-
                 });
-
-
             }
 
             $('#cte_id').html(opciones);
@@ -158,6 +152,7 @@ $fechaActual = date("Y-m-d");
                             });
                         }
                     });
+
                     actualizarListadoClientes('');
                 },
                 error: function() {
@@ -173,97 +168,123 @@ $fechaActual = date("Y-m-d");
             let cte_id = $('#cte_id').val();
             let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
 
-            empaquesArray.forEach((empaque, index) => {
-                let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val());
+            const soloEmpacados = empaquesArray.filter(item =>
+                item.tipo_producto === 'REVOLTURA' && item.rrc_id
+            );
 
-                if (cantidadIngresada > parseFloat(empaque.rr_ext_real)) {
-                    validacion = false;
+            if (soloEmpacados.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin productos reasignables',
+                    text: 'Solo los productos empacados pueden reasignarse de cliente.'
+                });
+                return;
+            }
+
+            for (let index = 0; index < empaquesArray.length; index++) {
+                let empaque = empaquesArray[index];
+
+                if (empaque.tipo_producto !== 'REVOLTURA') {
+                    continue;
+                }
+
+                let cantidadDisponible = parseFloat(empaque.rr_ext_real || 0);
+                let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val()) || 0;
+
+                if (cantidadIngresada > cantidadDisponible) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Cantidad excedida',
-                        text: `No puedes tomar más de la cantidad disponible (${empaque.rr_ext_real}). Verifica la fila ${index + 1}.`
+                        text: `No puedes tomar más de la cantidad disponible (${cantidadDisponible}). Verifica la fila ${index + 1}.`
                     });
                     return;
                 }
+
                 cambiar_de_cliente(empaque.rrc_id, cte_id, cliente);
-            });
+            }
         });
     });
 
-
-    // Función para cargar los datos del localStorage y mostrarlos en la tabla
     function cargarDatosEmpaques() {
-        // Recupera el arreglo de empaques desde el localStorage o inicializa un arreglo vacío
         let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
         const tbody = document.querySelector("#table tbody");
-        tbody.innerHTML = ""; // Limpia el contenido actual de la tabla
+        tbody.innerHTML = "";
 
-        // Tomar cliente seleccionado
         const cteId = $('#cte_id').val();
-        console.log(cteId);
 
-        // Buscar bloom del cliente
         let bloomCliente = null;
         if (cteId) {
-            const clienteSel = arrayClientes.find(c => c.cte_id === cteId);
+            const clienteSel = arrayClientes.find(c => c.cte_id == cteId);
             bloomCliente = clienteSel?.cte_bloom || null;
         }
 
-        console.log(bloomCliente);
         if (empaquesArray.length > 0) {
-            // Itera sobre el arreglo y agrega cada elemento como una nueva fila en la tabla
             empaquesArray.forEach((empaque, index) => {
                 let row = document.createElement("tr");
-                let cantidad = (empaque.rr_ext_real === '0.00') ? empaque.rr_ext_inicial : empaque.rr_ext_real;
+
+                let cantidadDisponible = parseFloat(empaque.rr_ext_real || 0);
+                let esExterno = empaque.tipo_producto === 'EXTERNO';
 
                 row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${empaque.revoltura}</td>
-                <td>${empaque.pres_descrip}</td>
-                <td>${cantidad}</td>
-                <td><input type="text" class="form-control" id="cantidad_${index}"  onclick="$(this).val('')" onkeypress="return isNumberKey(event, this);" maxlength="7" required></td>
-                <td>
-                    <input type="text" 
-                        class="form-control" 
-                        id="bloom_${index}"  
-                        value="${bloomCliente ? bloomCliente : ''}"
-                        onclick="$(this).val('')" 
-                        onkeypress="return isNumberKey(event, this);" 
-                        maxlength="3" 
-                        required>
-                </td>
+                    <td>${index + 1}</td>
+                    <td>
+                        ${esExterno
+                            ? '<span class="badge bg-warning text-dark">EXTERNO</span>'
+                            : '<span class="badge bg-success">REVOLTURA</span>'
+                        }
+                    </td>
+                    <td>${empaque.revoltura}</td>
+                    <td>${empaque.pres_descrip}</td>
+                    <td>${cantidadDisponible}</td>
+                    <td>
+                        <input type="text"
+                            class="form-control"
+                            id="cantidad_${index}"
+                            onclick="$(this).val('')"
+                            onkeypress="return isNumberKey(event, this);"
+                            maxlength="7"
+                            required>
+                    </td>
+                    <td>
+                        ${
+                            esExterno
+                                ? '<input type="text" class="form-control" value="N/A" readonly>'
+                                : `<input type="text"
+                                        class="form-control"
+                                        id="bloom_${index}"
+                                        value="${bloomCliente ? bloomCliente : ''}"
+                                        onclick="$(this).val('')"
+                                        onkeypress="return isNumberKey(event, this);"
+                                        maxlength="3"
+                                        required>`
+                        }
+                    </td>
+                    <td>
+                        <a href="#" onclick="eliminarEmpaque(${index}); return false;">
+                            <i class="fas fa-times-circle text-danger"></i>
+                        </a>
+                    </td>
+                `;
 
-                <td><a href="#" onclick="eliminarEmpaque(${index})"><i class="fas fa-times-circle text-danger"></i></a></td>
-            `;
                 tbody.appendChild(row);
             });
         } else {
             let row = document.createElement("tr");
-            row.innerHTML = `<td colspan="6" class="text-center">Sin empaques seleccionados</td>`;
+            row.innerHTML = `<td colspan="8" class="text-center">Sin productos seleccionados</td>`;
             tbody.appendChild(row);
         }
     }
 
-
-    // Función para eliminar un elemento específico del localStorage y de la tabla
     function eliminarEmpaque(index) {
         let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
-
-        // Elimina el elemento del arreglo
         empaquesArray.splice(index, 1);
-
-        // Actualiza el localStorage con el nuevo arreglo sin el elemento eliminado
         localStorage.setItem('empaques', JSON.stringify(empaquesArray));
-
-        // Vuelve a cargar los datos en la tabla
         cargarDatosEmpaques();
         $('#dataTableEmpaques').DataTable().ajax.reload();
     }
 
-
     function insertarOrdenEmbarque() {
         let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
-        let fecha = $('#fecha').val();
         let cliente = $('#cte_id').val();
 
         if (empaquesArray.length === 0) {
@@ -274,25 +295,57 @@ $fechaActual = date("Y-m-d");
             });
         }
 
+        if (!cliente) {
+            return Swal.fire({
+                icon: 'warning',
+                title: 'Cliente requerido',
+                text: 'Selecciona un cliente para generar la orden.'
+            });
+        }
+
         let validacion = true;
         let empaquesProcesados = [];
 
         empaquesArray.forEach((empaque, index) => {
-            let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val());
-            let bloomAsig = $(`#bloom_${index}`).val();
+            let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val()) || 0;
+            let cantidadDisponible = parseFloat(empaque.rr_ext_real || 0);
+            let esExterno = empaque.tipo_producto === 'EXTERNO';
+            let bloomAsig = esExterno ? null : ($(`#bloom_${index}`).val() || null);
 
-            if (cantidadIngresada > parseFloat(empaque.rr_ext_real)) {
+            if (cantidadIngresada <= 0) {
+                validacion = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cantidad inválida',
+                    text: `Debes capturar una cantidad válida en la fila ${index + 1}.`
+                });
+                return false;
+            }
+
+            if (cantidadIngresada > cantidadDisponible) {
                 validacion = false;
                 Swal.fire({
                     icon: 'error',
                     title: 'Cantidad excedida',
-                    text: `No puedes tomar más de la cantidad disponible (${empaque.rr_ext_real}). Verifica la fila ${index + 1}.`
+                    text: `No puedes tomar más de la cantidad disponible (${cantidadDisponible}). Verifica la fila ${index + 1}.`
                 });
-                return;
+                return false;
+            }
+
+            if (!esExterno && (!bloomAsig || bloomAsig === '')) {
+                validacion = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Bloom requerido',
+                    text: `Debes capturar bloom en la fila ${index + 1}.`
+                });
+                return false;
             }
 
             empaquesProcesados.push({
+                tipo_producto: empaque.tipo_producto ?? 'REVOLTURA',
                 rr_id: empaque.rr_id || null,
+                pe_id: empaque.pe_id || null,
                 rrc_id: empaque.rrc_id || null,
                 cantidad: cantidadIngresada,
                 bloom: bloomAsig
@@ -301,7 +354,6 @@ $fechaActual = date("Y-m-d");
 
         if (!validacion) return;
 
-        // Enviar una sola petición al backend
         $.ajax({
             url: 'funciones/orden_embarque_insertar.php',
             type: 'POST',
@@ -310,12 +362,15 @@ $fechaActual = date("Y-m-d");
                 empaques: empaquesProcesados
             }),
             contentType: 'application/json',
+            dataType: 'json',
             success: function(response) {
                 if (response.success) {
                     alertas_v5("#alerta-factura", 'Listo!', response.message, 1, true, 5000);
-                    localStorage.clear();
+
+                    localStorage.removeItem('empaques');
+                    localStorage.removeItem('cliente_id');
+
                     cargarDatosEmpaques();
-                    $('#fe_factura').val('');
                     $('#cte_id').val('');
                     $('#dataTableEmpaques').DataTable().ajax.reload();
                     $('#dataTableEmpaquesClientes').DataTable().ajax.reload();
@@ -324,7 +379,14 @@ $fechaActual = date("Y-m-d");
                 }
             },
             error: function(xhr) {
-                alertas_v5("#alerta-factura", 'Error de red', xhr.responseText || 'No se pudo conectar con el servidor.', 3, true, 5000);
+                alertas_v5(
+                    "#alerta-factura",
+                    'Error de red',
+                    xhr.responseText || 'No se pudo conectar con el servidor.',
+                    3,
+                    true,
+                    5000
+                );
             }
         });
     }
@@ -339,19 +401,21 @@ $fechaActual = date("Y-m-d");
             },
             success: function(response) {
                 Swal.fire({
-                    'title': 'Cliente reasinganado correctamente',
-                    'text': `El cliente nuevo sera ${cliente}`,
-                    'icon': 'success'
+                    title: 'Cliente reasignado correctamente',
+                    text: `El cliente nuevo será ${cliente}`,
+                    icon: 'success'
                 });
-                localStorage.clear();
+
+                localStorage.removeItem('empaques');
+                localStorage.removeItem('cliente_id');
+
                 cargarDatosEmpaques();
                 $('#dataTableEmpaquesClientes').DataTable().ajax.reload();
-
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function() {
                 Swal.fire({
                     title: 'Error al reasignar cliente',
-                    text: 'Ocurrió un error al intentar reasignar el cliente. Por favor intente nuevamente.',
+                    text: 'Ocurrió un error al intentar reasignar el cliente. Por favor intenta nuevamente.',
                     icon: 'error'
                 });
             }

@@ -183,20 +183,17 @@ foreach ($cliente_data as $cliente => $presentaciones) {
     }
 }
 
-// ==================================================
-//  PRODUCTO EXTERNO (GRENETINA HIDROLIZADA)
-//  NOTA: pae_existenica_inicial por error es "existenica" en la BD, se mantiene así para evitar errores
-// ==================================================
 $query_externo = "SELECT
         pe.pe_id,
         pe.pres_id,
         pres.pres_descrip,
         pres.pres_kg,
         pe.pe_lote,
-        pe.pe_existenica_inicial,
+        pe.pe_existencia_inicial,
         pe.pe_existencia_real
     FROM producto_externo pe
     INNER JOIN rev_presentacion pres ON pres.pres_id = pe.pres_id
+    WHERE pe.pe_existencia_real != 0
     ORDER BY pres.pres_descrip, pe.pe_lote";
 $res_externo = q($cnx, $query_externo);
 
@@ -222,7 +219,7 @@ while ($row = mysqli_fetch_assoc($res_externo)) {
         'pres_id'     => (int)$row['pres_id'],
         'presentacion' => $presentacion,
         'lote'        => $row['pe_lote'],
-        'ext_inicial' => (float)$row['pe_existenica_inicial'],
+        'ext_inicial' => (float)$row['pe_existencia_inicial'],
         'ext_real'    => $ext_real,
         'kg'          => $kg_totales
     ];
@@ -484,7 +481,7 @@ mysqli_close($cnx);
         </div>
         <div class="row align-items-center p-3">
             <div class="col-md-2 text-center">
-                <img src="../../imagenes/logo_progel_v3.png" alt="Logo Progel" class="img-fluid" style="max-height: 80px;">
+                <img src="../../imagenes/logo_empresa.png" alt="Logo Progel" class="img-fluid" style="max-height: 80px;">
             </div>
             <div class="col-md-10 text-center">
                 <h2 class="fw-bold m-0">Producto terminado (Empacado)</h2>

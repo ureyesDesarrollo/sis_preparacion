@@ -20,4 +20,14 @@ if (!function_exists('Conectarse')) {
 
 		return $cn;
 	}
+
+	function Conectarse2()
+	{
+		$cn = new mysqli("192.168.1.104", "saipbi", "4U4TIM2v3Oo1", "saipbi");
+		if ($cn->connect_error) {
+			die("Error de conexión secundaria: " . $cn->connect_error);
+		}
+		$cn->set_charset("utf8");
+		return $cn;
+	}
 }

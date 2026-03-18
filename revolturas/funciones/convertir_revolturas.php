@@ -11,6 +11,7 @@ mysqli_begin_transaction($conexion);
 
 try {
 
+
   /*
     ==========================================
     1️⃣ OBTENER REVOLTURA
@@ -26,6 +27,10 @@ try {
   }
 
   $rev = mysqli_fetch_assoc($res_rev);
+
+  if ($rev['rev_count_etiquetado'] == 0) {
+    throw new Exception("Esta revoltura ya fue convertida anteriormente.");
+  }
 
   /*
     ==========================================

@@ -36,8 +36,8 @@
     </style>
 </head>
 <?php
-// Desarrollado por: CCA Consultores TI 
-// Contacto: contacto@ccaconsultoresti.com 
+// Desarrollado por: CCA Consultores TI
+// Contacto: contacto@ccaconsultoresti.com
 // Actualizado: Agosto-2024
 include "../../conexion/conexion.php";
 
@@ -74,8 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $proceso = mysqli_real_escape_string($cnx, $_POST['txt_filtro_proceso']);
 
         // Primera consulta: buscar todas las ocurrencias del folio de tarima
-        $query = "SELECT tar_id, pro_id, tar_folio, tar_estatus 
-                  FROM rev_tarimas 
+        $query = "SELECT tar_id, pro_id, tar_folio, tar_estatus
+                  FROM rev_tarimas
                   WHERE tar_folio = '$tarima'";
         $res = mysqli_query($cnx, $query);
 
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $procesoDiferente = false;
             $tarimaEnAlmacen = false;
             $tar_estatus = '';
-			$tar_id = '';
+            $tar_id = '';
             // Recorrer todos los resultados para buscar coincidencias específicas
             while ($row = mysqli_fetch_assoc($res)) {
                 if ($row['pro_id'] == $proceso) {
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     // Verificar el estado de la tarima
                     if ($row['tar_estatus'] == '1') {
                         $tarimaEnAlmacen = true;
-						$tar_id = $row['tar_id'];
+                        $tar_id = $row['tar_id'];
                     }
                     break;
                 } else {
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $tar_rev = "SELECT t.pro_id,t.tar_folio,tar_bloom,t.tar_viscosidad,c.cal_descripcion, r.rev_folio,r.rev_id FROM rev_tarimas t
                     LEFT JOIN rev_calidad c ON c.cal_id = t.cal_id
                     INNER JOIN rev_revolturas_tarimas rt ON rt.tar_id = t.tar_id
-                    INNER JOIN rev_revolturas r ON r.rev_id = rt.rev_id 
+                    INNER JOIN rev_revolturas r ON r.rev_id = rt.rev_id
                     WHERE t.tar_folio = '$tarima' AND pro_id = '$proceso'";
                     $res = mysqli_fetch_assoc(mysqli_query($cnx, $tar_rev));
                     if ($res != null) {
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 }
 
-$listado_tarimas = mysqli_query($cnx, "SELECT DATE(r.rev_fecha) as rev_fecha,r.rev_folio,r.rev_id FROM 
+$listado_tarimas = mysqli_query($cnx, "SELECT DATE(r.rev_fecha) as rev_fecha,r.rev_folio,r.rev_id FROM
     rev_revolturas r " . $clausulaWhere);
 
 
@@ -180,10 +180,10 @@ try {
 
 try {
     // Consulta los datos de las tarimas
-    $consulta = mysqli_query($cnx, "SELECT t.*,DATE(t.tar_fecha) as tar_fecha, 
+    $consulta = mysqli_query($cnx, "SELECT t.*,DATE(t.tar_fecha) as tar_fecha,
     r.*,DATE(r.rev_fecha) as rev_fecha,u.usu_nombre, c.cal_descripcion
-    FROM rev_revolturas_tarimas rt 
-    INNER JOIN rev_tarimas t ON rt.tar_id = t.tar_id 
+    FROM rev_revolturas_tarimas rt
+    INNER JOIN rev_tarimas t ON rt.tar_id = t.tar_id
     INNER JOIN rev_revolturas r ON rt.rev_id = r.rev_id
     INNER JOIN usuarios u ON u.usu_id = r.usu_id
     LEFT JOIN rev_calidad c ON c.cal_id = t.cal_id " . $clausulaWhere);
@@ -193,7 +193,7 @@ try {
         $registros[] = $fila;
     }
 
-    $consultaR = mysqli_query($cnx, "SELECT r.*,c.cal_descripcion 
+    $consultaR = mysqli_query($cnx, "SELECT r.*,c.cal_descripcion
     FROM rev_revolturas r
     INNER JOIN usuarios u ON u.usu_id = r.usu_id
     LEFT JOIN rev_calidad c ON c.cal_id = r.cal_id " . $clausulaWhere);
@@ -246,12 +246,12 @@ try {
 }
 
 if (!empty($res)) {
-    $listado_presentaciones = mysqli_query($cnx, "SELECT rp.*,p.pres_descrip,p.pres_kg FROM rev_revolturas_pt rp 
+    $listado_presentaciones = mysqli_query($cnx, "SELECT rp.*,p.pres_descrip,p.pres_kg FROM rev_revolturas_pt rp
         JOIN rev_presentacion p ON rp.pres_id = p.pres_id WHERE rp.rev_id = '" . $res[0]['rev_id'] . "'");
 
     $listado_presentaciones_cliente = mysqli_query(
         $cnx,
-        "SELECT rpc.*, p.pres_descrip, p.pres_kg, c.cte_nombre 
+        "SELECT rpc.*, p.pres_descrip, p.pres_kg, c.cte_nombre
     FROM rev_revolturas_pt_cliente rpc
     JOIN rev_presentacion p ON rpc.pres_id = p.pres_id
     JOIN rev_clientes c ON rpc.cte_id = c.cte_id
@@ -343,7 +343,7 @@ $currentDir = dirname($_SERVER['REQUEST_URI']);
     <div class="header mb-4">
         <div class="row align-items-center">
             <div class="col-3">
-                <img src="../../imagenes/logo_progel_v3.png" alt="Logo" class="img-fluid">
+                <img src="../../imagenes/logo_empresa.png" alt="Logo" class="img-fluid" width="60">
             </div>
             <div class="col-5">
                 <div class="title">Detalle de Revolturas <?= $res[0]['rev_fecha'] ?></div>

@@ -83,9 +83,9 @@
                             data: null,
                             render: function(data, type, row) {
                                 if (row.ft_tipo === 'V') {
-                                    return `<button class="btn btn-primary btn-actualizar" data-id='${row.ft_vale_salida}' data-tipo='${row.ft_tipo}' title="Actualizar"><i class="fa-solid fa-file-invoice"></i></button>`;
+                                    return `<button class="btn btn-primary btn-actualizar" data-id='${row.ft_vale_salida}' data-tipo='${row.ft_tipo}' data-cte='${row.cte_id ?? ''}' title="Actualizar"><i class="fa-solid fa-file-invoice"></i></button>`;
                                 } else if (row.ft_tipo === 'F' || row.ft_tipo === 'R') {
-                                    return `<button class="btn btn-primary btn-actualizar" data-id='${row.ft_factura}' data-tipo='${row.ft_tipo}' title="Actualizar"><i class="fa-solid fa-file-invoice"></i></button>`;
+                                    return `<button class="btn btn-primary btn-actualizar" data-id='${row.ft_factura}' data-tipo='${row.ft_tipo}' data-cte='${row.cte_id ?? ''}' title="Actualizar"><i class="fa-solid fa-file-invoice"></i></button>`;
                                 }
                                 return '';
                             },
@@ -186,24 +186,20 @@
                 buttons: {
                     dom: {
                         button: {
-                            className: 'btn' //Primary class for all buttons
+                            className: 'btn'
                         },
                     },
                     buttons: [{
-                            //Botón para Excel
                             extend: 'excel',
                             footer: true,
                             title: titulo,
                             filename: `${titulo}_excel`,
-
-                            //Aquí es donde generas el botón personalizado
                             text: '<button title="Exportar excel" class="btn btn-outline-success"><i class="fas fa-file-excel"></i></button>',
                             exportOptions: {
                                 columns: indices
                             }
                         },
                         {
-                            //Botón para PDF
                             extend: 'pdf',
                             footer: true,
                             title: titulo,
@@ -213,7 +209,6 @@
                                 columns: indices
                             }
                         },
-                        //Botón para print
                         {
                             extend: 'print',
                             footer: true,
@@ -240,10 +235,51 @@
             ingresar_cartaporte(factura);
         });
 
+        // Variable para guardar los datos SAI del modal de actualizar
+        let jsonDataSaiActualizar = null;
+        // Guarda el tipo del modal actual para usarlo en el submit
+        let tipoModalActual = null;
+        // Datos del cliente para enviar al SAI
+        let clienteSaiTipoVenta = '';
+        let clienteSaiClasificacion = '';
+
+        // Carga los datos del cliente desde el catálogo para usarlos al insertar en SAI
+        function cargarDatosCliente(cteId) {
+            if (!cteId) return;
+            $.ajax({
+                type: 'GET',
+                url: 'catalogos/clientes_listado.php',
+                success: function(data) {
+                    let clientes = JSON.parse(data);
+                    let cliente = clientes.find(c => c.cte_id == cteId);
+                    if (cliente) {
+                        clienteSaiTipoVenta = cliente.cte_tipo || '';
+                        clienteSaiClasificacion = cliente.cte_clasificacion || '';
+                    }
+
+                    console.log(clienteSaiClasificacion);
+                    console.log(clienteSaiTipoVenta);
+                }
+            });
+        }
+
         $(document).on('click', '.btn-actualizar', function() {
 
             let valor = $(this).data('id');
             let tipo = $(this).data('tipo');
+            let cteId = $(this).data('cte');
+
+            // Guarda el tipo para usarlo al guardar
+            tipoModalActual = tipo;
+            jsonDataSaiActualizar = null;
+            clienteSaiTipoVenta = '';
+            clienteSaiClasificacion = '';
+            $('#btnGuardarCambios').prop('disabled', false);
+
+            // Carga tipo y clasificación del cliente para SAI (solo necesario en tipo V)
+            if (tipo === 'V') {
+                cargarDatosCliente(cteId);
+            }
 
             let modal = new bootstrap.Modal(document.getElementById('modalActualizarFactura'));
             modal.show();
@@ -286,6 +322,9 @@
                     } else {
 
                         response.data.forEach(function(tarima, index) {
+                            // El input de factura es editable solo si está vacío y el tipo es F
+                            let facturaVacia = !tarima.ft_factura || tarima.ft_factura.trim() === '';
+                            let esEditable = facturaVacia && tipo === 'V';
 
                             html += `
         <tr>
@@ -315,9 +354,9 @@
 
             <td>
                 <input type="text"
-                       class="form-control form-control-sm input-factura"
+                       class="form-control form-control-sm input-factura ${esEditable ? 'input-factura-editable' : ''}"
                        value="${tarima.ft_factura ?? ''}"
-                       ${response.tipo === 'V' ? '' : 'readonly'}>
+                       ${esEditable ? '' : 'readonly'}>
             </td>
 
             <td class="text-center">
@@ -336,14 +375,122 @@
             });
         });
 
-        $(document).on('input', '.input-factura', function() {
-
+        // Sincroniza el valor entre todos los inputs de factura editables
+        $(document).on('input', '.input-factura-editable', function() {
             let nuevaFactura = $(this).val();
-
-            // Copiar a todos los inputs de factura
-            $('.input-factura').val(nuevaFactura);
-
+            $('.input-factura-editable').val(nuevaFactura);
         });
+
+        // Consulta SAI con debounce solo en inputs de factura editables (vacíos, tipo F)
+        let typingTimerSai;
+        $(document).on('input', '.input-factura-editable', function() {
+
+            clearTimeout(typingTimerSai);
+            const factura = $(this).val().trim();
+
+            $('#btnGuardarCambios').prop('disabled', true);
+            jsonDataSaiActualizar = null;
+
+            if (!factura) return;
+
+            typingTimerSai = setTimeout(function() {
+                consultarFacturaSaiActualizar(factura);
+            }, 800);
+        });
+
+        // Consulta la factura en SAI y guarda los datos para insertar al guardar
+        function consultarFacturaSaiActualizar(factura) {
+            // Muestra loader dentro del modal
+            $('#modalActualizarFactura .modal-body').css('position', 'relative');
+            $('#loader-sai-actualizar').remove();
+            $('#modalActualizarFactura .modal-body').append(`
+                <div id="loader-sai-actualizar" style="
+                    position: absolute;
+                    z-index: 9999;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(255,255,255,0.75);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-direction: column;
+                ">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <div class="mt-3 fs-5 text-dark">Consultando Factura...</div>
+                </div>
+            `);
+
+            $.ajax({
+                type: 'GET',
+                url: `lib/consultar_factura_sai.php?folio=${encodeURIComponent(factura)}`,
+                dataType: 'json',
+                success: function(response) {
+                    $('#loader-sai-actualizar').remove();
+
+                    if (response.success === false || response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.error || 'La factura no existe en SAI.',
+                            timer: 4000,
+                            showConfirmButton: false
+                        });
+                        jsonDataSaiActualizar = null;
+                        return;
+                    }
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Factura encontrada',
+                        text: '',
+                        timer: 4000,
+                        showConfirmButton: false
+                    });
+
+                    // Guarda los datos SAI para usarlos al guardar
+                    jsonDataSaiActualizar = response.data || response;
+                    $('#btnGuardarCambios').prop('disabled', false);
+                },
+                error: function(xhr, status, error) {
+                    $('#loader-sai-actualizar').remove();
+                    let msg = 'No se pudo consultar la factura en SAI. ';
+                    if (status === 'timeout') msg += 'La consulta tardó demasiado.';
+                    else if (xhr.responseJSON && xhr.responseJSON.error) msg += xhr.responseJSON.error;
+                    else msg += error;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: msg,
+                        timer: 4000,
+                        showConfirmButton: false
+                    });
+                    jsonDataSaiActualizar = null;
+                }
+            });
+        }
+
+        // Inserta en SAI
+        function insertarRegistrosSai(data) {
+            return new Promise(function(resolve, reject) {
+                console.log(clienteSaiClasificacion);
+                console.log(clienteSaiTipoVenta);
+                data.FACTURA_CABECERA.TIPO_VENTA = clienteSaiTipoVenta;
+                data.FACTURA_CABECERA.TIPO_CLIENTE = clienteSaiClasificacion;
+                $.ajax({
+                    url: 'funciones/sai/insertar.php',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        resolve(response);
+                    },
+                    error: function(xhr) {
+                        reject(xhr.responseText || 'Error al registrar en SAI');
+                    }
+                });
+            });
+        }
 
         $(document).on('click', '#btnGuardarCambios', function() {
 
@@ -381,21 +528,42 @@
                 return;
             }
 
-            $.ajax({
-                url: 'reportes/actualizar_tarimas_facturas.php',
-                method: 'POST',
-                data: {
-                    tarimas: JSON.stringify(datos)
-                },
-                success: function(response) {
-                    alert("Actualización correcta.");
-                    location.reload();
-                },
-                error: function() {
-                    alert("Error al guardar.");
-                }
-            });
+            const guardar = function() {
+                $.ajax({
+                    url: 'reportes/actualizar_tarimas_facturas.php',
+                    method: 'POST',
+                    data: {
+                        tarimas: JSON.stringify(datos)
+                    },
+                    success: function(response) {
+                        alert("Actualización correcta.");
+                        jsonDataSaiActualizar = null;
+                        location.reload();
+                    },
+                    error: function() {
+                        alert("Error al guardar.");
+                    }
+                });
+            };
 
+            // Solo inserta en SAI si el tipo es V y hay datos SAI disponibles
+            if (tipoModalActual === 'V' && jsonDataSaiActualizar) {
+                insertarRegistrosSai(jsonDataSaiActualizar)
+                    .then(function() {
+                        guardar();
+                    })
+                    .catch(function(err) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error SAI',
+                            text: err,
+                            timer: 4000,
+                            showConfirmButton: false
+                        });
+                    });
+            } else {
+                guardar();
+            }
         });
     });
 </script>
@@ -540,7 +708,6 @@
                         throw new Error(data.error || "Error en la validación de la clave");
                     }
 
-                    // Retornamos tanto la respuesta como el cartaporte ingresado
                     return {
                         ...data,
                         cartaporte: cartaporteInput
@@ -552,10 +719,8 @@
             allowOutsideClick: () => !Swal.isLoading()
         });
 
-        // Si se canceló o hubo error, no hacer nada
         if (!result) return;
 
-        // Mostrar confirmación con el cartaporte capturado
         Swal.fire({
             icon: "success",
             title: "Carta porte registrada",

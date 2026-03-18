@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Devuelve la descripción de calidad (bloom) a partir del cal_id.
  *
@@ -22,12 +23,41 @@ function obtenerBloomPorCalidad($cal_id)
 function numeroALetras($numero)
 {
     // Definición de palabras
-    $UNIDADES = ['', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE', 'DIEZ',
-        'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISÉIS', 'DIECISIETE', 'DIECIOCHO', 'DIECINUEVE', 'VEINTE'];
+    $UNIDADES = [
+        '',
+        'UN',
+        'DOS',
+        'TRES',
+        'CUATRO',
+        'CINCO',
+        'SEIS',
+        'SIETE',
+        'OCHO',
+        'NUEVE',
+        'DIEZ',
+        'ONCE',
+        'DOCE',
+        'TRECE',
+        'CATORCE',
+        'QUINCE',
+        'DIECISÉIS',
+        'DIECISIETE',
+        'DIECIOCHO',
+        'DIECINUEVE',
+        'VEINTE'
+    ];
     $DECENAS = ['', '', 'VEINTE', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
     $CENTENAS = [
-        '', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS',
-        'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'
+        '',
+        'CIENTO',
+        'DOSCIENTOS',
+        'TRESCIENTOS',
+        'CUATROCIENTOS',
+        'QUINIENTOS',
+        'SEISCIENTOS',
+        'SETECIENTOS',
+        'OCHOCIENTOS',
+        'NOVECIENTOS'
     ];
 
     // Aseguramos el formato y separación de decimales
@@ -95,16 +125,20 @@ function convertirNumero($numero, $UNIDADES, $DECENAS, $CENTENAS)
 
 
 
-function descripcionCajas($kilos, $empaque, $presentacion) {
-    $cajas = $kilos / 12;
+function descripcionCajas($kilos, $empaque, $presentacion, $kilosPorCaja = 12)
+{
+    $cajas = $kilos / $kilosPorCaja;
+
     if (fmod($cajas, 1) == 0) {
         $cajas = intval($cajas);
     } else {
         $cajas = number_format($cajas, 2, '.', '');
     }
-    if($empaque == '25 KG'){
+
+    if ($empaque == '25 KG') {
         $sacos = $kilos / 25;
         return "{$sacos} {$presentacion} DE {$empaque} C/U";
     }
-    return "{$cajas} {$presentacion} DE 12 KG C/U PRESENTACIÓN: {$empaque}";
+
+    return "{$cajas} {$presentacion} DE {$kilosPorCaja} KG C/U PRESENTACIÓN: {$empaque}";
 }

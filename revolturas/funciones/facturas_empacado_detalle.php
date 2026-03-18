@@ -52,7 +52,7 @@ try {
         $fe_factura = $_GET['fe_factura'];
     }
 
-    $query = "SELECT 
+    $query = "SELECT
     rpf.fe_factura,
     rpf.fe_cartaporte,
     rpf.fe_cantidad,
@@ -66,17 +66,17 @@ try {
     COALESCE(rr.rr_id, rrc.rrc_id) AS referencia_id,
     COALESCE(rr.rr_ext_inicial, rrc.rrc_ext_inicial) AS rr_ext_inicial,
     COALESCE(rr.rr_ext_real, rrc.rrc_ext_real) AS rr_ext_real
-FROM 
+FROM
     rev_revolturas_pt_facturas rpf
-INNER JOIN 
+INNER JOIN
     rev_clientes c ON c.cte_id = rpf.cte_id
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas_pt rr ON rr.rr_id = rpf.rr_id  -- Facturas con rr_id
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas_pt_cliente rrc ON rrc.rrc_id = rpf.rrc_id  -- Facturas con rrc_id
-LEFT JOIN 
+LEFT JOIN
     rev_presentacion rp ON rp.pres_id = COALESCE(rr.pres_id, rrc.pres_id)  -- Tomar la presentación correcta
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas rev ON rev.rev_id = COALESCE(rr.rev_id, rrc.rev_id)
         WHERE rpf.fe_factura = '$fe_factura'";
 
@@ -98,10 +98,10 @@ $currentDir = dirname($_SERVER['REQUEST_URI']);
     <div class="header mb-4">
         <div class="row align-items-center">
             <div class="col-3">
-                <img src="../../imagenes/logo_progel_v3.png" alt="Logo" class="img-fluid">
+                <img src="../../imagenes/logo_empresa.png" alt="Logo" class="img-fluid" width="60">
             </div>
             <div class="col-5">
-                <div class="title">Detalle de <?= $res[0]['fe_tipo'] == 'A' ? 'Factura' : 'Remisión' ?>: <?= $fe_factura ?></div>
+                <div class="title">Detalle de <?= $res[0]['fe_tipo'] == 'F' ? 'Factura' : 'Remisión' ?>: <?= $fe_factura ?></div>
             </div>
         </div>
     </div>

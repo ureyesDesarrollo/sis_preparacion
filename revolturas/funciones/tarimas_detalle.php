@@ -24,23 +24,23 @@ try {
 
     //extract($_GET);
     $query = "SELECT t.*, c.cal_descripcion, c.cal_color, t.niv_id
-    FROM rev_tarimas t 
-    LEFT JOIN rev_calidad c ON c.cal_id = t.cal_id 
+    FROM rev_tarimas t
+    LEFT JOIN rev_calidad c ON c.cal_id = t.cal_id
     WHERE t.tar_id = '" . $_GET['tar_id'] . "'";
 
     $result = mysqli_fetch_assoc(mysqli_query($cnx, $query));
 
     $sqlProMat = mysqli_query($cnx, "SELECT m.mat_nombre, pm.pma_kg, pm.pma_fe_entrada, pm.pma_fe_entrada_maquila,inv.inv_id, inv.inv_no_ticket
-    FROM materiales as m	
-    INNER JOIN procesos_materiales as pm on(m.mat_id=pm.mat_id) 
+    FROM materiales as m
+    INNER JOIN procesos_materiales as pm on(m.mat_id=pm.mat_id)
 	INNER JOIN inventario as inv on pm.inv_id = inv.inv_id
     WHERE pm.pro_id ='" . $result['pro_id'] . "' order by pma_fe_entrada asc");
     $reg_material = mysqli_fetch_assoc($sqlProMat);
 
-    $sqlPosicion = "SELECT r.rac_descripcion,r.rac_zona, np.* 
-    FROM rev_nivel_posicion np 
+    $sqlPosicion = "SELECT r.rac_descripcion,r.rac_zona, np.*
+    FROM rev_nivel_posicion np
     INNER JOIN rev_racks r ON r.rac_id = np.rac_id
-    INNER JOIN rev_tarimas t ON t.niv_id = np.niv_id 
+    INNER JOIN rev_tarimas t ON t.niv_id = np.niv_id
     WHERE t.tar_id = '" . $_GET['tar_id'] . "'";
 
 
@@ -76,7 +76,7 @@ try {
         <nav class="navbar bg-body-tertiary" style="box-shadow: 10px 5px 5px #e6e6e6;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="../../imagenes/logo_progel_v5.png" alt="Progel Mexicana">
+                    <img src="../../imagenes/logo_empresa.png" alt="Progel Mexicana" width="60">
                 </a>
                 DETALLE DE TARIMA
                 <ul class="nav justify-content-center">
@@ -239,7 +239,7 @@ try {
                         do {
 
                             $sql_prov = mysqli_query($cnx, "SELECT p.prv_nombre,i.inv_folio_interno, i.inv_folio_interno2,p.prv_tipo,p.prv_ncorto
-                        FROM inventario as i 
+                        FROM inventario as i
                         inner join proveedores as p on(i.prv_id = p.prv_id)
                         WHERE inv_id ='" . $reg_material['inv_id'] . "'");
 
@@ -257,7 +257,7 @@ try {
                                 <td><?php echo fnc_formato_fecha($reg_material['pma_fe_entrada']) ?></td>
                                 <td><?php echo fnc_formato_fecha($reg_material['pma_fe_entrada_maquila'] ?? ''); ?></td>
                                 <td><?php echo $folio ?></td>
-                                <td><?php echo $reg_material['inv_no_ticket']?></td>
+                                <td><?php echo $reg_material['inv_no_ticket'] ?></td>
                             </tr>
                         <?php
                             $tot_material += $reg_material['pma_kg'];

@@ -35,15 +35,23 @@ $stmt = $conexion->prepare("
     SELECT
         oed.oed_id,
         oed.cantidad,
-        COALESCE(rev.rev_folio, rrc_rev.rev_folio) AS rev_folio,
-        COALESCE(rr_pres.pres_descrip, rrc_pres.pres_descrip) AS presentacion
+        CASE
+            WHEN oed.oed_tipo_producto = 'EXTERNO' THEN pe.pe_lote
+            ELSE COALESCE(rev.rev_folio, rrc_rev.rev_folio)
+        END AS rev_folio,
+        COALESCE(rr_pres.pres_descrip, rrc_pres.pres_descrip, pe_pres.pres_descrip) AS presentacion
     FROM rev_orden_embarque_detalle oed
     LEFT JOIN rev_revolturas_pt rr ON rr.rr_id = oed.rr_id
     LEFT JOIN rev_revolturas rev ON rev.rev_id = rr.rev_id
     LEFT JOIN rev_presentacion rr_pres ON rr_pres.pres_id = rr.pres_id
+
     LEFT JOIN rev_revolturas_pt_cliente rrc ON rrc.rrc_id = oed.rrc_id
     LEFT JOIN rev_revolturas rrc_rev ON rrc_rev.rev_id = rrc.rev_id
     LEFT JOIN rev_presentacion rrc_pres ON rrc_pres.pres_id = rrc.pres_id
+
+    LEFT JOIN producto_externo pe ON pe.pe_id = oed.pe_id
+    LEFT JOIN rev_presentacion pe_pres ON pe_pres.pres_id = pe.pres_id
+
     WHERE oed.oe_id = ?
 ");
 $stmt->bind_param("i", $ordenId);

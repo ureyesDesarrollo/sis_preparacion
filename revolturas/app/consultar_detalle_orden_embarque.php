@@ -29,21 +29,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     oe.tarimas_liberadas AS tarimas_liberadas,
 
     CASE
+        WHEN oed.oed_tipo_producto = 'EXTERNO' THEN pe.pe_lote
         WHEN rr.rev_id IS NOT NULL THEN rev.rev_folio
         WHEN rrc.rev_id IS NOT NULL THEN rrc_rev.rev_folio
         ELSE 'Producto General'
     END AS rev_folio,
 
-    COALESCE(rr.rr_id, rrc.rrc_id) AS empaque_id,
-
-    COALESCE(rr.rr_ext_inicial, rrc.rrc_ext_inicial, 0) AS existencia_inicial,
-    COALESCE(rr.rr_ext_real, rrc.rrc_ext_real, 0) AS existencia_real,
-
-    COALESCE(rr_pres.pres_id, rrc_pres.pres_id) AS presentacion_id,
-    COALESCE(rr_pres.pres_descrip, rrc_pres.pres_descrip) AS presentacion_descripcion,
-    COALESCE(rr_pres.pres_kg, rrc_pres.pres_kg) AS pres_kg,
+    CASE
+        WHEN oed.oed_tipo_producto = 'EXTERNO' THEN pe.pe_id
+        ELSE COALESCE(rr.rr_id, rrc.rrc_id)
+    END AS empaque_id,
 
     CASE
+        WHEN oed.oed_tipo_producto = 'EXTERNO' THEN COALESCE(pe.pe_existencia_inicial, 0)
+        ELSE COALESCE(rr.rr_ext_inicial, rrc.rrc_ext_inicial, 0)
+    END AS existencia_inicial,
+
+    CASE
+        WHEN oed.oed_tipo_producto = 'EXTERNO' THEN COALESCE(pe.pe_existencia_real, 0)
+        ELSE COALESCE(rr.rr_ext_real, rrc.rrc_ext_real, 0)
+    END AS existencia_real,
+
+    COALESCE(rr_pres.pres_id, rrc_pres.pres_id, pe_pres.pres_id) AS presentacion_id,
+    COALESCE(rr_pres.pres_descrip, rrc_pres.pres_descrip, pe_pres.pres_descrip) AS presentacion_descripcion,
+    COALESCE(rr_pres.pres_kg, rrc_pres.pres_kg, pe_pres.pres_kg) AS pres_kg,
+
+    CASE
+        WHEN oed.oed_tipo_producto = 'EXTERNO' THEN 'EXTERNO'
         WHEN rr.rr_id IS NOT NULL THEN 'GENERAL'
         WHEN rrc.rrc_id IS NOT NULL THEN 'CLIENTE'
         ELSE 'GENERAL'
@@ -75,7 +87,17 @@ LEFT JOIN
     rev_presentacion rrc_pres ON rrc_pres.pres_id = rrc.pres_id
 
 LEFT JOIN
-    rev_nivel_posicion_detalle npd ON (npd.rr_id = rr.rr_id OR npd.rrc_id = rrc.rrc_id)
+    producto_externo pe ON pe.pe_id = oed.pe_id
+LEFT JOIN
+    rev_presentacion pe_pres ON pe_pres.pres_id = pe.pres_id
+
+LEFT JOIN
+    rev_nivel_posicion_detalle npd
+        ON (
+            (oed.oed_tipo_producto <> 'EXTERNO' AND npd.rr_id = rr.rr_id)
+            OR
+            (oed.oed_tipo_producto <> 'EXTERNO' AND npd.rrc_id = rrc.rrc_id)
+        )
 LEFT JOIN
     rev_nivel_posicion np ON np.niv_id = npd.niv_id
 
@@ -86,7 +108,7 @@ LEFT JOIN
     rev_clientes cte ON oe.cte_id = cte.cte_id
 
 WHERE
-        oe.oe_id = '$oe_id'";
+    oe.oe_id = '$oe_id'";
 
         $listado_detalle_embarque = mysqli_query($cnx, $sql);
 

@@ -28,8 +28,8 @@ $oe_id = isset($_POST['oe_id']) ? json_decode($_POST['oe_id']) : null;
                 <div class="row mb-3 align-items-center">
                     <div class="col-md-12">
                         <label for="cliente" class="form-label d-inline-block me-2 mb-0">Cliente:</label>
-                        <input name="cte_id" id="cte_id" class="form-control d-inline-block me-2" style="width: 80px;">
-                        <input name="cte_nombre" id="cte_nombre" class="form-control d-inline-block" style="width: calc(100% - 180px);">
+                        <input name="cte_id" id="cte_id" class="form-control d-inline-block me-2 d-none">
+                        <input name="cte_nombre" id="cte_nombre" class="form-control d-inline-block" style="width: calc(100% - 180px);" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -38,7 +38,7 @@ $oe_id = isset($_POST['oe_id']) ? json_decode($_POST['oe_id']) : null;
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Revoltura</th>
+                                    <th>Lote</th>
                                     <th>Empaque</th>
                                     <th>Cantidad solicitada</th>
                                     <th>Liberación</th>
@@ -192,8 +192,13 @@ $oe_id = isset($_POST['oe_id']) ? json_decode($_POST['oe_id']) : null;
                             <td>${item.rev_folio}</td>
                             <td>${item.presentacion_descripcion}</td>
                             <td>${item.cantidad_solicitada}</td>
-                            <td><button type="button" class="btn btn-outline-success btn-liberar" data-id='${JSON.stringify(item.empaque_id)}' title="Imprimir etiqueta"><i class="fa-solid fa-tags"></i></button>
-                            <button type="button" class="btn btn-outline-success btn-certificado" data-id='${JSON.stringify(item.empaque_id)}' title="Generar certificado"><i class="fa-solid fa-file-word"></i></button></td>
+                        ${item.presentacion_id != '6' ? `
+                        <td>
+                            <button type="button" class="btn btn-outline-success btn-liberar" data-id='${JSON.stringify(item.empaque_id)}' title="Imprimir etiqueta"><i class="fa-solid fa-tags"></i></button>
+                            <button type="button" class="btn btn-outline-success btn-certificado" data-id='${JSON.stringify(item.empaque_id)}' title="Generar certificado"><i class="fa-solid fa-file-word"></i></button>
+                        </td>`
+                            : '<td></td>'}
+
                         </tr>`;
                         tableBody.append(row);
                     });

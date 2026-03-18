@@ -10,7 +10,7 @@ try {
     $usu_clave_auth = isset($_POST['usu_clave_auth']) ? mysqli_real_escape_string($cnx, $_POST['usu_clave_auth']) : '';
 
 
-    $query = "SELECT usu_id FROM usuarios WHERE usu_clave_auth = '$usu_clave_auth'";
+    $query = "SELECT usu_id FROM usuarios WHERE usu_clave_auth = '$usu_clave_auth' AND usu_est = 'A'";
     $result = mysqli_query($cnx, $query);
 
     if (!$result) {
@@ -22,7 +22,7 @@ try {
         exit;
     }
 
-    echo json_encode(["success" => "Movimiento autorizado.","usu_id" => mysqli_fetch_assoc($result)['usu_id']]);
+    echo json_encode(["success" => "Movimiento autorizado.", "usu_id" => mysqli_fetch_assoc($result)['usu_id']]);
 } catch (Exception $e) {
     echo json_encode(["error" => $e->getMessage()]);
     exit;

@@ -20,7 +20,7 @@ include "../funciones/funciones.php";
 <nav class="navbar bg-body-tertiary" style="box-shadow: 10px 5px 5px #e6e6e6;">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="../imagenes/logo_progel_v5.png" alt="Progel Mexicana">
+            <img src="../imagenes/logo_empresa.png" alt="Progel Mexicana" style="width: 60px;">
         </a>
         <ul class="nav justify-content-center">
             <li>

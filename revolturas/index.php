@@ -28,7 +28,7 @@
     <div class="cont">
         <div class="demo">
             <div class="login">
-                <center><img src="../imagenes/logo_progel_v3.png" class="logo"></center>
+                <center><img src="../imagenes/logo_empresa.png" class="logo"></center>
 
                 <div class="login__form">
                     <div style="font-size: 23px; color: rgba(255, 255, 255, 0.8); font-weight: bold;">

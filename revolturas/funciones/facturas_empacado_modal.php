@@ -18,7 +18,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
     $fe_tipo = $_POST['fe_tipo'];
 
     $msg = $fe_tipo == 'F' ? 'Factura' : 'Remisión';
-    // Verificación de existencia de la factura
     $checkSql = "SELECT COUNT(*) AS count FROM rev_revolturas_pt_facturas WHERE fe_factura = '$fe_factura' AND fe_tipo = '$fe_tipo'";
     $checkResult = mysqli_query($cnx, $checkSql);
     $checkRow = mysqli_fetch_assoc($checkResult);
@@ -28,7 +27,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
     $checkRow_2 = mysqli_fetch_assoc($checkResult_2);
 
     if ($checkRow['count'] > 0 || $checkRow_2['count'] > 0) {
-        // Si la factura ya existe, devolver un mensaje de error
         $res = "La $msg $fe_factura ya está registrada.";
         echo json_encode(["error" => $res]);
     } else {
@@ -49,16 +47,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         </div>
         <!-- Overlay de loader -->
         <div id="modal-loader-overlay" style="
-    position: absolute;
-    z-index: 9999;
-    top: 0; left: 0; right: 0; bottom: 0;
-    display: none;
-    background: rgba(255,255,255,0.7);
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 1rem;
-">
+            position: absolute; z-index: 9999;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: none; background: rgba(255,255,255,0.7);
+            align-items: center; justify-content: center;
+            text-align: center; border-radius: 1rem;">
             <div style="margin-top:20%;">
                 <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
                     <span class="visually-hidden">Cargando...</span>
@@ -71,7 +64,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             <input type="text" id="orden_id" name="orden_id" value="<?= $oe_id ?>" hidden>
 
             <form id="form_factura" method="POST" class="needs-validation" novalidate autocomplete="off">
-                <!-- Sección de Tipo de Documento y Fecha - Mejorada -->
                 <div class="card mb-4 border-0 shadow-sm">
                     <div class="card-body">
                         <div class="row g-3 align-items-center">
@@ -82,14 +74,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                     <label class="btn btn-outline-primary" for="factura">
                                         <i class="fas fa-file-invoice me-2"></i>Factura
                                     </label>
-
                                     <input type="radio" class="btn-check" name="tipo" id="remision" value="R" required>
                                     <label class="btn btn-outline-primary" for="remision">
                                         <i class="fas fa-truck me-2"></i>Remisión
                                     </label>
                                 </div>
                             </div>
-
                             <div class="col-md-6" id="fecha_container">
                                 <label for="fecha" class="form-label fw-medium">Fecha</label>
                                 <div class="input-group">
@@ -102,8 +92,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                 <label for="vendedor" class="form-label fw-medium">Vendedor</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white"><i class="fas fa-user-tie"></i></span>
-                                    <select name="vendedor" id="vendedor" class="form-select" required>
-                                    </select>
+                                    <select name="vendedor" id="vendedor" class="form-select" required></select>
                                 </div>
                                 <div class="invalid-feedback">Por favor selecciona un vendedor</div>
                             </div>
@@ -111,15 +100,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     </div>
                 </div>
 
-                <!-- Sección de Datos Principales - Mejorada -->
                 <div class="card mb-4 border-0 shadow-sm">
                     <div class="card-body">
                         <h6 class="card-title mb-3 fw-medium text-primary">
                             <i class="fas fa-user-tie me-2"></i>Datos del Cliente
                         </h6>
-
                         <div class="row g-3">
-                            <!-- Cliente -->
                             <div class="col-md-5">
                                 <label for="cte_id" class="form-label">Cliente <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -131,8 +117,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                 </div>
                                 <div class="invalid-feedback">Por favor selecciona un cliente</div>
                             </div>
-
-                            <!-- Tipo de Cliente -->
                             <div class="col-md-3">
                                 <label for="cte_tipo" class="form-label">Tipo de Cliente</label>
                                 <div class="input-group">
@@ -140,8 +124,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                     <input type="text" name="cte_tipo" id="cte_tipo" class="form-control" readonly required>
                                 </div>
                             </div>
-
-                            <!-- Selector de Tipo cuando es "Ambos" -->
                             <div class="col-md-3 d-none" id="tipo_venta_container">
                                 <label for="cte_tipo_select" class="form-label">Tipo de Venta <span class="text-danger">*</span></label>
                                 <select name="cte_tipo_select" id="cte_tipo_select" class="form-select" required>
@@ -151,8 +133,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                 </select>
                                 <div class="invalid-feedback">Seleccione el tipo de venta</div>
                             </div>
-
-                            <!-- Giro -->
                             <div class="col-md-4">
                                 <label for="cte_clasificacion" class="form-label">Clasificación</label>
                                 <div class="input-group">
@@ -164,15 +144,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     </div>
                 </div>
 
-                <!-- Sección de Documentos - Mejorada -->
                 <div class="card mb-4 border-0 shadow-sm">
                     <div class="card-body">
                         <h6 class="card-title mb-3 fw-medium text-primary">
                             <i class="fas fa-file-alt me-2"></i>Datos del Documento
                         </h6>
-
                         <div class="row g-3">
-                            <!-- Factura -->
                             <div class="col-md-4">
                                 <label for="fe_factura" class="form-label" id="tipo_documento_label">
                                     Factura <span class="text-danger">*</span>
@@ -183,8 +160,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                 </div>
                                 <div class="invalid-feedback" id="factura-feedback">Este campo es requerido</div>
                             </div>
-
-                            <!-- Carta Porte -->
                             <div class="col-md-4">
                                 <label for="fe_cartaporte" class="form-label">Carta Porte</label>
                                 <div class="input-group">
@@ -192,49 +167,36 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                     <input type="text" class="form-control" name="fe_cartaporte" id="fe_cartaporte">
                                 </div>
                             </div>
-
-                            <!-- Total -->
                             <div class="col-md-4">
                                 <label for="total" class="form-label">Total Real</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white"><i class="fas fa-dollar-sign"></i></span>
-                                    <div class="form-control fw-bold text-end pe-3" id="total-display" style="height: 38px; line-height: 1.5;">
-                                        $0.00
-                                    </div>
+                                    <div class="form-control fw-bold text-end pe-3" id="total-display" style="height: 38px; line-height: 1.5;">$0.00</div>
                                     <input type="hidden" name="total" id="total">
                                 </div>
                             </div>
                         </div>
-
                         <div class="row mt-3 d-none" id="total-container-nota">
-
                             <div class="col-md-4">
-                                <label for="total" class="form-label">Total Nota Credito</label>
+                                <label class="form-label">Total Nota Credito</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white"><i class="fas fa-dollar-sign"></i></span>
-                                    <div class="form-control fw-bold text-end pe-3" id="total-display-nota" style="height: 38px; line-height: 1.5;">
-                                        $0.00
-                                    </div>
+                                    <div class="form-control fw-bold text-end pe-3" id="total-display-nota" style="height: 38px; line-height: 1.5;">$0.00</div>
                                     <input name="total-nota" id="total-nota" class="form-control fw-bold text-end pe-3" style="height: 38px; line-height: 1.5;" hidden>
                                 </div>
                             </div>
-
                             <div class="col-md-4">
-                                <label for="total" class="form-label">Total <span id=""></span></label>
+                                <label class="form-label">Total</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-white"><i class="fas fa-dollar-sign"></i></span>
-                                    <div class="form-control fw-bold text-end pe-3" id="total-display-factura" style="height: 38px; line-height: 1.5;">
-                                        $0.00
-                                    </div>
+                                    <div class="form-control fw-bold text-end pe-3" id="total-display-factura" style="height: 38px; line-height: 1.5;">$0.00</div>
                                     <input name="total-factura" id="total-factura" class="form-control fw-bold text-end pe-3" style="height: 38px; line-height: 1.5;" hidden>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <!-- Tabla de Productos - Mejorada -->
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -252,9 +214,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                                         <th id="promocion" class="d-none text-end">Promoción</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- Filas se generarán dinámicamente -->
-                                </tbody>
+                                <tbody></tbody>
                                 <tfoot class="table-light">
                                     <tr>
                                         <td colspan="7" class="fw-bold text-end">Total:</td>
@@ -266,7 +226,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     </div>
                 </div>
 
-                <!-- Alertas - Mejoradas -->
                 <div id="alerta-factura" class="alert m-0 mb-3 d-none">
                     <div class="d-flex align-items-center">
                         <i class="fas flex-shrink-0 me-3 fs-4"></i>
@@ -279,7 +238,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             </form>
         </div>
 
-        <!-- Pie de Modal - Mejorado -->
         <div class="modal-footer bg-light">
             <div class="d-flex justify-content-between w-100 align-items-center">
                 <div id="mensajes-validacion" class="text-muted small">
@@ -298,21 +256,40 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
     </div>
 </div>
 
+<!-- Mini-modal para capturar factura SAI (cliente Arbaiza) -->
+<div class="modal fade" id="modalFacturaSai" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title fw-semibold">
+                    <i class="fas fa-file-invoice me-2"></i>Factura SAI
+                </h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-2">Ingresa el número de factura para registrar en SAI</p>
+                <input type="text" id="inputFacturaSai" class="form-control" placeholder="Ej. F0001" autocomplete="off">
+                <div id="feedbackFacturaSai" class="text-danger small mt-1" style="display:none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btnConfirmarFacturaSai">Consultar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function() {
         cargarDatosEmpaques();
 
         $('input[name="tipo"]').on('change', async function() {
-            // Obtén el valor seleccionado
             let tipoDocumento = $('input[name="tipo"]:checked').val();
-
-            // Cambia el texto del label
             let label = tipoDocumento == 'F' ? 'Factura' : 'Remisión';
             $('#tipo_documento').text(label);
             $('#tipo_documento_label').text(label);
             $('#title').text(`Capturar ${label}`);
             $('#guardar').html(`<i class="fas fa-save me-2"></i>Guardar ${label}`);
-
 
             if (tipoDocumento === 'R') {
                 await consultarRemision();
@@ -323,7 +300,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 let anio = String(hoy.getFullYear()).slice(-2);
                 let fechaFormateada = `${consecutivo}-${dia}-${mes}-${anio}`;
                 $('#fe_factura').val(fechaFormateada);
-                $('#fe_factura').prop('readonly', true); // Desactiva input
+                $('#fe_factura').prop('readonly', true);
                 $('#promocion').removeClass('d-none');
                 $('.promocion').removeClass('d-none');
                 $('#fecha_container').removeClass('col-md-6').addClass('col-md-3');
@@ -352,7 +329,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             const factura = $(this).val().trim();
             let tipoDocumento = $('input[name="tipo"]:checked').val();
 
-            // Bloquea botón y limpia feedback mientras escribe
             $('#guardar').prop('disabled', true);
             $('#factura-feedback').text('');
             $('#fe_factura').removeClass('is-invalid');
@@ -368,32 +344,24 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 lastFactura = factura;
 
                 if (tipoDocumento === 'F') {
-
                     consultarFactura();
-
                 } else {
                     validar_factura(lastFactura);
                 }
-
             }, typingDelay);
         });
 
-        // Quita el error al escribir o cambiar
         $(document).on('input change', '.form-control, .form-select', function() {
             $(this).removeClass('is-invalid');
         });
 
         function validarFormulario($form) {
             let hayError = false;
-
-            // Recorre TODOS los campos visibles requeridos
             $form.find('[required]:visible').each(function() {
                 let $campo = $(this);
                 let valor = $campo.val();
-
-                // Para select, checa si está vacío o no seleccionado
                 if ($campo.is('select')) {
-                    if (!valor || valor === '' || valor === null) {
+                    if (!valor || valor === '') {
                         $campo.addClass('is-invalid');
                         hayError = true;
                     } else {
@@ -408,8 +376,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     }
                 }
             });
-
-            // Si hay error, activa los feedbacks de Bootstrap
             if (hayError) {
                 $form.addClass('was-validated');
                 return false;
@@ -419,21 +385,37 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             }
         }
 
+        function ejecutarGuardadoRemision(data, $guardar) {
+            insertarRegistros()
+                .then(function() {
+                    return insertarRegistrosRemision(data);
+                })
+                .then(function() {
+                    generarRemision();
+                    showAlerta('success', 'Remisión', 'Remisión guardada');
+                })
+                .catch(function(error) {
+                    showAlerta('error', 'Error', error);
+                })
+                .finally(function() {
+                    $guardar.prop('disabled', false);
+                    $guardar.html('<i class="fas fa-save me-2"></i>Guardar Factura');
+                    limpiarFormulario();
+                });
+        }
 
         $('#form_factura').submit(function(e) {
             e.preventDefault();
             const $guardar = $('#guardar');
             if (!validarFormulario($(this))) {
-                // Faltan campos: NO envía, el usuario ve los mensajes
                 return;
             }
 
             let tipoDocumento = $('input[name="tipo"]:checked').val();
-            if (tipoDocumento === 'R') {
 
+            if (tipoDocumento === 'R') {
                 let data = generarDataRemision();
                 if (!data) {
-                    // Si no hay datos, no se puede continuar
                     $guardar.prop('disabled', false);
                     return;
                 }
@@ -445,24 +427,59 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     return;
                 }
 
-                insertarRegistros()
-                    .then(function(res) {
-                        return insertarRegistrosRemision(data);
-                    })
-                    .then(function(resRemision) {
-                        generarRemision();
-                        showAlerta('success', 'Remisión', 'Remisión guardada');
-                    })
-                    .catch(function(error) {
-                        // Maneja cualquier error de la cadena
-                        showAlerta('error', 'Error', error);
-                    })
-                    .finally(function() {
-                        $guardar.prop('disabled', false);
-                        $guardar.html('<i class="fas fa-save me-2"></i>Guardar Factura');
-                        limpiarFormulario();
+                let clienteNombre = $('#cte_id option:selected').text();
+                let esArbaiza = clienteNombre.includes('LUIS FRANCISCO ARBAIZA') || clienteNombre.includes('LUIS ARBAIZA');
+
+                if (esArbaiza) {
+                    $('#inputFacturaSai').val('');
+                    $('#feedbackFacturaSai').text('').hide();
+                    const miniModal = new bootstrap.Modal(document.getElementById('modalFacturaSai'), {
+                        backdrop: 'static'
+                    });
+                    miniModal.show();
+
+                    $('#btnConfirmarFacturaSai').off('click').on('click', function() {
+                        const facturaInput = $('#inputFacturaSai').val().trim();
+                        if (!facturaInput) {
+                            $('#feedbackFacturaSai').text('Ingresa un número de factura.').show();
+                            return;
+                        }
+
+                        const $btn = $(this);
+                        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Consultando...');
+                        $('#feedbackFacturaSai').hide();
+
+                        fetch(`lib/consultar_factura_sai.php?folio=${encodeURIComponent(facturaInput)}`)
+                            .then(res => res.json())
+                            .then(response => {
+                                if (response.success === false || response.error) {
+                                    $('#feedbackFacturaSai').text(response.error || 'La factura no existe en SAI.').show();
+                                    $btn.prop('disabled', false).html('Consultar');
+                                    return;
+                                }
+
+                                miniModal.hide();
+                                insertarRegistrosSai(response.data || response)
+                                    .then(function() {
+                                        ejecutarGuardadoRemision(data, $guardar);
+                                    })
+                                    .catch(function(err) {
+                                        showAlerta('error', 'Error SAI', err);
+                                        $guardar.prop('disabled', false).html('<i class="fas fa-save me-2"></i>Guardar Factura');
+                                    })
+                                    .finally(function() {
+                                        $btn.prop('disabled', false).html('Consultar');
+                                    });
+                            })
+                            .catch(() => {
+                                $('#feedbackFacturaSai').text('No se pudo consultar la factura en SAI.').show();
+                                $btn.prop('disabled', false).html('Consultar');
+                            });
                     });
 
+                } else {
+                    ejecutarGuardadoRemision(data, $guardar);
+                }
 
             } else {
                 if ($('#fe_factura').val() === '') {
@@ -477,7 +494,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                         return insertarRegistrosSai(jsonData);
                     })
                     .then(function(resSai) {
-                        // Puedes validar resSai aquí, mostrar alerta de éxito, etc.
                         showAlerta('success', 'Facturación', 'Factura guardada');
                     })
                     .catch(function(error) {
@@ -492,15 +508,13 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
 
         $(document).on('input', '.costo-unitario', function() {
-            let tipo = $('input[name="tipo"]:checked').val();
-            if (tipo === 'R') {
+            if ($('input[name="tipo"]:checked').val() === 'R') {
                 recalcularTotalRemision();
             }
         });
 
         $(document).on('input', '.promocion input', function() {
-            let tipo = $('input[name="tipo"]:checked').val();
-            if (tipo === 'R') {
+            if ($('input[name="tipo"]:checked').val() === 'R') {
                 recalcularTotalRemision();
             }
         });
@@ -510,7 +524,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             if (tipoDocumento === 'R') {
                 $('.costo-unitario').removeAttr('readonly');
                 recalcularTotalRemision();
-
             } else {
                 $('.costo-unitario').attr('readonly', true);
                 $('#tabla-total').text('$0.00');
@@ -518,25 +531,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
 
         $('#total-nota').on('input', function() {
-            let tipo = $('input[name="tipo"]:checked').val();
-            if (tipo === 'R') {
+            if ($('input[name="tipo"]:checked').val() === 'R') {
                 recalcularTotalRemision();
             }
         });
 
         $('#table').on('input', '.costo-unitario', function() {
-            let $actual = $(this).closest('tr');
-            let costo = $(this).val();
-
-            $('#table tbody tr').each(function() {
-                let $fila = $(this);
-            });
-
             recalcularTotalRemision();
         });
     });
 
-    // Función para insertar registros de SAI
     let jsonData = [];
     let consecutivoRemision = 0;
 
@@ -546,7 +550,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             let clasificacion = $('#cte_clasificacion').val();
             jsonData.FACTURA_CABECERA.TIPO_VENTA = tipoVenta;
             jsonData.FACTURA_CABECERA.TIPO_CLIENTE = clasificacion;
-
             $.ajax({
                 url: 'funciones/sai/insertar.php',
                 type: 'POST',
@@ -562,9 +565,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
     }
 
-
-
-    // Función para cargar los datos del localStorage y mostrarlos en la tabla
     function cargarDatosEmpaques() {
         const oe_id = $('#orden_id').val();
         $.ajax({
@@ -575,32 +575,42 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             },
             success: function(response) {
                 let data = JSON.parse(response);
+                if (data.data) {
+                    data = data.data;
+                }
                 setTimeout(() => {
+                    if (!data || data.length === 0) {
+                        $('#table tbody').empty();
+                        return;
+                    }
                     obtenerClientes(data[0].cliente_id);
                     let tableBody = $('#table tbody');
                     tableBody.empty();
-
-                    // En la función cargarDatosEmpaques(), modifica la creación de filas:
                     data.forEach((item, index) => {
                         let tipoDoc = $('input[name="tipo"]:checked').val();
                         let readonlyAttr = (tipoDoc === 'R') ? '' : 'readonly';
-                        let row = `<tr data-empaque-id="${item.empaque_id}" data-empaque-tipo="${item.presentacion_descripcion}" data-presentacion-id="${item.presentacion_id}">
-                <td>${index + 1}</td>
-                <td>${item.rev_folio}</td>
-                <td><span<span class="badge bg-primary">${item.calidad}</span></td>
-                <td>${item.presentacion_descripcion}</td>
-                <td>${item.existencia_inicial}</td>
-                <td>${item.cantidad_solicitada}</td>
-                <td>${item.pres_kg * item.cantidad_solicitada}</td>
-                <td><input type="number" class="form-control costo-unitario"
-                value="${item.costo_unitario || ''}" step="0.01" min="0" ${readonlyAttr}></td>
-                <td class="promocion d-none"><input type="number" class="form-control" min="0" placeholder="Cantidad en kilos"/></td>
-                </tr>`;
+                        let row = `
+                        <tr
+                            data-tipo-producto="${item.tipo_producto || 'REVOLTURA'}"
+                            data-tipo-revoltura="${item.tipo_revoltura || ''}"
+                            data-rr-id="${item.rr_id || ''}"
+                            data-rrc-id="${item.rrc_id || ''}"
+                            data-pe-id="${item.pe_id || ''}"
+                            data-empaque-id="${item.empaque_id || ''}"
+                            data-presentacion-id="${item.presentacion_id || ''}">
+                            <td>${index + 1}</td>
+                            <td>${item.rev_folio || ''}</td>
+                            <td><span class="badge bg-primary">${item.calidad || ''}</span></td>
+                            <td>${item.presentacion_descripcion || ''}</td>
+                            <td>${item.existencia_inicial || 0}</td>
+                            <td>${item.cantidad_solicitada || 0}</td>
+                            <td>${parseFloat(item.pres_kg || 0) * parseFloat(item.cantidad_solicitada || 0)}</td>
+                            <td><input type="number" class="form-control costo-unitario" value="${item.costo_unitario || ''}" step="0.01" min="0" ${readonlyAttr}></td>
+                            <td class="promocion d-none"><input type="number" class="form-control" min="0" placeholder="Cantidad en kilos"/></td>
+                        </tr>`;
                         tableBody.append(row);
                     });
-
                     localStorage.setItem('embarque', JSON.stringify(data));
-
                 }, 100);
             },
             error: function() {
@@ -611,7 +621,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
 
     function insertarRegistros() {
         return new Promise(function(resolve, reject) {
-            let empaquesArray = JSON.parse(localStorage.getItem('embarque')) || [];
+            let embarqueArray = JSON.parse(localStorage.getItem('embarque')) || [];
             let fecha = $('#fecha').val();
             let factura = $('#fe_factura').val();
             let cartaporte = $('#fe_cartaporte').val();
@@ -619,7 +629,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             let tipo = $('input[name="tipo"]:checked').val();
             const $guardar = $('#guardar');
 
-            if (empaquesArray.length === 0) {
+            if (embarqueArray.length === 0) {
                 Swal.fire({
                     icon: 'info',
                     title: 'No hay datos',
@@ -636,27 +646,30 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 exitos = 0,
                 errores = 0;
 
-            empaquesArray.forEach((empaque, index) => {
-                let costoUnitario = $(`tr[data-empaque-id="${empaque.empaque_id}"] .costo-unitario`).val();
+            embarqueArray.forEach((item) => {
+                let $fila = $('#table tbody tr').filter(function() {
+                    return $(this).data('empaque-id') == item.empaque_id;
+                }).first();
+                let costoUnitario = $fila.find('.costo-unitario').val();
 
                 $.ajax({
                     url: 'funciones/facturas_empacado_insertar.php',
                     type: 'POST',
                     data: {
                         oe_id: $('#orden_id').val(),
-                        rr_id: empaque.empaque_id,
+                        tipo_producto: item.tipo_producto || 'REVOLTURA',
+                        tipo_revoltura: item.tipo_revoltura || '',
+                        empaque_id: item.empaque_id || '',
                         fe_factura: factura,
                         fe_cartaporte: cartaporte,
-                        fe_cantidad: empaque.cantidad_solicitada,
+                        fe_cantidad: item.cantidad_solicitada,
                         costo_unitario: costoUnitario,
                         fe_fecha: fecha,
                         cte_id: cliente,
-                        tipo: tipo,
-                        cliente: empaque.tipo_revoltura
+                        tipo: tipo
                     },
                     success: function(response) {
-                        let res = JSON.parse(response);
-                        if (res.success) {
+                        if (response.success) {
                             exitos++;
                         } else {
                             errores++;
@@ -667,7 +680,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     },
                     complete: function() {
                         registrosProcesados++;
-                        if (registrosProcesados === empaquesArray.length) {
+                        if (registrosProcesados === embarqueArray.length) {
                             $guardar.prop('disabled', false);
                             $guardar.html('<i class="fas fa-save me-2"></i>Guardar Factura');
                             if (exitos > 0) {
@@ -684,7 +697,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
     }
 
-
     function obtenerClientes(cliente_id = '') {
         $.ajax({
             type: 'GET',
@@ -692,33 +704,25 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             success: function(data) {
                 let clientes = JSON.parse(data);
                 let options = '<option value="">Seleccione un cliente...</option>';
-
                 clientes.forEach(function(cte) {
                     if (cte.cte_estatus == 'A') {
                         let selected = (cte.cte_id == cliente_id) ? 'selected' : '';
                         options += `<option value="${cte.cte_id}" ${selected}>${cte.cte_nombre}</option>`;
-
-                        // Si es el cliente seleccionado
                         if (cte.cte_id == cliente_id) {
-                            // Manejo del tipo de cliente
                             if (cte.cte_tipo == 'Ambos') {
                                 $('#tipo_venta_container').removeClass('d-none');
-                                $('#cte_tipo').val(''); // Limpiamos el campo readonly
+                                $('#cte_tipo').val('');
                             } else {
                                 $('#tipo_venta_container').addClass('d-none');
                                 $('#cte_tipo').val(cte.cte_tipo);
                                 $('#cte_tipo_select').val(cte.cte_tipo);
                             }
-
                             $('#cte_clasificacion').val(cte.cte_clasificacion);
                             $('#cte_ubicacion').val(cte.cte_ubicacion);
                         }
                     }
                 });
-
                 $('#cte_id').empty().append(options);
-
-                // Si hay un cliente seleccionado inicialmente, activamos el change
                 if (cliente_id) {
                     $('#cte_id').trigger('change');
                 }
@@ -734,13 +738,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
     }
 
-    // Evento change para el select de tipo cuando es "Ambos"
     $('#cte_tipo_select').on('change', function() {
         $('#cte_tipo').val($(this).val());
     });
 
     function validar_factura(factura, onSuccess) {
-        console.log('Validando factura:', factura);
         let tipo = $('input[name="tipo"]:checked').val();
         const $input = $('#fe_factura');
         const $feedback = $('#factura-feedback');
@@ -755,22 +757,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             $guardar.prop('disabled', true);
             return false;
         }
-
         if (factura.length <= 3) {
-            $feedback.removeClass('invalid-feedback').addClass('text-danger');
             $feedback.text('La factura debe tener al menos 4 caracteres');
             $input.addClass('is-invalid');
             $guardar.prop('disabled', true);
-            console.warn('Factura demasiado larga');
             return false;
         }
-
-        if (factura.length >= 5) {
-            $feedback.removeClass('invalid-feedback').addClass('text-danger');
+        if (factura.length >= 10) {
             $feedback.text('La factura no puede exceder los 5 caracteres');
             $input.addClass('is-invalid');
             $guardar.prop('disabled', true);
-            console.warn('Factura demasiado larga');
             return false;
         }
 
@@ -812,7 +808,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 showAlerta('error', 'Error', 'No se pudo validar la factura. Intenta más tarde.');
             }
         });
-
         return true;
     }
 
@@ -821,7 +816,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         const $display = $('#total-display');
         const $detalle = $('#tabla-total');
         const $guardar = $('#guardar');
-        const $totalNotaContainer = $('#total-container-nota')
+        const $totalNotaContainer = $('#total-container-nota');
+
         if (!factura) {
             $display.text('$0.00');
             $detalle.text('$0.00');
@@ -829,7 +825,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             return;
         }
 
-        // Muestra el overlay sobre el modal
         $('#modal-loader-overlay').fadeIn(100);
         $guardar.prop('disabled', true);
 
@@ -848,9 +843,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     return;
                 }
 
-
                 jsonData = response.data || response;
-                console.table(jsonData);
                 $('#modal-loader-overlay').fadeOut(100);
 
                 let cab = response.FACTURA_CABECERA || (response.data && response.data.FACTURA_CABECERA);
@@ -870,9 +863,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     $detalle.text('$0.00');
                     $guardar.prop('disabled', true);
                     $('#table tbody tr').each(function() {
-                        let $fila = $(this);
-                        let loteTabla = $fila.find('td').eq(1).text().trim();
-                        $fila.find('.costo-unitario').val('');
+                        $(this).find('.costo-unitario').val('');
                     });
                     showAlerta('warning', 'No encontrada', response.error || 'La factura no existe en SAI.');
                     return;
@@ -882,21 +873,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 $detalle.text(`$${parseFloat(cab.TOTAL_REAL).toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
 
                 let detalles = response.data.FACTURA_DETALLE;
-                // Para recorrer la tabla:
                 $('#table tbody tr').each(function() {
                     let $fila = $(this);
                     let loteTabla = $fila.find('td').eq(1).text().trim();
                     let precioAsignado = false;
-
                     detalles.forEach(det => {
                         if (Array.isArray(det.LOTE) && det.LOTE.includes(loteTabla)) {
-                            $fila.find('.costo-unitario').val(det.PRECIO_KG);
-                            $fila.find('.costo-unitario').prop('readonly', true);
-                            $fila.find('.costo-unitario').addClass('bg-light text-end');
+                            $fila.find('.costo-unitario').val(det.PRECIO_KG).prop('readonly', true).addClass('bg-light text-end');
                             precioAsignado = true;
                         }
                     });
-
                     if (!precioAsignado) {
                         $fila.find('.costo-unitario').val('');
                     }
@@ -909,7 +895,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 $display.text('$0.00');
                 $detalle.text('$0.00');
                 $guardar.prop('disabled', true);
-
                 let msg = 'No se pudo consultar la factura. ';
                 if (status === "timeout") {
                     msg += 'La consulta tardó demasiado.';
@@ -925,30 +910,21 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
 
     async function consultarRemision() {
         const $guardar = $('#guardar');
-        // Muestra el overlay sobre el modal
         $('#modal-loader-overlay').fadeIn(100);
         $guardar.prop('disabled', true);
-
         await $.ajax({
             type: 'GET',
             url: `lib/consultar_remision.php`,
             dataType: 'json',
             timeout: 10000,
             success: function(response) {
-                let total = response.total || response;
-                console.log('Consecutivo de remisión:', total);
-
                 $('#modal-loader-overlay').fadeOut(100);
-
                 $guardar.prop('disabled', false);
-
-                consecutivoRemision = total;
+                consecutivoRemision = response.total || response;
             },
             error: function(xhr, status, error) {
                 $('#modal-loader-overlay').fadeOut(100);
-
                 $guardar.prop('disabled', true);
-
                 let msg = 'No se pudo consultar la remision. ';
                 if (status === "timeout") {
                     msg += 'La consulta tardó demasiado.';
@@ -962,34 +938,24 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
     }
 
-
     function recalcularTotalRemision() {
-        let total = 0;
-        let totalRemision = 0;
-
+        let total = 0,
+            totalRemision = 0;
         $('#table tbody tr').each(function() {
             let $fila = $(this);
             let kilos = parseFloat($fila.find('td').eq(6).text()) || 0;
             let promocion = parseFloat($fila.find('.promocion input').val()) || 0;
             let costo = parseFloat($fila.find('.costo-unitario').val()) || 0;
-
-            let kilosFacturables = Math.max(0, kilos - promocion);
-            total += kilosFacturables * costo; // total REAL
-            totalRemision += kilos * costo; // total antes de promocion
+            total += Math.max(0, kilos - promocion) * costo;
+            totalRemision += kilos * costo;
         });
-
-        // Si hay nota de crédito, réstala al total real y muéstrala
         let totalNota = parseFloat($('#total-nota').val()) || 0;
         let totalConNota = total - totalNota;
         if (totalNota > 0) {
-            $('#total-display-nota').removeClass('d-none').text(
-                `-$${totalNota.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})}`
-            );
+            $('#total-display-nota').removeClass('d-none').text(`-$${totalNota.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})}`);
         } else {
             $('#total-display-nota').addClass('d-none').text('$0.00');
         }
-
-        // Actualiza los totales en pantalla
         $('#tabla-total').text(`$${totalConNota.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})}`);
         $('#total').val(totalConNota.toFixed(2));
         $('#total-display').text(`$${totalConNota.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})}`);
@@ -997,10 +963,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         $('#total-display-factura').text(`$${totalRemision.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2})}`);
     }
 
-
     function showAlerta(icono, titulo, mensaje) {
         Swal.fire({
-            icon: icono, // 'success', 'warning', 'error', 'info'
+            icon: icono,
             title: titulo,
             text: mensaje,
             timer: 3000,
@@ -1008,25 +973,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
     }
 
-
     function generarRemision() {
-        // Construir la URL con parámetros
         let precios = [];
         $('#table tbody tr').each(function() {
             let $fila = $(this);
-            let empaqueId = $fila.data('empaque-id');
-            let costoUnitario = $fila.find('.costo-unitario').val();
-            let promocion = $fila.find('.promocion input').val() || '';
             precios.push({
-                empaque_id: empaqueId,
-                costo_unitario: costoUnitario,
-                promocion: promocion
+                empaque_id: $fila.data('empaque-id'),
+                costo_unitario: $fila.find('.costo-unitario').val(),
+                promocion: $fila.find('.promocion input').val() || ''
             });
         });
-        precios = JSON.stringify(precios);
-        const url = `lib/generar_remision.php?orden_id=${$('#orden_id').val()}&folio=${$('#fe_factura').val()}&precios=${encodeURIComponent(precios)}`;
-
-        // Crear un enlace invisible y hacer clic para descargar
+        const url = `lib/generar_remision.php?orden_id=${$('#orden_id').val()}&folio=${$('#fe_factura').val()}&precios=${encodeURIComponent(JSON.stringify(precios))}`;
         const link = document.createElement('a');
         link.href = url;
         link.target = '_self';
@@ -1034,27 +991,14 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
     }
 
     function actualizarFooterTotal() {
-        // Cuenta los th visibles en el thead (por si hay columnas ocultas con display: none)
         let numCols = $('#table thead tr th:visible').length;
-
-        // Si ya existe tfoot, lo eliminamos (evita duplicados)
         $('#table tfoot').remove();
-
-        // Agrega el nuevo tfoot con el colspan adecuado
-        $('#table').append(`
-        <tfoot class="table-light">
-            <tr>
-                <td colspan="${numCols - 1}" class="fw-bold text-end">Total:</td>
-                <td class="fw-bold text-end" id="tabla-total">$0.00</td>
-            </tr>
-        </tfoot>
-    `);
+        $('#table').append(`<tfoot class="table-light"><tr><td colspan="${numCols - 1}" class="fw-bold text-end">Total:</td><td class="fw-bold text-end" id="tabla-total">$0.00</td></tr></tfoot>`);
     }
 
     function generarDataRemision() {
         let tipoVenta = $('#cte_tipo_select').val();
         let clasificacion = $('#cte_clasificacion').val();
-
         let jsonData = {
             FACTURA_CABECERA: {
                 FOLIO: $('#fe_factura').val(),
@@ -1070,12 +1014,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             },
             FACTURA_DETALLE: []
         };
-
-        console.log('Generando datos de remisión:', jsonData);
-        1
         $('#table tbody tr').each(function() {
             let $fila = $(this);
-            let empaqueId = $fila.data('empaque-id');
             let presentacionId = $fila.data('presentacion-id');
             let bloom = $fila.find('td').eq(2).text();
             let claveDesc = obtenerClaveYDescripcionProducto(bloom, presentacionId);
@@ -1083,8 +1023,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             let cantidad_kilos = parseFloat($fila.find('td').eq(6).text());
             let precio = parseFloat($fila.find('.costo-unitario').val()) || 0;
             let promocion = parseFloat($fila.find('.promocion input').val()) || 0;
-
-            // Línea normal (lo facturado)
             let cantidadFacturada = cantidad_kilos - promocion;
             if (cantidadFacturada > 0) {
                 jsonData.FACTURA_DETALLE.push({
@@ -1092,40 +1030,33 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     PRODUCTO_DESCRIPCION: claveDesc.descripcion,
                     CANTIDAD: cantidadFacturada,
                     PRECIO: precio,
-                    PROMOCION: 0, // Línea normal
+                    PROMOCION: 0,
                     LOTE: [lote]
                 });
             }
-
-            // Línea de promoción (solo si aplica)
             if (promocion > 0) {
                 jsonData.FACTURA_DETALLE.push({
                     PRODUCTO_CVE: claveDesc.clave,
                     PRODUCTO_DESCRIPCION: claveDesc.descripcion + ' (MERCANCÍA DE PROMOCIÓN)',
                     CANTIDAD: promocion,
                     PRECIO: 0,
-                    PROMOCION: 1, // Línea de promoción
+                    PROMOCION: 1,
                     LOTE: [lote]
                 });
             }
         });
-
         return jsonData;
     }
-
 
     function obtenerVendedores() {
         $.ajax({
             type: 'GET',
             url: 'catalogos/vendedores_listado.php',
             success: function(response) {
-                let vendedores = response.data;
                 let options = '<option value="">Seleccione un vendedor...</option>';
-
-                vendedores.forEach(function(vendedor) {
-                    options += `<option value="${vendedor.ven_id}">${vendedor.ven_nombre}</option>`;
+                response.data.forEach(v => {
+                    options += `<option value="${v.ven_id}">${v.ven_nombre}</option>`;
                 });
-
                 $('#vendedor').empty().append(options);
             },
             error: function() {
@@ -1139,18 +1070,13 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
         });
     }
 
-
     function obtenerClaveYDescripcionProducto(bloom, presentacionId) {
-        // Mapeo de IDs a nombre presentación
         const presentaciones = {
             2: 'SACOS',
             3: 'CAJA',
             4: 'CAJA 1/4'
         };
-
         let bloomNum = parseInt(bloom);
-
-        // Catálogo de productos (clave por combinación de bloom y presentaciónId)
         const productos = [{
                 clave: 'GRE250B',
                 bloom: 250,
@@ -1181,7 +1107,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 presentacion: 2,
                 descripcion: 'GRENETINA ALIMENTICIA 315 BLOOM SACOS'
             },
-
             {
                 clave: 'GRE230C',
                 bloom: 230,
@@ -1206,7 +1131,6 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 presentacion: 3,
                 descripcion: 'GRENETINA ALIMENTICIA 315 BLOOM CAJA'
             },
-
             {
                 clave: 'GRE3151/4',
                 bloom: 315,
@@ -1214,25 +1138,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                 descripcion: 'GRENETINA ALIMENTICIA 315 BLOOM CAJA 1/4'
             },
         ];
-
-        // Buscar el producto por bloom y presentacionId
-        let encontrado = productos.find(p =>
-            p.bloom === bloomNum &&
-            p.presentacion == presentacionId
-        );
-
+        let encontrado = productos.find(p => p.bloom === bloomNum && p.presentacion == presentacionId);
         if (encontrado) {
             return {
                 clave: encontrado.clave,
                 descripcion: encontrado.descripcion
             };
-        } else {
-            // Si no se encuentra la combinación exacta, puedes devolver algo genérico:
-            return {
-                clave: '',
-                descripcion: `PRODUCTO BLOOM ${bloomNum} PRESENTACIÓN ${presentaciones[presentacionId] || presentacionId}`
-            };
         }
+        return {
+            clave: '',
+            descripcion: `PRODUCTO BLOOM ${bloomNum} PRESENTACIÓN ${presentaciones[presentacionId] || presentacionId}`
+        };
     }
 
     function insertarRegistrosRemision(data) {
@@ -1253,10 +1169,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
     }
 
     function limpiarFormulario() {
-        // Limpia sólo si al menos uno fue exitoso
-        localStorage.clear();
-        let tableBody = $('#table tbody');
-        tableBody.empty();
+        localStorage.removeItem('embarque');
+        localStorage.removeItem('empaques');
+        $('#table tbody').empty();
         $('#fe_factura').val('');
         $('#cte_id').val('');
         $('#fe_cartaporte').val('');

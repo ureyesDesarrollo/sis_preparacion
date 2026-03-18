@@ -13,6 +13,7 @@ include "../../seguridad/user_seguridad.php";
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         });
+
         $('#dataTableEmpaques').DataTable({
             responsive: true,
             bDestroy: true,
@@ -32,48 +33,43 @@ include "../../seguridad/user_seguridad.php";
                 },
             },
             order: [
-                [0, 'desc']
+                [1, 'desc']
             ],
-            "sDom": "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5 'B><'col-sm-12 col-md-4'f>r>t<'row'<'col-md-4'i>><'row'p>",
+            sDom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5 'B><'col-sm-12 col-md-4'f>r>t<'row'<'col-md-4'i>><'row'p>",
             buttons: {
                 dom: {
                     button: {
-                        className: 'btn' //Primary class for all buttons
+                        className: 'btn'
                     },
                 },
                 buttons: [{
-                        //Botón para Excel
                         extend: 'excel',
                         footer: true,
                         title: 'Listado Empacado',
                         filename: 'Listado_empacado_excel',
-
-                        //Aquí es donde generas el botón personalizado
                         text: '<button title="Exportar excel" class="btn btn-outline-success"><i class="fas fa-file-excel"></i></button>',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
                         }
                     },
                     {
-                        //Botón para PDF
                         extend: 'pdf',
                         footer: true,
                         title: 'Listado Empacado',
                         filename: 'Listado_empacado_pdf',
                         text: '<button title="Exportar pdf" class="btn btn-outline-danger"><i class="far fa-file-pdf"></i></button>',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
                         }
                     },
-                    //Botón para print
                     {
                         extend: 'print',
                         footer: true,
                         title: 'Listado Empacado',
                         filename: 'Listado_empacado_print',
-                        text: '<button title="Imprimir" class="btn btn-outline-info"><i class="fa-solid fa-print"></i></i></button>',
+                        text: '<button title="Imprimir" class="btn btn-outline-info"><i class="fa-solid fa-print"></i></button>',
                         exportOptions: {
-                            columns: [0, 1, 2, 3]
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7]
                         }
                     }
                 ]
@@ -83,11 +79,23 @@ include "../../seguridad/user_seguridad.php";
                 dataSrc: ''
             },
             columns: [{
+                    data: 'tipo_producto',
+                    render: function(data) {
+                        if (data === 'REVOLTURA') {
+                            return `<span class="badge bg-success">${data}</span>`;
+                        } else if (data === 'EXTERNO') {
+                            return `<span class="badge bg-warning text-dark">${data}</span>`;
+                        } else {
+                            return data;
+                        }
+                    }
+                },
+                {
                     data: 'revoltura'
                 },
                 {
                     data: 'calidad',
-                    render: function(data, type, row) {
+                    render: function(data) {
                         return `<span class="badge bg-primary">${data}</span>`;
                     }
                 },
@@ -100,73 +108,66 @@ include "../../seguridad/user_seguridad.php";
                 {
                     data: null,
                     render: function(data, type, row) {
-                        const kg = row.pres_kg * row.rr_ext_inicial;
-                        return `${formatter.format(kg)}`;
+                        const kg = parseFloat(row.pres_kg) * parseFloat(row.rr_ext_inicial);
+                        return formatter.format(kg);
                     }
                 },
                 {
-                    data: null,
-                    render: function(row) {
-                        if (row.rr_ext_real == 0.00) {
-                            return row.rr_ext_inicial;
-                        } else {
-                            return row.rr_ext_real;
-                        }
-                    }
+                    data: 'rr_ext_real'
                 },
                 {
                     data: null,
                     render: function(data, type, row) {
-                        let kg = 0;
-                        if (row.rr_ext_real == 0.00) {
-                            return `${formatter.format(row.pres_kg * row.rr_ext_inicial)}`;
-                        } else {
-                            return `${formatter.format(row.pres_kg * row.rr_ext_real)}`;
-                        }
+                        const kg = parseFloat(row.pres_kg) * parseFloat(row.rr_ext_real);
+                        return formatter.format(kg);
                     }
                 },
                 {
                     data: null,
                     render: function(row) {
-                        // Recupera el arreglo del localStorage o inicializa un arreglo vacío
                         let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
 
-                        // Comprueba si el elemento ya existe en el localStorage 
-                        const existe = empaquesArray.some(empaque => empaque.rr_id === row.rr_id);
+                        const existe = empaquesArray.some(function(empaque) {
+                            return (
+                                (row.tipo_producto === 'EMPACADO' &&
+                                    empaque.tipo_producto === 'EMPACADO' &&
+                                    empaque.rr_id == row.rr_id) ||
+                                (row.tipo_producto === 'EXTERNO' &&
+                                    empaque.tipo_producto === 'EXTERNO' &&
+                                    empaque.pe_id == row.pe_id)
+                            );
+                        });
 
-                        // Si ya existe, muestra el botón en gris o sin icono; si no, muestra el botón normal
                         if (existe) {
-                            return '<a href="#" class="btn-facturar disabled" data-emp=\'' + JSON.stringify(row) + '\' style="color: gray;"><i class="fa-solid fa-hand" style="display: none;"></i></a>';
+                            return '<a href="#" class="btn-facturar disabled" data-emp=\'' + JSON.stringify(row) + '\' style="color: gray; pointer-events: none;"><i class="fa-solid fa-hand" style="display: none;"></i></a>';
                         } else {
                             return '<a href="#" class="btn-facturar" data-emp=\'' + JSON.stringify(row) + '\'><i class="fa-solid fa-hand"></i></a>';
                         }
                     }
                 }
-
             ],
             footerCallback: function(row, data, start, end, display) {
                 let totalInicial = 0;
                 let totalReal = 0;
 
                 data.forEach(function(row) {
-                    const kilosIniciales = row.pres_kg * row.rr_ext_inicial;
-                    const kilosReales = row.rr_ext_real == 0.00 ? kilosIniciales : row.pres_kg * row.rr_ext_real;
+                    const kilosIniciales = parseFloat(row.pres_kg) * parseFloat(row.rr_ext_inicial);
+                    const kilosReales = parseFloat(row.pres_kg) * parseFloat(row.rr_ext_real);
 
                     totalInicial += kilosIniciales;
                     totalReal += kilosReales;
                 });
 
-                // Actualiza los valores en el footer
                 $('#kilos-iniciales-total').html(formatter.format(totalInicial));
                 $('#kilos-reales-total').html(formatter.format(totalReal));
             }
         });
 
-        $('#dataTableEmpaques').on('click', '.btn-facturar', function() {
-            let empData = $(this).data('emp'); // Obtiene el objeto completo de datos del botón
+        $('#dataTableEmpaques').on('click', '.btn-facturar', function(e) {
+            e.preventDefault();
+            let empData = $(this).data('emp');
             agregarEmpaque(empData);
         });
-
     });
 </script>
 
@@ -195,13 +196,14 @@ include "../../seguridad/user_seguridad.php";
 
     <div class="container-fluid" style="border: 1px solid #cccccc; border-radius: 10px; margin-bottom: 50px;">
         <div class="table-responsive mt-3">
-            <table class="table table-hover" cellpadding="0" cellspacing="0" class="display" id="dataTableEmpaques" style="width: 100%;">
+            <table class="table table-hover display" cellpadding="0" cellspacing="0" id="dataTableEmpaques" style="width: 100%;">
                 <thead>
                     <tr>
+                        <th>Tipo de Producto</th>
                         <th>Revoltura</th>
                         <th>Calidad</th>
-                        <th>Presentac&iacute;on</th>
-                        <th>Existencia Incial</th>
+                        <th>Presentación</th>
+                        <th>Existencia Inicial</th>
                         <th>Kilos Inicial</th>
                         <th>Existencia Real</th>
                         <th>Kilos Real</th>
@@ -217,28 +219,31 @@ include "../../seguridad/user_seguridad.php";
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="4">Totales:</th>
+                        <th></th>
                         <th id="kilos-iniciales-total"></th>
                         <th></th>
                         <th id="kilos-reales-total"></th>
                         <th></th>
                     </tr>
                 </tfoot>
-
             </table>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="modal_facturas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 </div>
 
 <script>
     $('#modal_facturas').on('hidden.bs.modal', function() {
-        localStorage.clear();
+        localStorage.removeItem('empaques');
     });
 
     function abrir_modal_facturas() {
@@ -264,23 +269,29 @@ include "../../seguridad/user_seguridad.php";
     }
 
     function agregarEmpaque(empData) {
-        // Recupera los datos del Local Storage o inicializa un arreglo vacío
         let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
 
-        const existe = empaquesArray.some(empaque => empaque.rr_id === empData.rr_id);
+        const existe = empaquesArray.some(function(empaque) {
+            return (
+                (empData.tipo_producto === 'REVOLTURA' &&
+                    empaque.tipo_producto === 'REVOLTURA' &&
+                    empaque.rr_id == empData.rr_id) ||
+                (empData.tipo_producto === 'EXTERNO' &&
+                    empaque.tipo_producto === 'EXTERNO' &&
+                    empaque.pe_id == empData.pe_id)
+            );
+        });
 
         if (existe) {
-            // Muestra una alerta de que el empaque ya está agregado
             Swal.fire({
                 icon: 'info',
                 title: 'Ya existe',
-                text: 'Este empaque ya ha sido agregado previamente.'
+                text: 'Este producto ya fue agregado previamente.'
             });
         } else {
-            // Muestra la alerta de confirmación para agregar el empaque
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Deseas agregar este empaque?",
+                text: '¿Deseas agregar este producto?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -289,21 +300,16 @@ include "../../seguridad/user_seguridad.php";
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Agrega el nuevo objeto al arreglo
                     empaquesArray.push(empData);
-
-                    // Almacena el arreglo actualizado en el Local Storage
                     localStorage.setItem('empaques', JSON.stringify(empaquesArray));
 
-                    // Muestra un mensaje de éxito
                     Swal.fire(
                         'Agregado!',
-                        'El empaque ha sido agregado correctamente.',
+                        'El producto ha sido agregado correctamente.',
                         'success'
                     );
 
                     $('#dataTableEmpaques').DataTable().ajax.reload();
-
                 }
             });
         }
