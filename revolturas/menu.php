@@ -67,6 +67,9 @@ include "../funciones/funciones.php";
                     <?php if ($_SESSION['privilegio'] == 2) { ?>
                         <li><a class="menu-item dropdown-item" href="catalogos/vendedores.php">Vendedores</a></li>
                     <?php } ?>
+                    <?php if (fnc_permiso($_SESSION['privilegio'], 49, 'upe_listar') == 1) { ?>
+                        <li><a class="menu-item dropdown-item" href="catalogos/transportes.php">Transportes</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <?php if (($_SESSION['privilegio'] == 1) || ($_SESSION['privilegio'] == 2)) { ?>

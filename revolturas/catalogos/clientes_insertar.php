@@ -16,15 +16,27 @@ try {
     $clasificacion = mysqli_real_escape_string($cnx, trim($_POST['cte_clasificacion'] ?? ''));
     $tipo_bloom    = mysqli_real_escape_string($cnx, trim($_POST['cte_tipo_bloom'] ?? ''));
     $bloom_min     = mysqli_real_escape_string($cnx, trim($_POST['cte_bloom_min'] ?? ''));
+    $direccion_fiscal = mysqli_real_escape_string($cnx, trim($_POST['cte_direccion_fiscal'] ?? ''));
+    $direcciones = $_POST['direccion_entrega'] ?? [];
+
+    $direcciones_limpias = [];
+
+    foreach ($direcciones as $direccion) {
+        $direccion = trim($direccion);
+
+        if ($direccion !== '') {
+            $direcciones_limpias[] = $direccion;
+        }
+    }
 
     // Validaciones
     if ($nombre === '' || $rfc === '' || $razonSocial === '' || $tipo === '' || $clasificacion === '') {
         throw new Exception('Todos los campos marcados con * son obligatorios.');
     }
-    if (!in_array($tipo, ['Comercial','Industrial','Ambos'])) {
+    if (!in_array($tipo, ['Comercial', 'Industrial', 'Ambos'])) {
         throw new Exception('Tipo de cliente inválido.');
     }
-    if (!in_array($clasificacion, ['AA','AAA'])) {
+    if (!in_array($clasificacion, ['AA', 'AAA'])) {
         throw new Exception('Clasificación inválida.');
     }
 
@@ -47,22 +59,54 @@ try {
         throw new Exception('Ya existe un cliente con ese nombre' . ($condRfc ? ' o RFC.' : '.'));
     }
 
+    // Validar duplicados dentro del mismo request
+    if (count($direcciones_limpias) !== count(array_unique($direcciones_limpias))) {
+        throw new Exception('No puedes registrar direcciones duplicadas.');
+    }
+
     // Insertar nuevo cliente
     $sql = "
       INSERT INTO rev_clientes
-        (cte_nombre, cte_rfc, cte_razon_social, cte_ubicacion, cte_tipo, cte_clasificacion, cte_tipo_bloom, cte_bloom_min)
+        (cte_nombre, cte_rfc, cte_razon_social, cte_ubicacion, cte_tipo,
+        cte_clasificacion, cte_tipo_bloom, cte_bloom_min, cte_direccion_fiscal)
       VALUES
-        ('$nombre', '$rfc', '$razonSocial', '$ubicacion', '$tipo', '$clasificacion','$tipo_bloom', '$bloom_min')
+        ('$nombre', '$rfc', '$razonSocial', '$ubicacion', '$tipo',
+        '$clasificacion','$tipo_bloom', '$bloom_min','$direccion_fiscal')
     ";
     if (!mysqli_query($cnx, $sql)) {
         throw new Exception('Error al registrar el cliente: ' . mysqli_error($cnx));
     }
 
     $cte_id = mysqli_insert_id($cnx);
+
+    $exitos = 0;
+
+    foreach ($direcciones_limpias as $direccion) {
+
+        $direccion = mysqli_real_escape_string($cnx, $direccion);
+
+        $sqlDir = "
+        INSERT INTO rev_clientes_direcciones_entrega
+        (direccion_entrega, cte_id)
+        VALUES ('$direccion', $cte_id)
+    ";
+
+        if (!mysqli_query($cnx, $sqlDir)) {
+            throw new Exception('Error al guardar dirección: ' . mysqli_error($cnx));
+        }
+
+        $exitos++;
+    }
+
     ins_bit_acciones($_SESSION['idUsu'], 'A', $cte_id, '49');
 
-    echo json_encode(['success' => 'Cliente registrado correctamente.']);
+    $msg = "";
 
+    if ($exitos < count($direcciones)) {
+        $msg = "Alguna de las direcciones de entrega no pudo ser registrada, verifica en la pantalla de actualización del cliente.";
+    }
+
+    echo json_encode(['success' => "Cliente registrado correctamente. $msg"]);
 } catch (Exception $e) {
     http_response_code(400);
     echo json_encode(['error' => $e->getMessage()]);

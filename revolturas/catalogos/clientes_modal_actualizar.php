@@ -11,6 +11,11 @@ try {
     $cnx = Conectarse();
     extract($_POST);
     $res = mysqli_fetch_assoc(mysqli_query($cnx, "SELECT * FROM rev_clientes WHERE cte_id = '$id'"));
+
+    $direcciones = mysqli_query($cnx, "
+    SELECT * FROM rev_clientes_direcciones_entrega
+    WHERE cte_id = '$id'
+");
 } catch (Exception $e) {
     echo $e->getMessage();
 }
@@ -47,7 +52,7 @@ try {
                     </div>
                     <div class="col-md-3">
                         <label for="cte_ubicacion" class="form-label">Ubicación</label>
-                        <input type="text" name="cte_ubicacion" id="cte_ubicacion" class="form-control" value="<?= $res['cte_ubicacion'] ?> ">
+                        <input type="text" name="cte_ubicacion" id="cte_ubicacion" class="form-control" value="<?= $res['cte_ubicacion'] ?>">
                     </div>
 
                     <div class="col-md-3">
@@ -78,7 +83,7 @@ try {
                         <label for="cte_bloom_min" class="form-label">Bloom min</label>
                         <input type="text" name="cte_bloom_min" id="cte_bloom_min" class="form-control" onkeypress="return isNumberKey(event, this);" value="<?= $res['cte_bloom_min'] ?>">
                     </div>
-                    <div class="form-group ps-3">
+                    <div class=" form-group ps-3">
                         <div class="col-md-3">
                             <div class="form-check form-switch p-0">
                                 <div class="d-flex flex-column-reverse gap-1">
@@ -86,6 +91,44 @@ try {
                                     <label class="form-check-label" for="chk_estatus" id="chk_estatus_label">Estatus</label>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="" class="form-label">Dirección fiscal</label>
+                        <input type="text" class="form-control" id="cte_direccion_fiscal" name="cte_direccion_fiscal" value="<?= $res['cte_direccion_fiscal'] ?>">
+                    </div>
+                </div>
+                <div class="row" id="direcciones_act">
+                    <div class="row pt-3">
+                        <div class="col-md-4">
+                            <button id="agregar_dir_act" class="btn btn-outline-primary btn-sm">
+                                Agregar renglon
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="contenedor_direcciones">
+                        <div id="contenedor_direcciones">
+                            <?php while ($dir = mysqli_fetch_assoc($direcciones)) { ?>
+                                <div class="row pt-2 align-items-end direccion-item">
+                                    <input type="hidden" name="dir_id[]" value="<?= $dir['id'] ?>">
+
+                                    <div class="col-md-10">
+                                        <label>Dirección de entrega</label>
+                                        <input type="text" class="form-control"
+                                            name="direccion_entrega[]"
+                                            value="<?= $dir['direccion_entrega'] ?>">
+                                    </div>
+
+                                    <div class="col-md-2 d-flex align-items-end">
+                                        <button type="button" class="btn btn-outline-danger btn-sm eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -138,6 +181,33 @@ try {
                     }
                 }
             })
-        })
+        });
+
+        let renglonAct = `
+    <div class="row pt-2 align-items-end direccion-item">
+        <input type="hidden" name="dir_id[]" value="0">
+
+        <div class="col-md-10">
+            <label>Dirección de entrega</label>
+            <input type="text" class="form-control" name="direccion_entrega[]">
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-outline-danger btn-sm eliminar">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </div>
+`;
+
+        $('#agregar_dir_act').on('click', function(e) {
+            e.preventDefault();
+            $('#contenedor_direcciones').append(renglonAct);
+        });
+
+        // eliminar (visual)
+        $(document).on('click', '.eliminar', function() {
+            $(this).closest('.direccion-item').remove();
+        });
     })
 </script>

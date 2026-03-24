@@ -183,20 +183,27 @@ if (isset($_POST['action']) && $_POST['action'] == 'ultima_tarima') {
             const ultima_tarima = await ultimaTarima();
             const diferenciaMs = new Date() - new Date(ultima_tarima);
 
-            if (diferenciaMs < 15 * 60 * 1000) {
-                const alertaTarima = document.getElementById('alerta-tarima');
-                const alertBody = alertaTarima.querySelector('.alert-body');
-                const loadingMessage = alertaTarima.querySelector('#loadingMessage');
-                alertaTarima.className = 'alert alert-danger m-0 d-flex align-items-center';
-                alertBody.innerText = 'Por favor espera 15 minutos entre la creación de tarimas. Tiempo restante: ' + Math.ceil((15 * 60 * 1000 - diferenciaMs) / 60000) + ' minutos. Tiempo promedio de salida de tarimas 1 hora.';
-                loadingMessage.style.display = 'none';
-                return;
+            const isFino = $('#chk_fino').is(':checked');
+            const proId = $('#pro_id').val();
+            let tiempoEspera = 15;
+            if (!isFino) {
+                if (['1', '2', '3'].includes(proId)) {
+                    tiempoEspera = 1;
+                }
+                if (diferenciaMs < tiempoEspera * 60 * 1000) {
+                    const alertaTarima = document.getElementById('alerta-tarima');
+                    const alertBody = alertaTarima.querySelector('.alert-body');
+                    const loadingMessage = alertaTarima.querySelector('#loadingMessage');
+                    alertaTarima.className = 'alert alert-danger m-0 d-flex align-items-center';
+                    alertBody.innerText = `Por favor espera ${tiempoEspera} minutos entre la creación de tarimas. Tiempo restante: ${Math.ceil((tiempoEspera * 60 * 1000 - diferenciaMs) / 60000)} minutos. Tiempo promedio de salida de tarimas 1 hora.`;
+                    loadingMessage.style.display = 'none';
+                    return;
+                }
             }
 
             // Asignar el token al campo hidden antes de serializar
             $('#tar_token').val(tarimaToken);
             const dataForm = $(this).serialize();
-            const proId = $('#pro_id').val();
 
             $('#btnGuardar').prop('disabled', true).text('Guardando...');
 

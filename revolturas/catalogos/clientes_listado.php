@@ -9,7 +9,7 @@ include "../../conexion/conexion.php";
 $cnx = Conectarse();
 
 try {
-    $listado_clientes = mysqli_query($cnx, "SELECT * FROM rev_clientes ORDER BY cte_nombre ASC");
+    $listado_clientes = mysqli_query($cnx, "SELECT * FROM rev_clientes");
     if (!$listado_clientes) {
         die("Error en la consulta: " . mysqli_error($cnx));
     }

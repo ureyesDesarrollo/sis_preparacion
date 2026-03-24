@@ -369,7 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 FROM rev_revolturas r
                 LEFT JOIN rev_calidad ca ON ca.cal_id = r.rev_teo_calidad
                 LEFT JOIN rev_clientes cte ON cte.cte_id = r.rev_teo_cliente
-                WHERE r.rev_estatus = 0 OR r.rev_estatus = 1 AND r.rev_count_etiquetado > 0";
+                WHERE (r.rev_estatus = 0 OR r.rev_estatus = 1) AND r.rev_count_etiquetado > 0";
 
         $resultado = mysqli_query($cnx, $sql);
 
@@ -500,6 +500,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 ROUND(t.tar_color) AS Col,
                 t.tar_malla_30 AS Malla_30,
                 ROUND(t.tar_malla_45) AS Malla_45,
+                ROUND(t.tar_bma) AS BMA,
                 CASE
                 WHEN t.tar_fino = 'F' THEN 'FINOS'
                 WHEN t.tar_fino = 'N' THEN ''

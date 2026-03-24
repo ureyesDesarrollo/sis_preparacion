@@ -185,3 +185,63 @@
         cte_tipo_bloom = '',
         cte_bloom_min = ''
         WHERE cte_id = '18';
+[2026-03-19 13:34:04] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'DELI AMAITE',
+        cte_razon_social = 'DELI AMAITE',
+        cte_rfc = 'DAM250918CQ4',
+        cte_estatus = 'A',
+        cte_ubicacion = 'CDMX ',
+        cte_tipo = 'Comercial',
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '315',
+        cte_bloom_min = '0',
+        cte_direccion_fiscal = 'HOLA'
+        WHERE cte_id = '463';
+[2026-03-19 15:44:34] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'CLIENTE',
+        cte_razon_social = 'CLIENTE',
+        cte_rfc = 'CLIENTE',
+        cte_estatus = 'A',
+        cte_ubicacion = 'CLIETNE',
+        cte_tipo = 'Comercial',
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '2134',
+        cte_bloom_min = '0',
+        cte_direccion_fiscal = 'CALLE'
+        WHERE cte_id = '467';
+[2026-03-19 15:44:50] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'CLIENTE',
+        cte_razon_social = 'CLIENTE',
+        cte_rfc = 'CLIENTE',
+        cte_estatus = 'A',
+        cte_ubicacion = 'CLAEE',
+        cte_tipo = 'Comercial',
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '2134',
+        cte_bloom_min = '0',
+        cte_direccion_fiscal = 'CALLE'
+        WHERE cte_id = '467';
+[2026-03-23 13:15:30] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'ROBERTO MONTES SANCHEZ',
+        cte_razon_social = 'ROBERTO MONTES SANCHEZ',
+        cte_rfc = 'MOSR610221496',
+        cte_estatus = 'A',
+        cte_ubicacion = 'OAXACA',
+        cte_tipo = 'Comercial',
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '',
+        cte_bloom_min = '',
+        cte_direccion_fiscal = 'CALLE'
+        WHERE cte_id = '107';
+[2026-03-24 10:44:11] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'PRODUCTORA DE GOLOSINAS, S.A. DE C.V.',
+        cte_razon_social = 'PRODUCTORA DE GOLOSINAS',
+        cte_rfc = 'PGO030110Q74',
+        cte_estatus = 'A',
+        cte_ubicacion = 'CIUDAD DE MEXICO ',
+        cte_tipo = 'Industrial',
+        cte_clasificacion = 'AA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = '0',
+        cte_direccion_fiscal = 'PONIENTE 146 No. 696 COL. INDUSTRIAL VALLEJO DELEGACION AZCAPOTZALCO. MEXICO, D.F. C.P. 0230'
+        WHERE cte_id = '51';

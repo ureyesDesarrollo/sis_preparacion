@@ -27,7 +27,7 @@ include "../../conexion/conexion.php";
                 },
             },
             order: [
-                [0, 'asc']
+                [0, 'desc']
             ],
             "sDom": "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5 'B><'col-sm-12 col-md-4'f>r>t<'row'<'col-md-4'i>><'row'p>",
             buttons: {

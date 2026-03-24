@@ -12,6 +12,7 @@ $cnx = Conectarse();
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         extract($_POST);
+        error_log('POST tar_bma: ' . print_r($_POST['tar_bma'] ?? null, true));
 
         $tar_rechazado = 'A';
 
@@ -37,6 +38,7 @@ try {
         $tar_ecoli = isset($tar_ecoli) ? $tar_ecoli : '';
         $tar_salmonella = isset($tar_salmonella) ? $tar_salmonella : '';
         $tar_saereus = isset($tar_saereus) ? $tar_saereus : '';
+        $tar_bma = isset($tar_bma) ? $tar_bma : '';
 
         include 'tarimas_validacion.php';
 
@@ -56,18 +58,18 @@ try {
         }
 
 
-        $sql = "UPDATE rev_tarimas SET 
-        tar_bloom = '$tar_bloom', 
-        tar_viscosidad = '$tar_viscosidad', 
-        tar_ph = '$tar_ph', 
+        $sql = "UPDATE rev_tarimas SET
+        tar_bloom = '$tar_bloom',
+        tar_viscosidad = '$tar_viscosidad',
+        tar_ph = '$tar_ph',
         tar_trans = '$tar_trans',
-        tar_porcentaje_t = '$tar_porcentaje_t', 
+        tar_porcentaje_t = '$tar_porcentaje_t',
         tar_ntu =  '$tar_ntu',
         tar_humedad = '$tar_humedad',
         tar_cenizas = '$tar_cenizas',
         tar_ce = '$tar_ce',
-        tar_redox = '$tar_redox', 
-        tar_color = '$tar_color', 
+        tar_redox = '$tar_redox',
+        tar_color = '$tar_color',
         tar_olor = '$tar_olor',
         tar_pe_1kg = '$tar_pe_1kg',
         tar_par_extr = '$tar_par_extr',
@@ -79,6 +81,7 @@ try {
         tar_ecoli = '$tar_ecoli',
         tar_salmonella = '$tar_salmonella',
         tar_saereus = '$tar_saereus',
+        tar_bma = '$tar_bma',
         tar_fe_param = '" . date("Y-m-d H:i:s") . "',
         tar_rechazado = '$tar_rechazado',
         cal_id = '$cal_id'
@@ -86,7 +89,7 @@ try {
         if (mysqli_query($cnx, $sql)) {
             if ($tar_rechazado === 'C') {
                 $res = 'Parametros registrados exitosamente, algunos datos no cumplen con el mínimo establecido. Se marcará como en cuarentena.';
-            } else if($tar_rechazado === 'A'){
+            } else if ($tar_rechazado === 'A') {
                 $res = "Parametros registrados exitosamente";
             } else {
                 $res = 'Tarima con problemas de microbiologia sera rechazada';

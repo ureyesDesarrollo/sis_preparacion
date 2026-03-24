@@ -42,6 +42,7 @@ $tar_coliformes = isset($res['tar_coliformes']) ? $res['tar_coliformes'] : '';
 $tar_ecoli = isset($res['tar_ecoli']) ? $res['tar_ecoli'] : '';
 $tar_salmonella = isset($res['tar_salmonella']) ? $res['tar_salmonella'] : '';
 $tar_saereus = isset($res['tar_saereus']) ? $res['tar_saereus'] : '';
+$tar_bma = isset($res['tar_bma']) ? $res['tar_bma'] : '';
 
 include 'tarimas_validacion.php';
 
@@ -49,7 +50,7 @@ $isFino = mysqli_fetch_assoc(mysqli_query($cnx, "SELECT tar_fino FROM rev_tarima
 
 if ($isFino == 'F') {
     $valores_a_eliminar = ['malla_30', 'malla_45'];
-    $parametros_fallidos = array_diff($parametros_fallidos, $valores_a_eliminar);
+    $parametros_fallidos = array_values(array_diff($parametros_fallidos, $valores_a_eliminar));
 }
 ?>
 
@@ -204,13 +205,17 @@ if ($isFino == 'F') {
                     </div> -->
                 </div>
                 <div class="row mt-3">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="tar_salmonella" class="form-label">Salmonella</label>
-                        <input type="text" class="form-control <?= in_array('salmonella', $parametros_fallidos) ? 'is-invalid' : '' ?>" name="tar_salmonella" id="tar_salmonella" onkeypress="return isNumberKey(evente,this)" value="<?= isset($res['tar_salmonella']) ? $res['tar_salmonella'] : '' ?>">
+                        <input type="text" class="form-control <?= in_array('salmonella', $parametros_fallidos) ? 'is-invalid' : '' ?>" name="tar_salmonella" id="tar_salmonella" onkeypress="return isNumberKey(event,this)" value="<?= isset($res['tar_salmonella']) ? $res['tar_salmonella'] : '' ?>">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="tar_saereus" class="form-label">S.Aereus</label>
-                        <input type="text" class="form-control <?= in_array('saereus', $parametros_fallidos) ? 'is-invalid' : '' ?>"  name="tar_saereus" id="tar_saereus" onkeypress="return isNumberKey(event,this)" value="<?= isset($res['tar_saereus']) ? $res['tar_saereus'] : '' ?>">
+                        <input type="text" class="form-control <?= in_array('saereus', $parametros_fallidos) ? 'is-invalid' : '' ?>" name="tar_saereus" id="tar_saereus" onkeypress="return isNumberKey(event,this)" value="<?= isset($res['tar_saereus']) ? $res['tar_saereus'] : '' ?>">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="tar_bma" class="form-label">Mesofilos</label>
+                        <input type="text" class="form-control <?= in_array('bma', $parametros_fallidos) ? 'is-invalid' : '' ?>" name="tar_bma" id="tar_bma" onkeypress="return isNumberKey(event,this)" value="<?= isset($res['tar_bma']) ? $res['tar_bma'] : '' ?>">
                     </div>
                     <div class="col-md-4 d-none">
                         <label for="cal_id" class="form-label">Id Calidad</label>
@@ -286,40 +291,69 @@ if ($isFino == 'F') {
         });
 
         function manejarRespuesta(res) {
+            const fallidos = Array.isArray(res.fallidos) ? res.fallidos : [];
+
             if (res.success) {
                 $('#dataTableTarimas').DataTable().ajax.reload();
                 alertas_v5("#alerta-tarima-param", 'Listo!', res.success, 1, true, 5000);
             } else {
-                alertas_v5("#alerta-tarima-param", 'Error!', res.error, 3, true, 5000);
+                alertas_v5("#alerta-tarima-param", 'Error!', res.error || 'Respuesta inválida', 3, true, 5000);
             }
 
             $('#form_tarima_parametros .is-invalid').removeClass('is-invalid');
 
-            console.log(res);
-            if (res.fallidos.length > 0) {
+            if (fallidos.length > 0) {
+
                 $('#rechazado').val('Si').addClass('is-invalid');
-                res.fallidos.forEach(param => $('#tar_' + param).addClass('is-invalid'));
-                if(res.rechazado === 'R'){
-                    manejarQR($('#tar_id').val(), 4,'tarimas_generar_qr_rechazado');// Opcion 4 rechazado
-                }else{
-                    manejarQR($('#tar_id').val(), 2,'tarimas_generar_qr'); 
+
+                fallidos.forEach(param => {
+                    $('[name="tar_' + param + '"], [name="' + param + '"]').addClass('is-invalid');
+                });
+
+                if (res.rechazado === 'R') {
+
+                    manejarQR($('#tar_id').val(), 4, 'tarimas_generar_qr_rechazado');
+
+                } else {
+
+                    manejarQR($('#tar_id').val(), 2, 'tarimas_generar_qr');
+
                 }
+
             } else {
-                $('#rechazado').val('No');
-                manejarQR($('#tar_id').val(), 3,'tarimas_generar_qr');
+
+                $('#rechazado').val('No').removeClass('is-invalid');
+
+                manejarQR($('#tar_id').val(), 3, 'tarimas_generar_qr');
+
             }
         }
 
         async function manejarQR(tar_id, opcion, url) {
+
             let cal_id = $('#cal_id').val();
-            console.log(url);
-            if (!cal_id || cal_id === '0' || opcion === 4) {
-                try {
-                    let qrResponse = await generarQR(tar_id, opcion, url);
-                    console.log('QR generado:');
-                } catch (error) {
-                    console.error('Error al generar QR:', error);
+
+            console.log("cal_id:", cal_id);
+            console.log("opcion:", opcion);
+            console.log("url:", url);
+
+            try {
+
+                if (opcion === 4) {
+                    // siempre generar QR si está rechazado
+                    await generarQR(tar_id, opcion, url);
+
+                } else if (!cal_id || cal_id === '0') {
+                    // solo generar QR si no existe calidad
+                    await generarQR(tar_id, opcion, url);
                 }
+
+                console.log('QR generado');
+
+            } catch (error) {
+
+                console.error('Error al generar QR:', error);
+
             }
         }
 

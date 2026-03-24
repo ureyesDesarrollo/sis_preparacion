@@ -175,6 +175,43 @@
       <span class="d-none d-md-inline">Detalles</span>
     </button>`;
           }
+        },
+        {
+          data: null,
+          render: function(data, type, row) {
+            if (type === 'export') return '';
+
+            const ordenId = typeof row.orden_id === 'object' ? JSON.stringify(row.orden_id) : `"${row.orden_id}"`;
+
+            return `<button class="btn btn-sm btn-recibo"
+            data-id=${ordenId}
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            title="Recibo de embarque"
+            style="
+              background: transparent;
+              border: 1.5px solid #0a2472;
+              color: #0a2472;
+              padding: 0.45rem 1.3rem;
+              border-radius: 10px;
+              font-weight: 600;
+              font-size: 0.85rem;
+              transition: all 0.25s ease;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              cursor: pointer;
+              box-shadow: 0 2px 8px rgba(10, 36, 114, 0.1);
+              letter-spacing: 0.3px;
+              backdrop-filter: blur(2px);
+            "
+            onmouseover="this.style.background='#0a2472'; this.style.color='white'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 15px rgba(10, 36, 114, 0.25)'; this.style.borderColor='#0a2472';"
+            onmouseout="this.style.background='transparent'; this.style.color='#0a2472'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(10, 36, 114, 0.1)'; this.style.borderColor='#0a2472';">
+      <i class="fa-solid fa-receipt" style="font-size: 0.95rem;"></i>
+      <span class="d-none d-md-inline">Recibo de embarque</span>
+    </button>`;
+          }
         }
       ]
     });
@@ -183,7 +220,12 @@
     $('#dataTableOrdenEmbarque').on('click', '.btn-detalle', function() {
       let idOrden = $(this).data('id');
       abrir_modal_detalle_orden_embarque(idOrden);
-    })
+    });
+
+    $('#dataTableOrdenEmbarque').on('click', '.btn-recibo', function() {
+      let idOrden = $(this).data('id');
+      window.open(`funciones/recibo_embarque.php?orden_id=${idOrden}`, "_blank");
+    });
   });
 </script>
 
@@ -211,6 +253,7 @@
             <th>Factura</th>
             <th>Estatus</th>
             <th>Detalles</th>
+            <th>Recibo</th>
           </tr>
         </thead>
         <tbody>

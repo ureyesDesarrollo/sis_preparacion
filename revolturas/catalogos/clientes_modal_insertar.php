@@ -58,7 +58,24 @@ include "../../seguridad/user_seguridad.php";
                         <label for="cte_bloom_min" class="form-label">Bloom min</label>
                         <input type="text" name="cte_bloom_min" id="cte_bloom_min" class="form-control" onkeypress="return isNumberKey(event, this);">
                     </div>
-
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="" class="form-label">Dirección fiscal</label>
+                        <input type="text" class="form-control" id="cte_direccion_fiscal" name="cte_direccion_fiscal">
+                    </div>
+                </div>
+                <div class="row pt-3">
+                    <div class="col-md-4">
+                        <button id="mostrar" class="btn btn-outline-primary btn-sm">Agregar direcciones de entrega</button>
+                    </div>
+                </div>
+                <div class="row d-none" id="direcciones">
+                    <div class="row pt-3">
+                        <div class="col-md-4">
+                            <button id="agregar_dir" class="btn btn-outline-primary btn-sm">Agregar renglon</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -101,12 +118,48 @@ include "../../seguridad/user_seguridad.php";
                         alertas_v5("#alerta-cliente", 'Listo!', res.success, 1, true, 5000);
                         $('#dataTableClientes').DataTable().ajax.reload();
                         $('#form_cliente_agr')[0].reset();
+                        $('#direcciones').addClass('d-none');
+                        $('#agregar_dir').addClass('d-none');
+                        $('#mostrar').removeClass('d-none');
+
                     } else {
                         alertas_v5("#alerta-cliente", 'Error!', res.error, 3, true, 5000);
                         console.log(res.error);
                     }
                 }
             })
-        })
+        });
+
+        let renglon = `
+    <div class="row pt-2 align-items-end direccion-item">
+        <div class="col-md-10">
+            <label>Dirección de entrega</label>
+            <input type="text" class="form-control" name="direccion_entrega[]">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="button" class="btn btn-outline-danger btn-sm eliminar">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    </div>
+`;
+
+
+        $('#mostrar').on('click', function(e) {
+            e.preventDefault();
+            $('#mostrar').addClass('d-none');
+            $direcciones = $('#direcciones');
+            $direcciones.removeClass('d-none');
+            $direcciones.append(renglon);
+        });
+
+        $('#agregar_dir').on('click', function(e) {
+            e.preventDefault();
+            $('#direcciones').append(renglon);
+        });
+
+        $(document).on('click', '.eliminar', function() {
+            $(this).closest('.direccion-item').remove();
+        });
     })
 </script>
