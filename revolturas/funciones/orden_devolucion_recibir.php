@@ -65,7 +65,7 @@ try {
         INNER JOIN usuarios u ON u.usu_id = od.usu_id
         WHERE odd.tipo_empaque = 'rr' AND od.od_id = $od_id
 
-        UNION
+        UNION ALL
 
         SELECT od.od_id, od.od_fecha, od.od_estado, od.cte_id, ct.cte_nombre, odd.odd_id,
                odd.tipo_empaque, odd.id_empaque, odd.lote, odd.factura, odd.cantidad,
@@ -76,7 +76,20 @@ try {
         INNER JOIN rev_revolturas_pt_cliente ptc ON ptc.rrc_id = odd.id_empaque
         INNER JOIN rev_presentacion p ON p.pres_id = ptc.pres_id
         INNER JOIN usuarios u ON u.usu_id = od.usu_id
-        WHERE odd.tipo_empaque = 'rrc' AND od.od_id = $od_id";
+        WHERE odd.tipo_empaque = 'rrc' AND od.od_id = $od_id
+
+        UNION ALL
+
+        SELECT od.od_id, od.od_fecha, od.od_estado, od.cte_id, ct.cte_nombre, odd.odd_id,
+               odd.tipo_empaque, odd.id_empaque, odd.lote, odd.factura, odd.cantidad,
+               pe.pe_id AS empaque_id, pe.pres_id, p.pres_descrip, 'pe' AS tipo, od.od_motivo, u.usu_nombre
+        FROM orden_devolucion_detalle odd
+        INNER JOIN orden_devolucion od ON od.od_id = odd.od_id
+        INNER JOIN rev_clientes ct ON ct.cte_id = od.cte_id
+        INNER JOIN producto_externo pe ON pe.pe_id = odd.id_empaque
+        INNER JOIN rev_presentacion p ON p.pres_id = pe.pres_id
+        INNER JOIN usuarios u ON u.usu_id = od.usu_id
+        WHERE odd.tipo_empaque = 'pe' AND od.od_id = $od_id";
 
         $result = mysqli_query($cnx, $sql);
         $ordenInfo = null;

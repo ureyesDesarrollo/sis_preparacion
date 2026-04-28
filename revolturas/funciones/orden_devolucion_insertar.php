@@ -17,24 +17,25 @@ try {
     $devoluciones = $data['devoluciones'] ?? [];
     $observaciones = mysqli_real_escape_string($cnx, $data['observaciones'] ?? '');
     $usu_id = $_SESSION['idUsu'] ?? 0;
+    $folio_nota_credito = $data['folio_nota_credito'];
     $modo_prueba = false;
 
     if (empty($devoluciones)) {
         throw new Exception("No se recibieron devoluciones.");
     }
 
-    // Obtener cte_id del primer empaque
+    // Obtener cte_id de la primera factura
     $cte_id = null;
     foreach ($devoluciones as $factura) {
-    $facturaEscaped = mysqli_real_escape_string($cnx, $factura['factura']);
-    $sql_cte = "SELECT cte_id FROM rev_revolturas_pt_facturas WHERE fe_factura = '$facturaEscaped'";
-    $res_cte = mysqli_query($cnx, $sql_cte);
-    if ($res_cte && mysqli_num_rows($res_cte) > 0) {
-        $row_cte = mysqli_fetch_assoc($res_cte);
-        $cte_id = $row_cte['cte_id'];
-        break;
+        $facturaEscaped = mysqli_real_escape_string($cnx, $factura['factura']);
+        $sql_cte = "SELECT cte_id FROM rev_revolturas_pt_facturas WHERE fe_factura = '$facturaEscaped' LIMIT 1";
+        $res_cte = mysqli_query($cnx, $sql_cte);
+        if ($res_cte && mysqli_num_rows($res_cte) > 0) {
+            $row_cte = mysqli_fetch_assoc($res_cte);
+            $cte_id = $row_cte['cte_id'];
+            break;
+        }
     }
-}
 
     if (!$cte_id) {
         throw new Exception("No se encontró cliente asociado a los empaques.");
@@ -45,6 +46,8 @@ try {
         throw new Exception("Error al insertar orden de devolución: " . mysqli_error($cnx));
     }
     $od_id = mysqli_insert_id($cnx);
+
+    $cantidad_total = 0;
 
     // Insertar detalles
     foreach ($devoluciones as $factura) {
@@ -61,18 +64,49 @@ try {
             }
             $row_fact = mysqli_fetch_assoc($res_fact);
             $cantidad = (float)$emp['cantidad'];
+            $cantidad_total += $cantidad;
+            $sql_lote = '';
+            $lote = '';
 
-            $sql_lote = $tipo_empaque === 'rr' ?
-                "SELECT r.rev_folio FROM rev_revolturas r INNER JOIN rev_revolturas_pt pt ON pt.rev_id = r.rev_id WHERE pt.rr_id = $id_empaque" :
-                "SELECT r.rev_folio FROM rev_revolturas r INNER JOIN rev_revolturas_pt_cliente ptc ON ptc.rev_id = r.rev_id WHERE ptc.rrc_id = $id_empaque";
-
-            $res_lote = mysqli_query($cnx, $sql_lote);
-            $lote = (mysqli_num_rows($res_lote) > 0) ? mysqli_fetch_assoc($res_lote)['rev_folio'] : '';
+            if ($tipo_empaque === 'rr') {
+                $sql_lote = "SELECT r.rev_folio FROM rev_revolturas r INNER JOIN rev_revolturas_pt pt ON pt.rev_id = r.rev_id WHERE pt.rr_id = $id_empaque";
+                $res_lote = mysqli_query($cnx, $sql_lote);
+                $lote = (mysqli_num_rows($res_lote) > 0) ? mysqli_fetch_assoc($res_lote)['rev_folio'] : '';
+            } elseif ($tipo_empaque === 'rrc') {
+                $sql_lote = "SELECT r.rev_folio FROM rev_revolturas r INNER JOIN rev_revolturas_pt_cliente ptc ON ptc.rev_id = r.rev_id WHERE ptc.rrc_id = $id_empaque";
+                $res_lote = mysqli_query($cnx, $sql_lote);
+                $lote = (mysqli_num_rows($res_lote) > 0) ? mysqli_fetch_assoc($res_lote)['rev_folio'] : '';
+            } elseif ($tipo_empaque === 'pe') {
+                $res_pe = mysqli_query($cnx, "SELECT pe_lote FROM producto_externo WHERE pe_id = $id_empaque");
+                $lote = ($res_pe && mysqli_num_rows($res_pe) > 0) ? mysqli_fetch_assoc($res_pe)['pe_lote'] : '';
+            }
 
             $sql_detalle = "INSERT INTO orden_devolucion_detalle (od_id, tipo_empaque, id_empaque, lote, factura, cantidad) VALUES ($od_id, '$tipo_empaque', $id_empaque, '$lote', '$factura_num', $cantidad)";
             if (!mysqli_query($cnx, $sql_detalle)) {
                 throw new Exception("Error insertando detalle: " . mysqli_error($cnx));
             }
+        }
+    }
+
+    if ($folio_nota_credito != '') {
+        $conn = Conectarse2();
+
+        $sql_consultar_nota = "SELECT * FROM creditos WHERE NO_NOTA = '{$folio_nota_credito}'";
+        $res_nota = mysqli_query($conn, $sql_consultar_nota);
+        if (!$res_nota || mysqli_num_rows($res_nota) === 0) {
+            throw new Exception("No se encontro la nota de crédito con el folio proporcionado.");
+        }
+        $row_nota = mysqli_fetch_assoc($res_nota);
+        $total_nota = 0;
+        if ((int)$row_nota['CVE_MON'] != 1) {
+            $total_nota = (float)$row_nota['TOT_NOTA'] * (float)$row_nota['TIP_CAM'];
+        } else {
+            $total_nota = (float)$row_nota['TOT_NOTA'];
+        }
+        $sql_insert_nota = "INSERT INTO notas_credito (fecha, factura, folio_nota, tipo, cantidad, total)
+        VALUES (NOW(), '{$row_nota['NO_FAC']}', '$folio_nota_credito', 'DEVOLUCION', {$cantidad_total}, {$total_nota})";
+        if (!mysqli_query($cnx, $sql_insert_nota)) {
+            throw new Exception("Error al insertar nota de crédito: " . mysqli_error($conn));
         }
     }
 
@@ -90,7 +124,7 @@ try {
         INNER JOIN usuarios u ON u.usu_id = od.usu_id
         WHERE odd.tipo_empaque = 'rr' AND od.od_id = $od_id
 
-        UNION
+        UNION ALL
 
         SELECT od.od_id, od.od_fecha, od.od_estado, od.cte_id, ct.cte_nombre, odd.odd_id,
                odd.tipo_empaque, odd.id_empaque, odd.lote, odd.factura, odd.cantidad,
@@ -101,7 +135,20 @@ try {
         INNER JOIN rev_revolturas_pt_cliente ptc ON ptc.rrc_id = odd.id_empaque
         INNER JOIN rev_presentacion p ON p.pres_id = ptc.pres_id
         INNER JOIN usuarios u ON u.usu_id = od.usu_id
-        WHERE odd.tipo_empaque = 'rrc' AND od.od_id = $od_id";
+        WHERE odd.tipo_empaque = 'rrc' AND od.od_id = $od_id
+
+        UNION ALL
+
+        SELECT od.od_id, od.od_fecha, od.od_estado, od.cte_id, ct.cte_nombre, odd.odd_id,
+               odd.tipo_empaque, odd.id_empaque, odd.lote, odd.factura, odd.cantidad,
+               pe.pe_id AS empaque_id, pe.pres_id, p.pres_descrip, 'pe' AS tipo, od.od_motivo, u.usu_nombre
+        FROM orden_devolucion_detalle odd
+        INNER JOIN orden_devolucion od ON od.od_id = odd.od_id
+        INNER JOIN rev_clientes ct ON ct.cte_id = od.cte_id
+        INNER JOIN producto_externo pe ON pe.pe_id = odd.id_empaque
+        INNER JOIN rev_presentacion p ON p.pres_id = pe.pres_id
+        INNER JOIN usuarios u ON u.usu_id = od.usu_id
+        WHERE odd.tipo_empaque = 'pe' AND od.od_id = $od_id";
 
         $result = mysqli_query($cnx, $sql);
         $ordenInfo = null;

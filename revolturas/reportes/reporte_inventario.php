@@ -151,8 +151,8 @@
                                 <th>Col</th>
                                 <th>Malla #30</th>
                                 <th>Malla #45</th>
-                                <th>Ins. Ext</th>
                                 <th>Ins Gelat</th>
+                                <th>Ins</th>
                                 <th>Redox</th>
                                 <th>Calidad</th>
                                 <th>Kilos</th>
@@ -190,8 +190,8 @@
                                 <th>Col</th>
                                 <th>Malla #30</th>
                                 <th>Malla #45</th>
-                                <th>Ins. Ext</th>
                                 <th>Ins Gelat</th>
+                                <th>Ins</th>
                                 <th>Redox</th>
                                 <th>Calidad</th>
                                 <th>Kilos</th>
@@ -229,8 +229,8 @@
                                 <th>Col</th>
                                 <th>Malla #30</th>
                                 <th>Malla #45</th>
-                                <th>Ins. Ext</th>
                                 <th>Ins Gelat</th>
+                                <th>Ins</th>
                                 <th>Redox</th>
                                 <th>Calidad</th>
                                 <th>Kilos</th>
@@ -390,8 +390,8 @@
                                 <th>Col</th>
                                 <th>Malla #30</th>
                                 <th>Malla #45</th>
-                                <th>Ins. Ext</th>
                                 <th>Ins Gelat</th>
+                                <th>Ins</th>
                                 <th>Redox</th>
                                 <th>Calidad</th>
                                 <th>Kilos</th>
@@ -513,7 +513,7 @@
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_30 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_45 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_pe_1kg ?? ''}</td>
-                        <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_par_extr ?? ''}</td>
+                        <td style="background-color: ${color[tarima.tar_fino] || ''}; color:${tarima.tar_par_ind >= 10 ? 'red' : 'black'};">${tarima.tar_par_ind ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_redox ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.cal_descripcion ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_kilos ?? ''}</td>
@@ -577,7 +577,7 @@
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_30 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_45 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_pe_1kg ?? ''}</td>
-                        <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_par_extr ?? ''}</td>
+                        <td style="background-color: ${color[tarima.tar_fino] || ''}; color:${tarima.tar_par_ind >= 10 ? 'red' : 'black'};">${tarima.tar_par_ind ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_redox ?? ''}</td>
                         <td style="background-color:${tarima.cal_color  ?? ''}; color: #FFFFFF">${tarima.cal_descripcion ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_kilos ?? ''}</td>
@@ -642,7 +642,7 @@
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_30 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_45 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_pe_1kg ?? ''}</td>
-                        <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_par_extr ?? ''}</td>
+                        <td style="background-color: ${color[tarima.tar_fino] || ''}; color:${tarima.tar_par_ind >= 10 ? 'red' : 'black'};">${tarima.tar_par_ind ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_redox ?? ''}</td>
                         <td style="background-color:${tarima.cal_color  ?? ''}; color: #FFFFFF">${tarima.cal_descripcion ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_kilos ?? ''}</td>
@@ -767,8 +767,7 @@
                             <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_malla_30  ?? ''}</td>
                             <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_malla_45  ?? ''}</td>
                             <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_pe_1kg  ?? ''}</td>
-                            <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_par_extr  ?? ''}</td>
-                            <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_redox  ?? ''}</td>
+                            <td style="background-color: ${color[tarima.tar_fino] || ''}; color:${tarima.tar_par_ind >= 10 ? 'red' : 'black'};">${tarima.tar_par_ind ?? ''}</td>                            <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_redox  ?? ''}</td>
                             <td style="background-color:${color[tarima.cal_color] || '#FFFFFF'}; color: #FFFFFF">${tarima.cal_descripcion  ?? ''}</td>
                             <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.tar_kilos  ?? ''}</td>
                             <td style="background-color: ${color[tarima.tar_fino] || ''};">${tarima.rev_folio  ?? ''}</td>
@@ -891,7 +890,7 @@
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_30 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_malla_45 ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_pe_1kg ?? ''}</td>
-                        <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_par_extr ?? ''}</td>
+                        <td style="background-color: ${color[tarima.tar_fino] || ''}; color:${tarima.tar_par_ind >= 10 ? 'red' : 'black'};">${tarima.tar_par_ind ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_redox ?? ''}</td>
                         <td style="background-color:${tarima.cal_color ?? ''}; color: #FFFFFF">${tarima.cal_descripcion ?? ''}</td>
                         <td style="background-color: ${color[tarima.tar_fino] || ''};" >${tarima.tar_kilos ?? ''}</td>

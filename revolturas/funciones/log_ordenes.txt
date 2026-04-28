@@ -881,3 +881,6 @@
 [2026-03-12 16:28:45] | OrdenID: 1243 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
 [2026-03-13 10:53:33] | OrdenID: 1253 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
 [2026-03-13 15:23:51] | OrdenID: 1254 | Acción: Completar y marcar como facturada | Estado anterior: COMPLETADA | Estado nuevo: FACTURADA
+[2026-04-16 14:24:20] | OrdenID: 1389 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2026-04-16 14:24:20] | OrdenID: 1389 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO
+[2026-04-16 14:24:20] | OrdenID: 1389 | Acción: Marcar remisión | Estado anterior: LIBERADO | Estado nuevo: LIBERADO

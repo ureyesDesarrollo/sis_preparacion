@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 t.tar_malla_30,
                 ROUND(t.tar_malla_45) AS tar_malla_45,
                 ROUND(t.tar_pe_1kg) AS tar_pe_1kg,
-                ROUND(t.tar_par_extr) AS tar_par_extr,
+                ROUND(t.tar_par_ind) AS tar_par_ind,
                 t.tar_redox,
                 c.cal_descripcion,
                 c.cal_color
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 t.tar_malla_30,
                 ROUND(t.tar_malla_45) AS tar_malla_45,
                 ROUND(t.tar_pe_1kg) AS tar_pe_1kg,
-                ROUND(t.tar_par_extr) AS tar_par_extr,
+                ROUND(t.tar_par_ind) AS tar_par_ind,
                 t.tar_redox,
                 c.cal_descripcion,
                 c.cal_color,
@@ -155,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 t.tar_malla_30,
                 ROUND(t.tar_malla_45) AS tar_malla_45,
                 ROUND(t.tar_pe_1kg) AS tar_pe_1kg,
-                ROUND(t.tar_par_extr) AS tar_par_extr,
+                ROUND(t.tar_par_ind) AS tar_par_ind,
                 t.tar_redox,
                 c.cal_descripcion,
                 c.cal_color
@@ -227,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     r.rev_malla_30,
     ROUND(r.rev_malla_45) AS rev_malla_45,
     ROUND(r.rev_pe_1kg) AS rev_pe_1kg,
-    ROUND(r.rev_par_extr) AS rev_par_extr,
+    ROUND(r.rev_par_ind) AS rev_par_ind,
     r.rev_redox,
     ROUND(r.rev_teo_bloom) AS rev_teo_bloom,
     r.rev_teo_viscosidad,
@@ -314,7 +314,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 t.tar_malla_30,
                 ROUND(t.tar_malla_45) AS tar_malla_45,
                 ROUND(t.tar_pe_1kg) AS tar_pe_1kg,
-                ROUND(t.tar_par_extr) AS tar_par_extr,
+                ROUND(t.tar_par_ind) AS tar_par_ind,
                 t.tar_redox,
                 c.cal_descripcion,
                 c.cal_color,
@@ -422,7 +422,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 t.tar_malla_30,
                 ROUND(t.tar_malla_45) AS tar_malla_45,
                 ROUND(t.tar_pe_1kg) AS tar_pe_1kg,
-                ROUND(t.tar_par_extr) AS tar_par_extr,
+                ROUND(t.tar_par_ind) AS tar_par_ind,
                 t.tar_redox,
                 c.cal_descripcion,
                 c.cal_color
@@ -500,6 +500,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 ROUND(t.tar_color) AS Col,
                 t.tar_malla_30 AS Malla_30,
                 ROUND(t.tar_malla_45) AS Malla_45,
+                ROUND(t.tar_par_ind) AS Insoluble,
                 ROUND(t.tar_bma) AS BMA,
                 CASE
                 WHEN t.tar_fino = 'F' THEN 'FINOS'

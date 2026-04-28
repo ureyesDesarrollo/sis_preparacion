@@ -24,7 +24,6 @@ try {
 
         $fe_factura = mysqli_real_escape_string($cnx, $_POST['fe_factura']);
         $fe_cantidad = (float)$_POST['fe_cantidad'];
-        $fe_fecha = mysqli_real_escape_string($cnx, $_POST['fe_fecha']);
         $cte_id = (int)$_POST['cte_id'];
         $fe_tipo = mysqli_real_escape_string($cnx, $_POST['tipo']);
         $fe_cartaporte = mysqli_real_escape_string($cnx, $_POST['fe_cartaporte'] ?? '');
@@ -112,7 +111,7 @@ try {
                 '$tipo_producto',
                 '$fe_factura',
                 '$fe_cantidad',
-                '$fe_fecha',
+                NOW(),
                 '$cte_id',
                 '$fe_tipo',
                 '$fe_cartaporte',

@@ -169,11 +169,11 @@
                                 <i class="fa-solid fa-check me-2"></i>Liberar
                             </button>`;
                         }
-                         return `<button class="btn btn-outline-secondary btn-sm" disabled>
+                        return `<button class="btn btn-outline-secondary btn-sm" disabled>
                                 <i class="fa-solid fa-ban me-2"></i>No disponible
                             </button>`;
                     },
-                    
+
                 }
 
             ]
@@ -325,7 +325,7 @@
 </div>
 
 <div class="container-fluid" style="border: 1px solid #cccccc; border-radius: 10px; margin-bottom: 50px;">
-    <div class="table-responsive mt-3">
+    <div class="mt-3">
         <table class="table table-hover" cellpadding="0" cellspacing="0" border="0" class="display" id="dataTableOrdenesDevolucion" style="width: 100%;">
             <thead>
                 <tr>
@@ -353,7 +353,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_orden_devolucion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
+<div class="modal fade" id="modal_orden_devolucion" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
 
 </div>
 

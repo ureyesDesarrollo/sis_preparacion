@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
         $fe_factura = isset($data['factura']) ? $data['factura'] : '';
         $fe_factura = mysqli_real_escape_string($cnx, $fe_factura);
-        $query = "SELECT 
+        $query = "SELECT
     rpf.fe_factura,
     rpf.fe_cartaporte,
     rpf.fe_cantidad,
@@ -19,26 +19,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     rev.rev_id,
     rp.pres_descrip,
     rp.pres_kg,
+    ROUND(rpf.fe_cantidad * rp.pres_kg, 2) AS fe_cantidad_kg,
     COALESCE(rr.rr_id, rrc.rrc_id) AS referencia_id,
-    CASE 
+    CASE
         WHEN rr.rr_id IS NOT NULL THEN 'rr'
         WHEN rrc.rrc_id IS NOT NULL THEN 'rrc'
         ELSE NULL
-    END AS tipo_empaque
-FROM 
+    END AS tipo_empaque,
+    NULL AS pe_lote
+FROM
     rev_revolturas_pt_facturas rpf
-INNER JOIN 
+INNER JOIN
     rev_clientes c ON c.cte_id = rpf.cte_id
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas_pt rr ON rr.rr_id = rpf.rr_id
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas_pt_cliente rrc ON rrc.rrc_id = rpf.rrc_id
-LEFT JOIN 
+LEFT JOIN
     rev_presentacion rp ON rp.pres_id = COALESCE(rr.pres_id, rrc.pres_id)
-LEFT JOIN 
+LEFT JOIN
     rev_revolturas rev ON rev.rev_id = COALESCE(rr.rev_id, rrc.rev_id)
-WHERE 
+WHERE
     rpf.fe_factura LIKE '%" . $fe_factura . "%'
+    AND rpf.fe_tipo_producto = 'REVOLTURA'
     AND NOT EXISTS (
         SELECT 1
         FROM orden_devolucion_detalle odd
@@ -46,11 +49,49 @@ WHERE
             odd.factura = rpf.fe_factura
             AND (
                 (odd.tipo_empaque = 'rr' AND odd.id_empaque = rpf.rr_id)
-                OR 
+                OR
                 (odd.tipo_empaque = 'rrc' AND odd.id_empaque = rpf.rrc_id)
             )
     )
-ORDER BY rpf.fe_fecha DESC";
+
+UNION ALL
+
+SELECT
+    rpf.fe_factura,
+    rpf.fe_cartaporte,
+    rpf.fe_cantidad,
+    rpf.fe_tipo,
+    c.cte_nombre,
+    DATE(rpf.fe_fecha) AS fe_fecha,
+    NULL AS rev_folio,
+    NULL AS rev_id,
+    rp.pres_descrip,
+    rp.pres_kg,
+    ROUND(rpf.fe_cantidad * rp.pres_kg, 2) AS fe_cantidad_kg,
+    pe.pe_id AS referencia_id,
+    'pe' AS tipo_empaque,
+    pe.pe_lote
+FROM
+    rev_revolturas_pt_facturas rpf
+INNER JOIN
+    rev_clientes c ON c.cte_id = rpf.cte_id
+INNER JOIN
+    producto_externo pe ON pe.pe_id = rpf.pe_id
+LEFT JOIN
+    rev_presentacion rp ON rp.pres_id = pe.pres_id
+WHERE
+    rpf.fe_factura LIKE '%" . $fe_factura . "%'
+    AND rpf.fe_tipo_producto = 'EXTERNO'
+    AND NOT EXISTS (
+        SELECT 1
+        FROM orden_devolucion_detalle odd
+        WHERE
+            odd.factura = rpf.fe_factura
+            AND odd.tipo_empaque = 'pe'
+            AND odd.id_empaque = rpf.pe_id
+    )
+
+ORDER BY fe_fecha DESC";
 
         $listado_facturas = mysqli_query($cnx, $query);
 
@@ -65,7 +106,7 @@ ORDER BY rpf.fe_fecha DESC";
         }
 
         if (empty($res)) {
-            echo json_encode(['success' => false, 'menssage' => 'No se encontraron facturas']);
+            echo json_encode(['success' => false, 'message' => 'No se encontraron facturas']);
         } else {
             echo json_encode(['success' => true, 'data' => $res]);
         }

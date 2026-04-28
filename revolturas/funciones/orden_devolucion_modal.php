@@ -78,24 +78,19 @@
         background-color: #f8f9fa;
     }
 
-    /* Estilos para el contenedor de alertas */
     #alert-container {
         max-height: 100vh;
         overflow-y: auto;
         pointer-events: none;
-        /* Permite hacer clic a través del contenedor */
     }
 
-    /* Estilos para cada alerta individual */
     #alert-container .alert {
         pointer-events: auto;
-        /* Habilita interacción con las alertas */
         box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         transition: all 0.3s ease;
         margin-bottom: 0.75rem;
     }
 
-    /* Efecto hover opcional */
     #alert-container .alert:hover {
         transform: translateX(-5px);
         box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2);
@@ -142,7 +137,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="py-3"><i class="fas fa-file-invoice me-2"></i>Factura</th>
-                                    <th class="py-3"><i class="fas fa-hashtag me-2"></i>Folio</th>
+                                    <th class="py-3"><i class="fas fa-hashtag me-2"></i>Folio / Lote</th>
                                     <th class="py-3"><i class="far fa-calendar-alt me-2"></i>Fecha</th>
                                     <th class="py-3"><i class="fas fa-user-tie me-2"></i>Cliente</th>
                                     <th class="py-3 text-end"><i class="fa-solid fa-weight-scale me-2"></i>Cantidad</th>
@@ -201,13 +196,11 @@
 
 <script>
     $(document).ready(function() {
-        // Enfocar automáticamente al mostrar el modal
         $('#modal_orden_devolucion').on('shown.bs.modal', function() {
             localStorage.removeItem('devoluciones');
             $('#fe_factura').trigger('focus');
         });
 
-        // Limpiar búsqueda
         $('#clearSearch').click(function() {
             $('#fe_factura').val('').trigger('focus');
             $('#div_tabla_facturas').hide(300);
@@ -215,7 +208,6 @@
             $('#no-results').hide();
         });
 
-        // Búsqueda con debounce
         let searchTimer;
         $('#fe_factura').on('input', function() {
             clearTimeout(searchTimer);
@@ -239,29 +231,22 @@
             }, 500);
         });
 
-        // Función para mostrar estados de carga
         function showLoadingState() {
             $('#div_tabla_facturas').show(300);
             $('#tbody_facturas').html(`
-            <tr>
-                <td colspan="7" class="text-center py-5">
-                    <div class="d-flex flex-column align-items-center justify-content-center">
-                        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
-                            <span class="visually-hidden">Cargando...</span>
+                <tr>
+                    <td colspan="7" class="text-center py-5">
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <h5 class="text-primary">Buscando facturas...</h5>
                         </div>
-                        <h5 class="text-primary">Buscando facturas...</h5>
-                    </div>
-                </td>
-            </tr>
-        `);
+                    </td>
+                </tr>
+            `);
         }
 
-        // Mostrar campo de observaciones cuando se selecciona una factura
-        $(document).on('facturaSeleccionada', function() {
-
-        });
-
-        // Función para mostrar alertas
         function showAlertFactura(type, message) {
             const alert = $('#factura-alert');
             alert.removeClass('alert-warning alert-info alert-danger d-none')
@@ -277,16 +262,65 @@
                 return;
             }
 
-            guardar_orden(devoluciones);
+            // Paso 1: preguntar si ya existe nota de crédito
+            Swal.fire({
+                title: '¿Se generó nota de crédito?',
+                text: 'Antes de guardar, ¿ya se emitió un documento de devolución (nota de crédito)?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, tengo el folio',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Paso 2: pedir el folio
+                    // Ocultar el modal de Bootstrap para que no interfiera con el input de Swal
+                    $('#modal_orden_devolucion').modal('hide');
 
+                    Swal.fire({
+                        title: 'Folio de nota de crédito',
+                        input: 'text',
+                        inputLabel: 'Ingrese el folio del documento',
+                        inputPlaceholder: 'Ej. N102',
+                        inputAttributes: {
+                            autocomplete: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonColor: '#0d6efd',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Guardar',
+                        cancelButtonText: 'Cancelar',
+                        allowEnterKey: true,
+                        inputValidator: (value) => {
+                            if (!value || value.trim() === '') {
+                                return 'Debe ingresar el folio de la nota de crédito';
+                            }
+                        }
+                    }).then((folioResult) => {
+                        if (folioResult.isConfirmed) {
+                            guardar_orden(devoluciones, folioResult.value.trim());
+                        } else {
+                            // Canceló el folio — volver a mostrar el modal
+                            $('#modal_orden_devolucion').modal('show');
+                        }
+                    });
+                } else if (result.isDismissed && result.dismiss === Swal.DismissReason.cancel) {
+                    // Sin folio no permitir continuar y mostrar el modal
+                    $('#modal_orden_devolucion').modal('show');
+                    showAlert('warning', 'Debe proporcionar el folio de la nota de crédito para continuar');
+                }
+            });
         });
     });
 
-    function guardar_orden(devoluciones) {
+    function guardar_orden(devoluciones, folio_nota_credito) {
+        console.log(folio_nota_credito);
         const observaciones = $('#observaciones').val();
         const data = JSON.stringify({
             devoluciones: devoluciones,
-            observaciones: observaciones
+            observaciones: observaciones,
+            folio_nota_credito: folio_nota_credito // null si no se proporcionó
         });
 
         $.ajax({
@@ -305,10 +339,11 @@
                     localStorage.removeItem('devoluciones');
                     setTimeout(() => {
                         $('#modal_orden_devolucion').modal('hide');
-                    $('#dataTableOrdenesDevolucion').DataTable().ajax.reload();
-                    },1000);
+                        $('#dataTableOrdenesDevolucion').DataTable().ajax.reload();
+                    }, 1000);
                 } else {
                     showAlert('danger', response.message || 'Error al guardar la orden de devolución');
+                    $('#btn_guardar_orden_devolucion').prop('disabled', false);
                 }
             },
         });
@@ -343,111 +378,149 @@
     function renderFacturas(facturas) {
         const tbody = $('#tbody_facturas');
         tbody.empty();
+
         facturas.forEach(factura => {
+            // Cantidad en kg que viene del servidor (fe_cantidad * pres_kg)
+            const cantidadKg = parseFloat(factura.fe_cantidad_kg) || 0;
+            const presKg = parseFloat(factura.pres_kg) || 1;
+            const cantidadPzs = parseInt(factura.fe_cantidad) || 0;
+
+            // Folio/lote según tipo
+            const folio = factura.tipo_empaque === 'pe' ?
+                (factura.pe_lote ? `<span class="badge bg-secondary">Lote: ${factura.pe_lote}</span>` : 'N/A') :
+                (factura.rev_folio || 'N/A');
+
+            const tipoBadge = factura.tipo_empaque === 'pe' ?
+                '<span class="badge bg-warning text-dark ms-1" title="Producto Externo">Ext.</span>' :
+                '';
+
             tbody.append(`
-        <tr class="factura-row align-middle" data-folio="${factura.rev_folio}" data-tipo="${factura.tipo_empaque}" data-ref="${factura.referencia_id}" data-max="${factura.fe_cantidad}">
-            <td class="fw-semibold">${factura.fe_factura || 'N/A'}</td>
-            <td>${factura.rev_folio || 'N/A'}</td>
-            <td>${factura.fe_fecha}</td>
-            <td>${factura.cte_nombre || 'Cliente no especificado'}</td>
-            <td class="text-end">${factura.fe_cantidad}</td>
-            <td>${factura.pres_descrip || 'Sin especificar'}</td>
-            <td class="text-center align-middle">
-                <div class="row g-1 justify-content-center align-items-center">
-                    <div class="col-12 col-md-7 mb-2 mb-md-0">
-                        <input type="number" min="1" max="${factura.fe_cantidad}" step="any" class="form-control input-cantidad-lote" style="width:100%; max-width:220px; display:none; transition:all 0.2s; font-size:1.1rem;" placeholder="Cantidad (máx: ${factura.fe_cantidad})" />
-                    </div>
-                    <div class="col-12 col-md-5 d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-md-end gap-2">
-                        <button type="button" class="btn btn-primary btn-seleccionar-lote" title="Seleccionar lote">
-                            <i class="fas fa-check me-2"></i> Seleccionar
-                        </button>
-                        <button type="button" class="btn btn-success btn-confirmar-cantidad" style="display:none;" title="Agregar a devolución" disabled>
-                            <i class="fas fa-plus"></i>
-                        </button>
-                        <button type="button" class="btn btn-outline-secondary btn-cancelar-cantidad" style="display:none;" title="Cancelar selección">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="invalid-feedback text-center" style="display:none;">Ingrese una cantidad válida mayor a 0 y menor o igual a ${factura.fe_cantidad}</div>
-            </td>
-        </tr>
-    `);
+                <tr class="factura-row align-middle"
+                    data-folio="${factura.rev_folio || factura.pe_lote || ''}"
+                    data-tipo="${factura.tipo_empaque}"
+                    data-ref="${factura.referencia_id}"
+                    data-max-kg="${cantidadKg}"
+                    data-pres-kg="${presKg}">
+                    <td class="fw-semibold">${factura.fe_factura || 'N/A'}</td>
+                    <td>${folio}${tipoBadge}</td>
+                    <td>${factura.fe_fecha}</td>
+                    <td>${factura.cte_nombre || 'Cliente no especificado'}</td>
+                    <td class="text-end">
+                        <span class="fw-semibold">${cantidadKg.toFixed(2)} kg</span>
+                        <small class="text-muted d-block">${cantidadPzs} pza(s)</small>
+                    </td>
+                    <td>${factura.pres_descrip || 'Sin especificar'}</td>
+                    <td class="text-center align-middle">
+                        <div class="row g-1 justify-content-center align-items-center">
+                            <div class="col-12 col-md-7 mb-2 mb-md-0">
+                                <div class="input-group" style="display:none; max-width:220px; margin: 0 auto;">
+                                    <input type="number" min="0.01" max="${cantidadKg}" step="0.01"
+                                        class="form-control input-cantidad-lote"
+                                        placeholder="Kg (máx: ${cantidadKg})" />
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5 d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-md-end gap-2">
+                                <button type="button" class="btn btn-primary btn-seleccionar-lote" title="Seleccionar lote">
+                                    <i class="fas fa-check me-2"></i> Seleccionar
+                                </button>
+                                <button type="button" class="btn btn-success btn-confirmar-cantidad" style="display:none;" title="Agregar a devolución" disabled>
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-cancelar-cantidad" style="display:none;" title="Cancelar selección">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="invalid-feedback text-center" style="display:none;"></div>
+                    </td>
+                </tr>
+            `);
         });
 
-        // Mostrar input de cantidad con animación y UX mejorada
+        // Mostrar input de cantidad
         $('.btn-seleccionar-lote').off('click').on('click', function() {
             const tr = $(this).closest('tr');
             tr.find('.btn-seleccionar-lote').hide();
-            tr.find('.input-cantidad-lote').val('').show().addClass('animate__animated animate__fadeInRight').focus();
+            tr.find('.input-group').show();
+            tr.find('.input-cantidad-lote').val('').focus();
             tr.find('.btn-confirmar-cantidad, .btn-cancelar-cantidad').show();
             tr.find('.invalid-feedback').hide();
             tr.find('.btn-confirmar-cantidad').prop('disabled', true);
         });
 
-        // Habilitar botón solo si la cantidad es válida y no excede el lote
+        // Validar cantidad en kg al escribir
         tbody.on('input', '.input-cantidad-lote', function() {
             const tr = $(this).closest('tr');
-            const cantidad = parseFloat($(this).val());
-            const max = parseFloat(tr.data('max'));
-            if (!isNaN(cantidad) && cantidad > 0 && cantidad <= max) {
+            const valor = parseFloat($(this).val());
+            const maxKg = parseFloat(tr.data('max-kg'));
+
+            if (!isNaN(valor) && valor > 0 && valor <= maxKg) {
                 tr.find('.btn-confirmar-cantidad').prop('disabled', false);
                 tr.find('.invalid-feedback').hide();
                 $(this).removeClass('is-invalid');
             } else {
                 tr.find('.btn-confirmar-cantidad').prop('disabled', true);
-                if (!isNaN(cantidad) && cantidad > max) {
-                    tr.find('.invalid-feedback').text('No puede exceder la cantidad disponible en el lote (' + max + ')').show();
-                    $(this).addClass('is-invalid');
-                } else {
-                    tr.find('.invalid-feedback').text('Ingrese una cantidad válida mayor a 0 y menor o igual a ' + max).show();
-                    $(this).addClass('is-invalid');
-                }
+                const msg = (!isNaN(valor) && valor > maxKg) ?
+                    `No puede exceder ${maxKg} kg disponibles` :
+                    `Ingrese una cantidad válida mayor a 0 y menor o igual a ${maxKg} kg`;
+                tr.find('.invalid-feedback').text(msg).show();
+                $(this).addClass('is-invalid');
             }
         });
 
         // Cancelar selección
         $('.btn-cancelar-cantidad').off('click').on('click', function() {
             const tr = $(this).closest('tr');
-            tr.find('.input-cantidad-lote').hide().val('');
+            tr.find('.input-group').hide();
+            tr.find('.input-cantidad-lote').val('');
             tr.find('.btn-confirmar-cantidad, .btn-cancelar-cantidad').hide();
             tr.find('.btn-seleccionar-lote').show();
             tr.find('.invalid-feedback').hide();
         });
 
-        // Confirmar cantidad y guardar
+        // Confirmar cantidad: convierte kg → piezas antes de guardar
         $('.btn-confirmar-cantidad').off('click').on('click', function() {
             const tr = $(this).closest('tr');
-            const cantidad = parseFloat(tr.find('.input-cantidad-lote').val());
-            const max = parseFloat(tr.data('max'));
-            if (isNaN(cantidad) || cantidad <= 0 || cantidad > max) {
+            const cantKg = parseFloat(tr.find('.input-cantidad-lote').val());
+            const maxKg = parseFloat(tr.data('max-kg'));
+            const presKg = parseFloat(tr.data('pres-kg'));
+
+            if (isNaN(cantKg) || cantKg <= 0 || cantKg > maxKg) {
                 tr.find('.input-cantidad-lote').addClass('is-invalid');
-                tr.find('.invalid-feedback').text('No puede exceder la cantidad disponible en el lote (' + max + ')').show();
+                tr.find('.invalid-feedback').text(`No puede exceder ${maxKg} kg disponibles`).show();
                 return;
             }
+
             tr.find('.input-cantidad-lote').removeClass('is-invalid');
             tr.find('.invalid-feedback').hide();
+
+            // Conversión kg → piezas para el backend
+            const cantidadPiezas = Math.round((cantKg / presKg) * 1000) / 1000;
+
             const lote = tr.data('folio');
             const tipo_empaque = tr.data('tipo');
             const referencia_id = tr.data('ref');
             const factura = $('#fe_factura').val().trim();
+
             let devoluciones = JSON.parse(localStorage.getItem('devoluciones')) || [];
             const indexFactura = devoluciones.findIndex(item => item.factura === factura);
+
             if (indexFactura !== -1) {
-                const existe = devoluciones[indexFactura].empaques.some(empaque =>
-                    empaque.lote === lote &&
-                    empaque.tipo_empaque === tipo_empaque &&
-                    empaque.referencia_id === referencia_id
+                const existe = devoluciones[indexFactura].empaques.some(emp =>
+                    emp.lote === lote &&
+                    emp.tipo_empaque === tipo_empaque &&
+                    emp.referencia_id === referencia_id
                 );
                 if (existe) {
-                    showAlert('warning', 'Este producto (empaque con mismo lote, tipo y referencia) ya fue agregado');
+                    showAlert('warning', 'Este producto ya fue agregado a la orden');
                     return;
                 }
                 devoluciones[indexFactura].empaques.push({
                     lote: lote,
                     tipo_empaque: tipo_empaque,
                     referencia_id: referencia_id,
-                    cantidad: cantidad
+                    cantidad: cantidadPiezas // ← piezas para el backend
                 });
             } else {
                 devoluciones.push({
@@ -456,17 +529,30 @@
                         lote: lote,
                         tipo_empaque: tipo_empaque,
                         referencia_id: referencia_id,
-                        cantidad: cantidad
+                        cantidad: cantidadPiezas // ← piezas para el backend
                     }]
                 });
             }
+
             localStorage.setItem('devoluciones', JSON.stringify(devoluciones));
             $('#btn_guardar_orden_devolucion').prop('disabled', false);
             $('#div_observaciones').fadeIn(300);
-            showAlert('success', `Producto del lote ${lote} agregado a la orden de devolución con cantidad: ${cantidad}`);
-            tr.find('.input-cantidad-lote').val(cantidad).prop('disabled', true).css('background','#e9ffe9');
+
+            showAlert('success', `Agregado: ${cantKg} kg (${cantidadPiezas} pza(s)) del lote ${lote}`);
+
+            // Feedback visual en la fila
+            // POR esto:
+            tr.find('.input-group').hide();
             tr.find('.btn-confirmar-cantidad, .btn-cancelar-cantidad').hide();
             tr.find('.btn-seleccionar-lote').hide();
+            tr.find('.col-12.col-md-7').html(`
+    <div class="text-center py-1">
+        <span class="badge bg-success fs-6 px-3 py-2">
+            <i class="fas fa-check me-2"></i>${cantKg} kg
+        </span>
+        <small class="text-muted d-block mt-1">${cantidadPiezas} pza(s)</small>
+    </div>
+`);
         });
     }
 
@@ -478,33 +564,27 @@
 
     function showErrorState() {
         $('#tbody_facturas').html(`
-        <tr>
-            <td colspan="7" class="text-center py-5">
-                <div class="d-flex flex-column align-items-center justify-content-center">
-                    <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                    <h5 class="text-danger mb-2">Error al cargar los datos</h5>
-                    <p class="text-muted">Por favor, intente nuevamente más tarde</p>
-                </div>
-            </td>
-        </tr>
-    `);
+            <tr>
+                <td colspan="7" class="text-center py-5">
+                    <div class="d-flex flex-column align-items-center justify-content-center">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h5 class="text-danger mb-2">Error al cargar los datos</h5>
+                        <p class="text-muted">Por favor, intente nuevamente más tarde</p>
+                    </div>
+                </td>
+            </tr>
+        `);
         $('#factura-alert').removeClass('d-none').addClass('alert-danger')
             .find('.alert-message').text('Error al realizar la búsqueda');
     }
 
     function showAlert(type, message, timeout = 5000) {
-        // Crear el elemento de alerta si no existe
         let $alertContainer = $('#alert-container');
         if ($alertContainer.length === 0) {
-            $alertContainer = $(`
-            <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 500px;">
-                
-            </div>
-        `);
+            $alertContainer = $(`<div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999; width: 500px;"></div>`);
             $('body').append($alertContainer);
         }
 
-        // Mapear tipos de Bootstrap a iconos de Font Awesome
         const icons = {
             'success': 'check-circle',
             'warning': 'exclamation-triangle',
@@ -512,28 +592,24 @@
             'info': 'info-circle'
         };
 
-        // Crear la alerta
         const alertId = 'alert-' + Date.now();
         const $alert = $(`
-        <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show shadow" role="alert">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-${icons[type] || 'info-circle'} me-2"></i>
-                <div>${message}</div>
+            <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show shadow" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-${icons[type] || 'info-circle'} me-2"></i>
+                    <div>${message}</div>
+                </div>
             </div>
-            
-        </div>
-    `);
+        `);
 
-        // Agregar a contenedor
         $alertContainer.append($alert);
-
-        // Mostrar con animación
         $alert.hide().fadeIn(300);
 
-        // Ocultar automáticamente después del timeout
         if (timeout > 0) {
             setTimeout(() => {
-                $alert.fadeOut(300, () => $(this).alert('close'));
+                $alert.fadeOut(300, function() {
+                    $(this).remove();
+                });
             }, timeout);
         }
     }

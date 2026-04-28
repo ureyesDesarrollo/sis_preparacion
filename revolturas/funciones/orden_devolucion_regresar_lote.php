@@ -34,11 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cantidad = (float)$row['cantidad'];
         $od_id = (int)$row['od_id'];
 
-        // Actualizar el stock
+        // Actualizar el stock según el tipo de empaque
         if ($tipo_empaque === 'rr') {
             $update_empaque = "UPDATE rev_revolturas_pt SET rr_ext_real = rr_ext_real + $cantidad WHERE rr_id = $id_empaque";
-        } else {
+        } elseif ($tipo_empaque === 'rrc') {
             $update_empaque = "UPDATE rev_revolturas_pt_cliente SET rrc_ext_real = rrc_ext_real + $cantidad WHERE rrc_id = $id_empaque";
+        } elseif ($tipo_empaque === 'pe') {
+            $update_empaque = "UPDATE producto_externo SET pe_existencia_real = pe_existencia_real + $cantidad WHERE pe_id = $id_empaque";
+        } else {
+            throw new Exception('Tipo de empaque desconocido: ' . $tipo_empaque);
         }
 
         if (!mysqli_query($conn, $update_empaque)) {

@@ -1,13 +1,92 @@
 <?php
+
+declare(strict_types=1);
+
+// Captura cualquier salida accidental de includes/warnings para que no corrompa el DOCX.
+ob_start();
+ini_set('display_errors', '0');
+error_reporting(E_ALL);
+
 require_once 'load_phpword.php';
 include '../../conexion/conexion.php';
-include "../utils/funciones.php";
+include '../utils/funciones.php';
 
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Shared\Converter;
+use PhpOffice\PhpWord\SimpleType\Jc;
+use PhpOffice\PhpWord\SimpleType\JcTable;
+
+function limpiarTextoWord($texto): string
+{
+    $texto = (string)($texto ?? '');
+
+    if ($texto === '') {
+        return '';
+    }
+
+    // Asegura UTF-8 y elimina caracteres de control inválidos para XML.
+    if (function_exists('mb_convert_encoding')) {
+        $texto = mb_convert_encoding($texto, 'UTF-8', 'UTF-8');
+    }
+
+    $texto = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $texto) ?? '';
+    $texto = preg_replace('/\s+/u', ' ', $texto) ?? '';
+
+    return trim($texto);
+}
+
+function mayusculasSeguro(string $texto): string
+{
+    return function_exists('mb_strtoupper') ? mb_strtoupper($texto, 'UTF-8') : strtoupper($texto);
+}
+
+function limpiarNombreArchivo(string $texto): string
+{
+    $texto = limpiarTextoWord($texto);
+    $texto = preg_replace('/[^A-Za-z0-9_\- ]/', '', $texto) ?? '';
+    $texto = trim($texto);
+
+    return $texto !== '' ? $texto : 'CLIENTE';
+}
+
+function limpiarBuffersSalida(): void
+{
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+}
+
+function enviarArchivoDocx(string $rutaArchivo, string $nombreDescarga): void
+{
+    if (!is_file($rutaArchivo) || !file_exists($rutaArchivo)) {
+        throw new RuntimeException('No se pudo generar el archivo DOCX.');
+    }
+
+    limpiarBuffersSalida();
+
+    if (headers_sent($file, $line)) {
+        throw new RuntimeException('Los headers ya fueron enviados en ' . $file . ':' . $line);
+    }
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    header('Content-Disposition: attachment; filename="' . $nombreDescarga . '"');
+    header('Content-Transfer-Encoding: binary');
+    header('Content-Length: ' . filesize($rutaArchivo));
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Expires: 0');
+
+    readfile($rutaArchivo);
+
+    @unlink($rutaArchivo);
+    exit;
+}
 
 function obtenerDatosRemision($orden, $folio, $cnx)
 {
+    $orden = mysqli_real_escape_string($cnx, (string)$orden);
+
     $sql = "SELECT
         oe.cte_id AS cliente_id,
         cte.cte_nombre AS cliente_nombre,
@@ -94,71 +173,69 @@ function obtenerDatosRemision($orden, $folio, $cnx)
     while ($fila = mysqli_fetch_assoc($result)) {
         $fila['calidad'] = ($fila['tipo_producto'] === 'EXTERNO')
             ? ''
-            : obtenerBloomPorCalidad($fila['cal_id']);
+            : limpiarTextoWord((string)obtenerBloomPorCalidad($fila['cal_id']));
+
+        $fila['cliente_nombre'] = limpiarTextoWord($fila['cliente_nombre'] ?? '');
+        $fila['cliente_ubicacion'] = limpiarTextoWord($fila['cliente_ubicacion'] ?? '');
+        $fila['rev_folio'] = limpiarTextoWord($fila['rev_folio'] ?? '');
+        $fila['presentacion_descripcion'] = limpiarTextoWord($fila['presentacion_descripcion'] ?? '');
+
         $data[] = $fila;
     }
 
     return $data;
 }
 
-function formatoMoneda($cantidad)
+function formatoMoneda($cantidad): string
 {
-    return '$ ' . number_format($cantidad, 2, '.', ',');
+    return '$ ' . number_format((float)$cantidad, 2, '.', ',');
 }
 
-function obtenerDescripcionProducto($fila, $kilos_facturables, $esPromocion = false)
+function obtenerDescripcionProducto($fila, $kilos_facturables, $esPromocion = false): string
 {
-    $presentacionId = $fila['presentacion_id'];
-    $tipoProducto = $fila['tipo_producto'];
+    $presentacionId = (string)($fila['presentacion_id'] ?? '');
 
-    /* if ($tipoProducto === 'EXTERNO') {
-        if ($presentacionId == '6') {
-            return $esPromocion
-                ? 'GRENETINA HIDROLIZADA 500 GRAMOS (PROMOCIÓN)'
-                : 'GRENETINA HIDROLIZADA 500 GRAMOS';
-        }
-
-        return $esPromocion
-            ? $fila['presentacion_descripcion'] . ' (PROMOCIÓN)'
-            : $fila['presentacion_descripcion'];
-    } */
-
-    if ($presentacionId == '3') {
-        return descripcionCajas(
+    if ($presentacionId === '3') {
+        return limpiarTextoWord(descripcionCajas(
             $kilos_facturables,
             '1 KG',
             $esPromocion ? 'CAJAS (PROMOCIÓN)' : 'CAJAS'
-        );
-    } elseif ($presentacionId == '4') {
+        ));
+    }
 
-        return descripcionCajas(
+    if ($presentacionId === '4') {
+        return limpiarTextoWord(descripcionCajas(
             $kilos_facturables,
             '1/4 KG',
             $esPromocion ? 'CAJAS (PROMOCIÓN)' : 'CAJAS'
-        );
-    } elseif ($presentacionId == '2') {
+        ));
+    }
 
-        return descripcionCajas(
+    if ($presentacionId === '2') {
+        return limpiarTextoWord(descripcionCajas(
             $kilos_facturables,
             '25 KG',
             $esPromocion ? 'SACOS (PROMOCIÓN)' : 'SACOS'
-        );
-    } elseif ($presentacionId == '6') {
+        ));
+    }
 
-        return descripcionCajas(
+    if ($presentacionId === '6') {
+        return limpiarTextoWord(descripcionCajas(
             $kilos_facturables,
             '500 GRAMOS',
             $esPromocion ? 'CAJAS (PROMOCIÓN)' : 'CAJAS',
             10
-        );
+        ));
     }
 
-    return $esPromocion
-        ? $fila['presentacion_descripcion'] . ' (PROMOCIÓN)'
-        : $fila['presentacion_descripcion'];
+    return limpiarTextoWord(
+        $esPromocion
+            ? (($fila['presentacion_descripcion'] ?? '') . ' (PROMOCIÓN)')
+            : ($fila['presentacion_descripcion'] ?? '')
+    );
 }
 
-function generarRemisionWord($remision, $archivo = 'REMISION.docx')
+function generarRemisionWord(array $remision, string $archivo = 'REMISION.docx'): void
 {
     $phpWord = new PhpWord();
 
@@ -167,8 +244,8 @@ function generarRemisionWord($remision, $archivo = 'REMISION.docx')
         'marginRight'  => 600,
         'marginTop'    => 500,
         'marginBottom' => 500,
-        'pageSizeW'    => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(8.5),
-        'pageSizeH'    => \PhpOffice\PhpWord\Shared\Converter::inchToTwip(11),
+        'pageSizeW'    => Converter::inchToTwip(8.5),
+        'pageSizeH'    => Converter::inchToTwip(11),
     ]);
 
     $logoPath = '../../imagenes/logo_empresa.png';
@@ -176,8 +253,8 @@ function generarRemisionWord($remision, $archivo = 'REMISION.docx')
         $section->addImage($logoPath, [
             'width' => 100,
             'height' => 120,
-            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::START,
-            'wrappingStyle' => 'inline'
+            'alignment' => Jc::START,
+            'wrappingStyle' => 'inline',
         ]);
         $section->addTextBreak(1);
     }
@@ -186,32 +263,32 @@ function generarRemisionWord($remision, $archivo = 'REMISION.docx')
         'size' => 22,
         'bold' => true,
         'color' => '000000',
-        'name' => 'Arial'
+        'name' => 'Arial',
     ], ['align' => 'center', 'spaceAfter' => 200]);
 
-    $section->addText('FOLIO: ' . $remision['folio'], [
+    $section->addText('FOLIO: ' . limpiarTextoWord($remision['folio'] ?? ''), [
         'size' => 12,
-        'bold' => true
+        'bold' => true,
     ], ['align' => 'right']);
 
     $section->addTextBreak(1);
-    $section->addText("VENDIDO A: " . strtoupper($remision['cliente']), [
+    $section->addText('VENDIDO A: ' . mayusculasSeguro(limpiarTextoWord($remision['cliente'] ?? '')), [
         'size' => 12,
-        'bold' => true
+        'bold' => true,
     ]);
 
     $tableInfo = $section->addTable([
         'borderSize'  => 0,
         'borderColor' => 'FFFFFF',
         'cellMargin'  => 60,
-        'alignment'   => \PhpOffice\PhpWord\SimpleType\JcTable::START,
+        'alignment'   => JcTable::START,
     ]);
     $tableInfo->addRow();
-    $tableInfo->addCell(8000)->addText("DOMICILIO:   " . $remision['domicilio'], [
-        'size' => 12
+    $tableInfo->addCell(8000)->addText('DOMICILIO:   ' . limpiarTextoWord($remision['domicilio'] ?? ''), [
+        'size' => 12,
     ]);
-    $tableInfo->addCell(4000)->addText($remision['fecha'], [
-        'size' => 12
+    $tableInfo->addCell(4000)->addText(limpiarTextoWord($remision['fecha'] ?? ''), [
+        'size' => 12,
     ], ['align' => 'right']);
     $section->addTextBreak(1);
 
@@ -219,7 +296,7 @@ function generarRemisionWord($remision, $archivo = 'REMISION.docx')
         'borderSize' => 0,
         'borderColor' => 'FFFFFF',
         'cellMargin' => 10,
-        'alignment'  => \PhpOffice\PhpWord\SimpleType\JcTable::START,
+        'alignment'  => JcTable::START,
         'width' => 100 * 30,
     ]);
 
@@ -230,16 +307,17 @@ function generarRemisionWord($remision, $archivo = 'REMISION.docx')
     $table->addCell(1500)->addText('IMPORTE', ['bold' => true, 'size' => 11], ['align' => 'right']);
     $table->addCell(2500)->addText('OBSERVACIONES', ['bold' => true, 'size' => 11], ['align' => 'center']);
 
-    foreach ($remision['productos'] as $prod) {
+    foreach (($remision['productos'] ?? []) as $prod) {
         $esPromocion = !empty($prod['es_promocion']);
+        $presentacionId = (string)($prod['presentacion_id'] ?? '');
 
         $table->addRow();
-        $table->addCell(1500)->addText($prod['cantidad'], [], ['align' => 'center']);
+        $table->addCell(1500)->addText(limpiarTextoWord((string)($prod['cantidad'] ?? '')), [], ['align' => 'center']);
         $table->addCell(5000)->addText(
-            $prod['presentacion_id'] == '6' ? 'GRENETINA HIDROLIZADA' : 'GRENETINA ALIMIENTICIA'
+            $presentacionId === '6' ? 'GRENETINA HIDROLIZADA' : 'GRENETINA ALIMIENTICIA'
         );
-        $table->addCell(1500)->addText($prod['precio'], [], ['align' => 'right']);
-        $table->addCell(1500)->addText($prod['importe'], [], ['align' => 'right']);
+        $table->addCell(1500)->addText(limpiarTextoWord($prod['precio'] ?? ''), [], ['align' => 'right']);
+        $table->addCell(1500)->addText(limpiarTextoWord($prod['importe'] ?? ''), [], ['align' => 'right']);
         $table->addCell(2500)->addText(
             $esPromocion ? 'MERCANCÍA DE PROMOCIÓN' : '',
             ['italic' => $esPromocion, 'bold' => $esPromocion, 'color' => $esPromocion ? 'B22222' : '000000'],
@@ -249,16 +327,17 @@ function generarRemisionWord($remision, $archivo = 'REMISION.docx')
         if (!empty($prod['bloom'])) {
             $table->addRow();
             $table->addCell(1500);
-            $table->addCell(5000)->addText("({$prod['bloom']})", ['size' => 10]);
+            $table->addCell(5000)->addText('(' . limpiarTextoWord($prod['bloom']) . ')', ['size' => 10]);
             $table->addCell(1500);
             $table->addCell(1500);
             $table->addCell(2500);
         }
 
         if (!empty($prod['detalle'])) {
+            $detalle = limpiarTextoWord(($prod['descripcion'] ?? '') . ' - ' . ($prod['detalle'] ?? ''));
             $table->addRow();
             $table->addCell(1500);
-            $table->addCell(5000)->addText("({$prod['descripcion']} - {$prod['detalle']})", ['size' => 10]);
+            $table->addCell(5000)->addText('(' . $detalle . ')', ['size' => 10]);
             $table->addCell(1500);
             $table->addCell(1500);
             $table->addCell(2500);
@@ -269,62 +348,70 @@ function generarRemisionWord($remision, $archivo = 'REMISION.docx')
     $tableTotals = $section->addTable([
         'borderSize' => 0,
         'borderColor' => 'FFFFFF',
-        'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::END,
+        'alignment' => JcTable::END,
     ]);
     $tableTotals->addRow();
     $tableTotals->addCell(4000)->addText('SUBTOTAL:', [
         'bold' => true,
-        'size' => 12
+        'size' => 12,
     ]);
-    $tableTotals->addCell(3000)->addText($remision['subtotal'], [
+    $tableTotals->addCell(3000)->addText(limpiarTextoWord($remision['subtotal'] ?? ''), [
         'bold' => true,
-        'size' => 12
+        'size' => 12,
     ], ['align' => 'right']);
     $tableTotals->addRow();
     $tableTotals->addCell(4000)->addText('TOTAL:', [
         'bold' => true,
-        'size' => 12
+        'size' => 12,
     ]);
-    $tableTotals->addCell(3000)->addText($remision['total'], [
+    $tableTotals->addCell(3000)->addText(limpiarTextoWord($remision['total'] ?? ''), [
         'bold' => true,
-        'size' => 12
+        'size' => 12,
     ], ['align' => 'right']);
 
     if (!empty($remision['total_letra'])) {
         $section->addTextBreak(1);
-        $section->addText('IMPORTE CON LETRA: (' . strtoupper($remision['total_letra'] . ')'), [
-            'size' => 12
+        $section->addText('IMPORTE CON LETRA: (' . mayusculasSeguro(limpiarTextoWord($remision['total_letra'])) . ')', [
+            'size' => 12,
         ]);
     }
 
-    header("Content-Description: File Transfer");
-    header('Content-Disposition: attachment; filename="' . $archivo . '"');
-    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-    header('Content-Transfer-Encoding: binary');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Expires: 0');
+    $tempFile = tempnam(sys_get_temp_dir(), 'remision_');
+    if ($tempFile === false) {
+        throw new RuntimeException('No se pudo crear el archivo temporal.');
+    }
+
+    $rutaDocx = $tempFile . '.docx';
+    @rename($tempFile, $rutaDocx);
 
     $writer = IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save("php://output");
-    exit;
+    $writer->save($rutaDocx);
+
+    enviarArchivoDocx($rutaDocx, $archivo);
 }
 
-$orden = $_GET['orden_id'];
-$folio = $_GET['folio'];
+$orden = $_GET['orden_id'] ?? '';
+$folio = $_GET['folio'] ?? '';
 
 $precios = [];
 if (!empty($_GET['precios'])) {
-    $precios = json_decode($_GET['precios'], true);
+    $precios = json_decode((string)$_GET['precios'], true);
     if (!is_array($precios)) {
         $precios = [];
     }
 }
 
 $cnx = Conectarse();
+if (function_exists('mysqli_set_charset')) {
+    @mysqli_set_charset($cnx, 'utf8mb4');
+}
+
 $datos = obtenerDatosRemision($orden, $folio, $cnx);
 
 if ($datos === null) {
-    die('No se pudieron obtener los datos de la remisión.');
+    limpiarBuffersSalida();
+    http_response_code(500);
+    exit('No se pudieron obtener los datos de la remisión.');
 }
 
 $fmt = new \IntlDateFormatter('es_MX', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
@@ -335,80 +422,82 @@ foreach ($precios as $p) {
     $empaqueId = $p['empaque_id'] ?? null;
     if ($empaqueId !== null && $empaqueId !== '') {
         $preciosIndex[$empaqueId] = [
-            'costo_unitario' => floatval($p['costo_unitario'] ?? 0),
-            'promocion' => floatval($p['promocion'] ?? 0)
+            'costo_unitario' => (float)($p['costo_unitario'] ?? 0),
+            'promocion' => (float)($p['promocion'] ?? 0),
         ];
     }
 }
 
 $remision = [
-    'folio' => $folio,
-    'fecha' => strtoupper($fmt->format(time())),
+    'folio' => limpiarTextoWord((string)$folio),
+    'fecha' => mayusculasSeguro((string)$fmt->format(time())),
     'cliente' => '',
     'domicilio' => '',
     'productos' => [],
     'subtotal' => '',
     'total' => '',
-    'total_letra' => ''
+    'total_letra' => '',
 ];
 
 foreach ($datos as $fila) {
     if (empty($remision['cliente'])) {
-        $remision['cliente'] = $fila['cliente_nombre'];
-        $remision['domicilio'] = $fila['cliente_ubicacion'];
+        $remision['cliente'] = limpiarTextoWord($fila['cliente_nombre'] ?? '');
+        $remision['domicilio'] = limpiarTextoWord($fila['cliente_ubicacion'] ?? '');
     }
 
     $empaqueId = $fila['empaque_id'];
     $precioData = $preciosIndex[$empaqueId] ?? [
         'costo_unitario' => 0,
-        'promocion' => 0
+        'promocion' => 0,
     ];
-    $presentacionId = $fila['presentacion_id'];
+    $presentacionId = (string)($fila['presentacion_id'] ?? '');
 
-    $precio = floatval($precioData['costo_unitario']);
-    $promocion = floatval($precioData['promocion']);
-    $kilos_solicitados = floatval($fila['cantidad_solicitada']) * floatval($fila['pres_kg']);
-    $kilos_facturables = max(0, $kilos_solicitados - $promocion);
+    $precio = (float)$precioData['costo_unitario'];
+    $promocion = (float)$precioData['promocion'];
+    $kilosSolicitados = (float)($fila['cantidad_solicitada'] ?? 0) * (float)($fila['pres_kg'] ?? 0);
+    $kilosFacturables = max(0, $kilosSolicitados - $promocion);
 
-    $descripcion = obtenerDescripcionProducto($fila, $kilos_facturables, false);
-    $importe = $precio * $kilos_facturables;
+    $descripcion = obtenerDescripcionProducto($fila, $kilosFacturables, false);
+    $importe = $precio * $kilosFacturables;
 
     $remision['productos'][] = [
         'presentacion_id' => $presentacionId,
-        'cantidad' => $kilos_facturables,
+        'cantidad' => $kilosFacturables,
         'descripcion' => $descripcion,
-        'bloom' => $fila['calidad'],
-        'detalle' => "Lote: {$fila['rev_folio']}",
-        'precio' => '$ ' . number_format($precio, 2, '.', ','),
-        'importe' => '$ ' . number_format($importe, 2, '.', ','),
-        'es_promocion' => false
+        'bloom' => limpiarTextoWord($fila['calidad'] ?? ''),
+        'detalle' => limpiarTextoWord('Lote: ' . ($fila['rev_folio'] ?? '')),
+        'precio' => formatoMoneda($precio),
+        'importe' => formatoMoneda($importe),
+        'es_promocion' => false,
     ];
 
     if ($promocion > 0) {
-        $descripcion_promo = obtenerDescripcionProducto($fila, $promocion, true);
+        $descripcionPromo = obtenerDescripcionProducto($fila, $promocion, true);
 
         $remision['productos'][] = [
             'presentacion_id' => $presentacionId,
             'cantidad' => $promocion,
-            'descripcion' => $descripcion_promo,
-            'bloom' => $fila['calidad'],
-            'detalle' => "LOTE: {$fila['rev_folio']}",
+            'descripcion' => $descripcionPromo,
+            'bloom' => limpiarTextoWord($fila['calidad'] ?? ''),
+            'detalle' => limpiarTextoWord('LOTE: ' . ($fila['rev_folio'] ?? '')),
             'precio' => '$ 0.00',
             'importe' => '$ 0.00',
-            'es_promocion' => true
+            'es_promocion' => true,
         ];
     }
 }
 
-$subtotal = 0;
+$subtotal = 0.0;
 foreach ($remision['productos'] as $prod) {
-    $imp = str_replace(['$', ','], '', $prod['importe']);
-    $subtotal += floatval($imp);
+    $imp = str_replace(['$', ','], '', (string)($prod['importe'] ?? '0'));
+    $subtotal += (float)$imp;
 }
 
-$remision['subtotal'] = '$ ' . number_format($subtotal, 2, '.', ',');
+$remision['subtotal'] = formatoMoneda($subtotal);
 $remision['total'] = $remision['subtotal'];
-$remision['total_letra'] = numeroALetras($subtotal);
+$remision['total_letra'] = limpiarTextoWord((string)numeroALetras($subtotal));
 
-$nombreCliente = preg_replace('/[^A-Za-z0-9_\- ]/', '', $remision['cliente']);
-generarRemisionWord($remision, 'REMISION_' . $remision['folio'] . '_' . $nombreCliente . '.docx');
+$nombreCliente = limpiarNombreArchivo($remision['cliente']);
+$nombreArchivo = 'REMISION_' . ($remision['folio'] !== '' ? $remision['folio'] : 'SIN_FOLIO') . '_' . $nombreCliente . '.docx';
+
+generarRemisionWord($remision, $nombreArchivo);

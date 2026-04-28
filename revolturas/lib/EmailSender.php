@@ -35,16 +35,16 @@ class MailSender
     {
         try {
             // Configurar destinatario
-			$this->mail->addAddress("concepcion@progel.com.mx");
-			$this->mail->addAddress("bgonzalez@progel.com.mx");
-			//$this->mail->addAddress("gerentemejoracontinua@progel.com.mx");
-			$this->mail->addAddress("jefaturati@progel.com.mx");
-			$this->mail->addAddress("gerentedeventas@progel.com.mx");
-			$this->mail->addAddress("ventas3@progel.com.mx");
-			$this->mail->addAddress("fernando.rull@progel.com.mx");
+            $this->mail->addAddress("concepcion@progel.com.mx");
+            $this->mail->addAddress("bgonzalez@progel.com.mx");
+            //$this->mail->addAddress("gerentemejoracontinua@progel.com.mx");
+            $this->mail->addAddress("jefaturati@progel.com.mx");
+            $this->mail->addAddress("gerentedeventas@progel.com.mx");
+            $this->mail->addAddress("ventas3@progel.com.mx");
+            $this->mail->addAddress("fernando.rull@progel.com.mx");
             //$this->mail->addAddress("desarrollo@progel.com.mx");
             //$this->mail->addCC("jefaturati@progel.com.mx");
-            //$this->mail->addCC('');  
+            //$this->mail->addCC('');
             // Configurar asunto y cuerpo del correo
             $this->mail->isHTML(true);
             $this->mail->Subject = $asunto;
@@ -72,14 +72,14 @@ class MailSender
                 die("Error: No se pudo leer logo_base64.txt en: " . $base64File);
             }
             $this->mail->clearAddresses();
-			$this->mail->addAddress("bgonzalez@progel.com.mx");
+            /* $this->mail->addAddress("bgonzalez@progel.com.mx");
 			$this->mail->addAddress("jefaturati@progel.com.mx");
 			//$this->mail->addAddress("gerentedeventas@progel.com.mx");
 			$this->mail->addAddress("ventas3@progel.com.mx");
 			$this->mail->addAddress("fernando.rull@progel.com.mx");
 			$this->mail->addAddress("almacen@progel.com.mx");
-			$this->mail->addAddress("contacto@gprot.com.mx");
-            //$this->mail->addAddress("desarrollo@progel.com.mx");
+			$this->mail->addAddress("contacto@gprot.com.mx"); */
+            $this->mail->addAddress("desarrollo@progel.com.mx");
             #$this->mail->addCC("jefaturati@progel.com.mx");
 
             if (!empty($destinatarios)) {
@@ -90,6 +90,15 @@ class MailSender
             $this->mail->isHTML(true);
             $this->mail->Subject = "Orden de Devolución - {$ordenInfo['od_id']}";
 
+            $map = [
+                'PENDIENTE'  => 'pending',
+                'RECIBIDO'   => 'completed',
+                'LIBERADO'   => 'completed',
+                'FINALIZADA' => 'completed',
+            ];
+
+            $estado = $ordenInfo['od_estado'] ?? '';
+            $badgeClass = $map[$estado] ?? '';
             // Construir el cuerpo HTML del correo
             $body = '
 <!DOCTYPE html>
@@ -238,7 +247,8 @@ class MailSender
             <div class="document-number">ORDEN-' . $ordenInfo['od_id'] . '</div>
             <img src="' . $logoBase64 . '" alt="Logo progel" class="logo">
             <h3>Orden de Devolución</h3>
-            <div class="badge ' . strtolower($ordenInfo['od_estado'] ?? 'pending') . '">' . ($ordenInfo['od_estado'] ?? 'Pendiente') . '</div>
+
+           <div class="badge ' . $badgeClass . '">' . ($ordenInfo['od_estado'] ?? 'Pendiente') . '</div>
         </div>
 
         <div class="info-section">

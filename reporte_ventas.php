@@ -57,6 +57,21 @@ remisiones_kilos AS (
       AND UPPER(r.cliente_nombre) NOT LIKE '%LUIS FRANCISCO ARBAIZA%'
       AND UPPER(r.cliente_nombre) NOT LIKE '%LUIS ARBAIZA%'
     GROUP BY DATE_FORMAT(r.fecha_remision, '%Y-%m-01')
+),
+
+notas_credito_agg AS (
+    SELECT
+        DATE_FORMAT(fecha, '%Y-%m-01') AS mes,
+        SUM(COALESCE(total, 0)) AS total_nc,
+        SUM(
+            CASE
+                WHEN tipo = 'DEVOLUCION' THEN COALESCE(cantidad, 0)
+                ELSE 0
+            END
+        ) AS cantidad_devuelta
+    FROM notas_credito
+    WHERE fecha BETWEEN ? AND ?
+    GROUP BY DATE_FORMAT(fecha, '%Y-%m-01')
 )
 
 SELECT
@@ -77,20 +92,21 @@ SELECT
         WHEN 12 THEN 'DICIEMBRE'
     END AS mes_nombre,
 
-    COALESCE(fk.kilos_fiscal, 0) AS kilos_fiscal,
-    COALESCE(ft.monto_fiscal, 0) AS monto_fiscal,
+    COALESCE(fk.kilos_fiscal, 0) - COALESCE(nc.cantidad_devuelta, 0) AS kilos_fiscal,
+    COALESCE(ft.monto_fiscal, 0) - COALESCE(nc.total_nc, 0) AS monto_fiscal,
 
     COALESCE(rk.kilos_remision, 0) AS kilos_remision,
     COALESCE(rt.monto_remision, 0) AS monto_remision,
 
-    COALESCE(fk.kilos_fiscal, 0) + COALESCE(rk.kilos_remision, 0) AS venta_total_kg,
-    COALESCE(ft.monto_fiscal, 0) + COALESCE(rt.monto_remision, 0) AS venta_total_monto
+    (COALESCE(fk.kilos_fiscal, 0) - COALESCE(nc.cantidad_devuelta, 0)) + COALESCE(rk.kilos_remision, 0) AS venta_total_kg,
+    (COALESCE(ft.monto_fiscal, 0) - COALESCE(nc.total_nc, 0)) + COALESCE(rt.monto_remision, 0) AS venta_total_monto
 
 FROM meses m
 LEFT JOIN facturas_totales ft   ON ft.mes = DATE_FORMAT(m.mes, '%Y-%m-01')
 LEFT JOIN facturas_kilos fk     ON fk.mes = DATE_FORMAT(m.mes, '%Y-%m-01')
 LEFT JOIN remisiones_totales rt ON rt.mes = DATE_FORMAT(m.mes, '%Y-%m-01')
 LEFT JOIN remisiones_kilos rk   ON rk.mes = DATE_FORMAT(m.mes, '%Y-%m-01')
+LEFT JOIN notas_credito_agg nc  ON nc.mes = DATE_FORMAT(m.mes, '%Y-%m-01')
 ORDER BY m.mes
 ";
 
@@ -101,7 +117,9 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-  'ssssssssss',
+  'ssssssssssss',
+  $fechaInicio,
+  $fechaFin,
   $fechaInicio,
   $fechaFin,
   $fechaInicio,
@@ -148,12 +166,18 @@ while ($fila = $resultadoCobranzaR->fetch_assoc()) {
 
 $sqlCobranza = "
     SELECT
-        DATE_FORMAT(FEC_REA, '%Y-%m-01') AS mes,
-        SUM(COALESCE(CANTIDAD, 0)) AS cobranza_f
+        DATE_FORMAT(FECHA, '%Y-%m-01') AS mes,
+        SUM(
+    CASE
+        WHEN cve_mon <> 1 THEN importe * tip_cam
+        ELSE IMPORTE
+    END
+    ) AS cobranza_f
     FROM pagos2
-    WHERE FEC_REA BETWEEN ? AND ?
+    WHERE FECHA BETWEEN ? AND ?
+      AND STATUS != 'Cancelada'
       AND TIPO != 'Nota Cred'
-    GROUP BY DATE_FORMAT(FEC_REA, '%Y-%m-01')
+    GROUP BY DATE_FORMAT(FECHA, '%Y-%m-01')
 ";
 
 $stmtCobranza = $conexion2->prepare($sqlCobranza);
@@ -579,7 +603,6 @@ function acumular(&$t, $r)
               <td><?= money($totales['cobranza_f']) ?></td>
               <td><?= money($totales['cobranza_r']) ?></td>
               <td><?= money($totales['cobranza_total']) ?></td>
-              <td></td>
               <td></td>
               <td><?= precioPromedio($totales['venta_total_monto'], $totales['venta_total_kg']) ?></td>
             </tr>

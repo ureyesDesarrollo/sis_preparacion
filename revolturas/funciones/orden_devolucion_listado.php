@@ -82,13 +82,53 @@ INNER JOIN rev_presentacion p
     ON p.pres_id = ptc.pres_id
 INNER JOIN usuarios u
     ON u.usu_id = od.usu_id
-WHERE odd.tipo_empaque = 'rrc';
+WHERE odd.tipo_empaque = 'rrc'
+
+UNION ALL
+
+SELECT
+    od.od_id,
+    od.od_fecha,
+    od.od_estado,
+    od.cte_id,
+    ct.cte_nombre,
+    odd.odd_id,
+    odd.tipo_empaque,
+    odd.id_empaque,
+    odd.lote,
+    odd.factura,
+    odd.cantidad,
+    oda.cal_id,
+    odd.estado_lote,
+    pe.pe_id AS empaque_id,
+    pe.pres_id,
+    p.pres_descrip,
+    'pe' AS tipo,
+    od.od_motivo,
+    u.usu_nombre
+FROM orden_devolucion_detalle odd
+INNER JOIN orden_devolucion od
+    ON od.od_id = odd.od_id
+LEFT JOIN (
+    SELECT odd_id, MAX(cal_id) AS cal_id
+    FROM orden_devolucion_analisis
+    GROUP BY odd_id
+) oda ON oda.odd_id = odd.odd_id
+INNER JOIN rev_clientes ct
+    ON ct.cte_id = od.cte_id
+INNER JOIN producto_externo pe
+    ON pe.pe_id = odd.id_empaque
+INNER JOIN rev_presentacion p
+    ON p.pres_id = pe.pres_id
+INNER JOIN usuarios u
+    ON u.usu_id = od.usu_id
+WHERE odd.tipo_empaque = 'pe';
 ";
 
         $res = mysqli_query($cnx, $sql);
 
         if (!$res) {
-            throw new Exception("Error al ejecutar la consulta de orden de voluciones: {$mysqli_error($cnx)}");
+            throw new Exception("Error al ejecutar la consulta de orden de devoluciones: " . mysqli_error($cnx));
         }
 
         $devoluciones = [];
