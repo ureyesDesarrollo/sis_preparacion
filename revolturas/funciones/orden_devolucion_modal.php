@@ -520,7 +520,8 @@
                     lote: lote,
                     tipo_empaque: tipo_empaque,
                     referencia_id: referencia_id,
-                    cantidad: cantidadPiezas // ← piezas para el backend
+                    cantidad: cantidadPiezas, // ← piezas para el backend
+                    cantidad_kg: cantKg
                 });
             } else {
                 devoluciones.push({

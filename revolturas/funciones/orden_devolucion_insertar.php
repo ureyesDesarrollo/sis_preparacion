@@ -47,7 +47,7 @@ try {
     }
     $od_id = mysqli_insert_id($cnx);
 
-    $cantidad_total = 0;
+    $cantidad_total_kg  = 0;
 
     // Insertar detalles
     foreach ($devoluciones as $factura) {
@@ -63,8 +63,9 @@ try {
                 continue;
             }
             $row_fact = mysqli_fetch_assoc($res_fact);
-            $cantidad = (float)$emp['cantidad'];
-            $cantidad_total += $cantidad;
+            $cantidad = (float)$emp['cantidad']; // piezas para el detalle
+            $cantidad_kg = isset($emp['cantidad_kg']) ? (float)$emp['cantidad_kg'] : 0; // kg para nota
+            $cantidad_total_kg += $cantidad_kg;
             $sql_lote = '';
             $lote = '';
 
@@ -104,7 +105,7 @@ try {
             $total_nota = (float)$row_nota['TOT_NOTA'];
         }
         $sql_insert_nota = "INSERT INTO notas_credito (fecha, factura, folio_nota, tipo, cantidad, total)
-        VALUES (NOW(), '{$row_nota['NO_FAC']}', '$folio_nota_credito', 'DEVOLUCION', {$cantidad_total}, {$total_nota})";
+        VALUES (NOW(), '{$row_nota['NO_FAC']}', '$folio_nota_credito', 'DEVOLUCION', {$cantidad_total_kg}, {$total_nota})";
         if (!mysqli_query($cnx, $sql_insert_nota)) {
             throw new Exception("Error al insertar nota de crédito: " . mysqli_error($conn));
         }
