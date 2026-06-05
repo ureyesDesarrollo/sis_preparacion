@@ -6,34 +6,83 @@
 include "../../seguridad/user_seguridad.php";
 include "../../conexion/conexion.php";
 
-$cnx =  Conectarse();
+$cnx = Conectarse();
 
 if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
+    header('Content-Type: application/json; charset=utf-8');
+
     try {
-        $cte_id = $_POST['cte_id'];
-        $listado_empacado_cliente = mysqli_query($cnx, "SELECT rrc.rrc_ext_inicial as rr_ext_inicial,rrc.rrc_id, 
-        rrc.rrc_ext_real as rr_ext_real,pres.pres_descrip,rev.rev_folio as revoltura FROM rev_revolturas_pt_cliente rrc
-        INNER JOIN rev_presentacion pres ON pres.pres_id = rrc.pres_id
-        INNER JOIN rev_revolturas rev ON rev.rev_id = rrc.rev_id
-        WHERE rrc.cte_id = '$cte_id' AND rrc.rrc_ext_real != 0 AND rev.rev_count_etiquetado > 0");
+        $cte_id = isset($_POST['cte_id']) ? intval($_POST['cte_id']) : 0;
+
+        if ($cte_id <= 0) {
+            throw new Exception("Cliente inválido");
+        }
+
+        /*
+            Ahora usamos la vista de disponibilidad de PT cliente.
+
+            Regla:
+            existencia disponible = rrc_ext_real - órdenes abiertas comprometidas
+
+            Estados abiertos:
+            PENDIENTE, PROCESO, ETIQUETA LIBERADA, LIBERADO
+        */
+        $sql = "
+            SELECT 
+                v.rrc_ext_inicial AS rr_ext_inicial,
+                v.rrc_id,
+                v.rev_id,
+                v.pres_id,
+                v.cte_id,
+                v.rrc_ext_real AS rr_ext_real,
+                v.cantidad_comprometida,
+                v.cantidad_disponible,
+                pres.pres_descrip,
+                pres.pres_kg,
+                rev.rev_folio AS revoltura
+            FROM vw_rev_revolturas_pt_cliente_disponible v
+            INNER JOIN rev_presentacion pres 
+                ON pres.pres_id = v.pres_id
+            INNER JOIN rev_revolturas rev 
+                ON rev.rev_id = v.rev_id
+            WHERE v.cte_id = ?
+              AND v.cantidad_disponible > 0
+              AND rev.rev_count_etiquetado > 0
+            ORDER BY rev.rev_folio DESC, v.rrc_id ASC
+        ";
+
+        $stmt = mysqli_prepare($cnx, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $cte_id);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if (!$result) {
+            throw new Exception(mysqli_error($cnx));
+        }
 
         $datos = array();
 
-        while ($fila = mysqli_fetch_assoc($listado_empacado_cliente)) {
+        while ($fila = mysqli_fetch_assoc($result)) {
+            $fila['rr_ext_inicial'] = floatval($fila['rr_ext_inicial']);
+            $fila['rr_ext_real'] = floatval($fila['rr_ext_real']);
+            $fila['cantidad_comprometida'] = floatval($fila['cantidad_comprometida']);
+            $fila['cantidad_disponible'] = floatval($fila['cantidad_disponible']);
+            $fila['pres_kg'] = floatval($fila['pres_kg']);
+
             $datos[] = $fila;
         }
 
-        $json_empacado = json_encode($datos);
-
-        echo $json_empacado;
+        echo json_encode($datos);
     } catch (Exception $e) {
+        http_response_code(400);
         echo json_encode(['error' => $e->getMessage()]);
     } finally {
         mysqli_close($cnx);
     }
+
     exit();
 }
-
 ?>
 
 <script>
@@ -42,6 +91,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         });
+
         $('#dataTableEmpaquesClientes').DataTable({
             responsive: true,
             bDestroy: true,
@@ -67,24 +117,20 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
             buttons: {
                 dom: {
                     button: {
-                        className: 'btn' //Primary class for all buttons
+                        className: 'btn'
                     },
                 },
                 buttons: [{
-                        //Botón para Excel
                         extend: 'excel',
                         footer: true,
                         title: 'Listado Cliente Empacado',
                         filename: 'Listado_cliente_empacado_excel',
-
-                        //Aquí es donde generas el botón personalizado
                         text: '<button title="Exportar excel" class="btn btn-outline-success"><i class="fas fa-file-excel"></i></button>',
                         exportOptions: {
                             columns: [0, 1, 2, 3]
                         }
                     },
                     {
-                        //Botón para PDF
                         extend: 'pdf',
                         footer: true,
                         title: 'Listado Cliente Empacado',
@@ -94,13 +140,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
                             columns: [0, 1, 2, 3]
                         }
                     },
-                    //Botón para print
                     {
                         extend: 'print',
                         footer: true,
                         title: 'Listado Cliente Empacado',
                         filename: 'Listado_cliente_empacado_print',
-                        text: '<button title="Imprimir" class="btn btn-outline-info"><i class="fa-solid fa-print"></i></i></button>',
+                        text: '<button title="Imprimir" class="btn btn-outline-info"><i class="fa-solid fa-print"></i></button>',
                         exportOptions: {
                             columns: [0, 1, 2, 3]
                         }
@@ -118,8 +163,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
                     data: 'total_presentaciones'
                 },
                 {
-                    data: 'total_empaques',
-
+                    data: 'total_empaques'
                 },
                 {
                     data: 'total_kilos',
@@ -130,20 +174,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
                 {
                     data: null,
                     render: function(row) {
-                        return `<button class="btn btn-primary btn-facturar-cliente" data-emp='${row.cte_id}'>Crear orden</button>`;
+                        return `<button class="btn btn-primary btn-facturar-cliente" data-emp="${row.cte_id}">Crear orden</button>`;
                     }
                 }
             ]
-
         });
 
         $('#dataTableEmpaquesClientes').on('click', '.btn-facturar-cliente', function() {
-            let empData = $(this).data('emp'); // Obtiene el objeto completo de datos del botón
-            agregarEmpaque(empData);
+            let empData = $(this).data('emp');
+
+            localStorage.removeItem('empaques');
             localStorage.setItem('cliente_id', empData);
-            setTimeout(() => {
-                abrir_modal_facturas();
-            }, 100);
+
+            agregarEmpaque(empData);
         });
 
         function abrir_modal_facturas() {
@@ -153,14 +196,18 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
                 success: function(result) {
                     $('#modal_facturas').html(result);
                     $('#modal_facturas').modal('show');
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo abrir el modal de orden de embarque.'
+                    });
                 }
             });
         }
 
         function agregarEmpaque(empData) {
-            // Recupera los datos del Local Storage o inicializa un arreglo vacío
-            let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
-
             $.ajax({
                 url: 'funciones/cliente_empacado.php',
                 type: 'POST',
@@ -169,42 +216,110 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
                     action: 'obtener_datos'
                 },
                 success: function(data) {
-                    let response = JSON.parse(data);
-                    console.log(response); // Verifica la estructura de la respuesta
+                    let response;
 
-                    // Itera sobre cada objeto dentro de la respuesta
+                    try {
+                        response = typeof data === 'string' ? JSON.parse(data) : data;
+                    } catch (e) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Respuesta inválida del servidor.'
+                        });
+                        return;
+                    }
+
+                    if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.error
+                        });
+                        return;
+                    }
+
+                    if (!Array.isArray(response) || response.length === 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Sin disponible',
+                            text: 'Este cliente no tiene producto disponible para embarque.'
+                        });
+                        return;
+                    }
+
+                    let disponibles = [];
+
                     response.forEach(empaque => {
-                        // Construye el objeto con los datos del empaque
-                        const empaqueConDatos = {
-                            revoltura: empaque.revoltura,
-                            rev_id: empaque.rev_id,
-                            rrc_id: empaque.rrc_id,
-                            pres_descrip: empaque.pres_descrip,
-                            rr_ext_inicial: empaque.rr_ext_inicial,
-                            rr_ext_real: empaque.rr_ext_real,
-                            pres_kg: empaque.pres_kg
-                        };
+                        const cantidadDisponible = parseFloat(empaque.cantidad_disponible) || 0;
 
-                        // Agrega el empaque al arreglo de empaques
-                        empaquesArray.push(empaqueConDatos);
+                        if (cantidadDisponible > 0) {
+                            disponibles.push({
+                                tipo_producto: 'REVOLTURA',
+
+                                revoltura: empaque.revoltura,
+                                rev_id: empaque.rev_id,
+
+                                rr_id: null,
+                                rrc_id: empaque.rrc_id,
+                                pe_id: null,
+
+                                pres_id: empaque.pres_id,
+                                pres_descrip: empaque.pres_descrip,
+
+                                rr_ext_inicial: empaque.rr_ext_inicial,
+                                rr_ext_real: empaque.rr_ext_real,
+
+                                cantidad_comprometida: empaque.cantidad_comprometida,
+                                cantidad_disponible: empaque.cantidad_disponible,
+
+                                pres_kg: empaque.pres_kg
+                            });
+                        }
                     });
 
-                    // Guarda el arreglo actualizado en el Local Storage
-                    localStorage.setItem('empaques', JSON.stringify(empaquesArray));
+                    if (disponibles.length === 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Sin disponible',
+                            text: 'Este cliente no tiene producto disponible para embarque.'
+                        });
+                        return;
+                    }
 
+                    /*
+                        Nuevo flujo:
+                        - empaques_cliente_disponibles = catálogo para seleccionar
+                        - empaques = partidas reales de la orden, inicia vacío
+                    */
+                    localStorage.setItem('cliente_id', empData);
+                    localStorage.setItem('empaques_cliente_disponibles', JSON.stringify(disponibles));
+                    localStorage.setItem('empaques', JSON.stringify([]));
+
+                    abrir_modal_facturas();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    let mensaje = `Error al crear orden: ${textStatus}, ${errorThrown}`;
+
+                    if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+                        mensaje = jqXHR.responseJSON.error;
+                    }
+
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: `Error al crear orden: ${textStatus}, ${errorThrown}`,
+                        text: mensaje,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2500
                     });
                 }
             });
         }
 
+        $('#modal_facturas').on('hidden.bs.modal', function() {
+            localStorage.removeItem('empaques');
+            localStorage.removeItem('empaques_cliente_disponibles');
+            localStorage.removeItem('cliente_id');
+        });
     });
 </script>
 
@@ -241,18 +356,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'obtener_datos') {
                         <td></td>
                     </tr>
                 </tbody>
-                <tfoot>
-
-                </tfoot>
-
+                <tfoot></tfoot>
             </table>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="modal_facturas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 </div>
-<script>
-    $('#modal_facturas').on('hidden.bs.modal', function() {
-        localStorage.clear();
-    });
-</script>

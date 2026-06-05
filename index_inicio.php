@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/config/app.php';
+app_session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,7 +16,7 @@
     <div id="salir"></div>
     <?php
 
-    include_once 'generales/menu.php'; ?>
+    include_once __DIR__ . '/generales/menu.php'; ?>
 
     <body>
 
@@ -58,7 +62,7 @@
         </div>
         <?php } ?>
 
-        <?php include "generales/pie_pagina.php"; ?>
+        <?php include __DIR__ . "/generales/pie_pagina.php"; ?>
 
         <div class="modal right" id="modal_ver_historial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="false">
         </div>

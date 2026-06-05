@@ -3,6 +3,7 @@
 /*Contacto: info@ccaconsultoresti.com */
 /*Actualizado: Septiembre-2023*/
 /*Realizado: 21 - Agosto - 2018*/
+require_once __DIR__ . '/config/app.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -11,8 +12,8 @@
   <meta charset="UTF-8">
   <title>Login Sistema Preparacion</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
-  <link rel="stylesheet" href="css/estilos_login.css">
-  <script src='js/jquery.min.js'></script>
+  <link rel="stylesheet" href="<?php echo asset_url('css/estilos_login.css'); ?>">
+  <script src="<?php echo asset_url('js/jquery.min.js'); ?>"></script>
   <!--<script src="js/jquerylogin.js"></script>-->
   <?php
   // Verifica si se ha pasado el parámetro "session_closed" en la URL
@@ -28,9 +29,9 @@
   <div class="cont">
     <div class="demo">
       <div class="login">
-        <center><img src="imagenes/logo_empresa.png" class="logo"></center>
+        <center><img src="<?php echo asset_url('imagenes/logo_empresa.png'); ?>" class="logo"></center>
         <div class="login__form">
-          <form autocomplete="off" action="seguridad/user_valida.php" method="post">
+          <form autocomplete="off" action="<?php echo base_url('seguridad/user_valida.php'); ?>" method="post">
             <div class="login__row">
               <svg class="login__icon name svg-icon" viewBox="0 0 20 20">
                 <path d="M0,20 a10,8 0 0,1 20,0z M10,0 a4,4 0 0,1 0,8 a4,4 0 0,1 0,-8" />

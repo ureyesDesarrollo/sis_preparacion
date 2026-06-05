@@ -7,37 +7,12 @@
 
 
 
-// Ruta completa de la página actual
-$url_actual = $_SERVER['REQUEST_URI'];
+require_once __DIR__ . '/../config/app.php';
+require_once __DIR__ . '/../conexion/conexion.php';
+require_once __DIR__ . '/../seguridad/user_seguridad.php';
+require_once __DIR__ . '/../funciones/funciones.php';
 
-// Ruta desde /sis_preparacion/ hasta la página actual
-$ruta_base = str_replace('/sis_preparacion', '', dirname($url_actual));
-
-// Contar la cantidad de directorios en la ruta relativa
-$levelCount = substr_count($ruta_base, '/');
-
-if ($levelCount > 0) {
-    //$directorio = substr_count($ruta_base, '/');
-    $directorio = str_repeat('..' . DIRECTORY_SEPARATOR, $levelCount);
-    $ruta_base_conexion = str_repeat('..' . DIRECTORY_SEPARATOR, $levelCount);
-    $ruta_base_seguridad = str_repeat('..' . DIRECTORY_SEPARATOR, $levelCount);
-    $ruta_base_funciones = str_repeat('..' . DIRECTORY_SEPARATOR, $levelCount);
-} else {
-    $directorio = '';
-    $ruta_base_conexion = '';
-    $ruta_base_seguridad = '';
-    $ruta_base_funciones = '';
-}
-
-
-/* require_once('../conexion/conexion.php');
-include "../seguridad/user_seguridad.php";
-include "../funciones/funciones.php"; */
-
-// Incluir el archivo de conexión usando la ruta relativa
-require_once $ruta_base_conexion . 'conexion/conexion.php';
-require_once $ruta_base_seguridad . 'seguridad/user_seguridad.php';
-require_once $ruta_base_funciones . 'funciones/funciones.php';
+$directorio = base_url('');
 $cnx = Conectarse();
 
 
@@ -48,45 +23,45 @@ $registros = mysqli_fetch_assoc($cadena);
 $tot_alerta = 0;
 ?>
 
-<link rel="stylesheet" href=<?php echo $directorio . "bootstrap/css/bootstrap.min.css" ?>>
-<script src=<?php echo $directorio . "js/jquery.min.js" ?>></script>
-<script src=<?php echo $directorio . "js/bootstrap.min.js" ?>></script>
-<link rel="stylesheet" href=<?php echo $directorio . "css/estilos_menu_general.css" ?>>
-<link rel="stylesheet" href=<?php echo $directorio . "assets/css/estilos_generales.css" ?>>
+<link rel="stylesheet" href="<?php echo asset_url('bootstrap/css/bootstrap.min.css'); ?>">
+<script src="<?php echo asset_url('js/jquery.min.js'); ?>"></script>
+<script src="<?php echo asset_url('js/bootstrap.min.js'); ?>"></script>
+<link rel="stylesheet" href="<?php echo asset_url('css/estilos_menu_general.css'); ?>">
+<link rel="stylesheet" href="<?php echo asset_url('assets/css/estilos_generales.css'); ?>">
 
-<link rel="icon" type="image/png" sizes="32x32" href=<?php echo $directorio . "imagenes/favicon-32x32.png" ?>>
-<script src=<?php echo $directorio . "assets/fontawesome/fontawesome.js" ?>></script>
+<link rel="icon" type="image/png" sizes="32x32" href="<?php echo asset_url('imagenes/favicon-32x32.png'); ?>">
+<script src="<?php echo asset_url('assets/fontawesome/fontawesome.js'); ?>"></script>
 
 
 <!-- Toastr  -->
-<link rel="stylesheet" href=<?php echo $directorio . "assets/toastr/toastr.css" ?>>
-<script src=<?php echo $directorio . "assets/toastr/toastr.min.js" ?>></script>
+<link rel="stylesheet" href="<?php echo asset_url('assets/toastr/toastr.css'); ?>">
+<script src="<?php echo asset_url('assets/toastr/toastr.min.js'); ?>"></script>
 
 <!-- Sweet alert -->
-<link href=<?php echo $directorio . "assets/sweetalert/sweetalert.css" ?> rel="stylesheet" />
-<script src=<?php echo $directorio . "assets/sweetalert/sweetalert.js" ?>></script>
-<script src=<?php echo $directorio . "assets/sweetalert/sweetalert2.js" ?>></script>
+<link href="<?php echo asset_url('assets/sweetalert/sweetalert.css'); ?>" rel="stylesheet" />
+<script src="<?php echo asset_url('assets/sweetalert/sweetalert.js'); ?>"></script>
+<script src="<?php echo asset_url('assets/sweetalert/sweetalert2.js'); ?>"></script>
 
 <nav class="navbar navbar" style="background: #333333">
     <div class="container-fluid">
         <div class="col-sm-12 col-md-3">
-            <img src="<?php echo $directorio . "imagenes/logo_progel_v5.png" ?>" alt=" Progel Mexicana">
+            <img src="<?php echo asset_url('imagenes/logo_progel_v5.png'); ?>" alt=" Progel Mexicana">
         </div>
         <div class="col-sm-12 col-md-9">
 
 
             <ul class="navbar-nav navbar-right">
-                <li class="active"><a href="<?php echo $directorio . 'index_inicio.php' ?>" onclick="obtenerURL(<?php echo $directorio . 'index_inicio.php' ?>)"><i class=" fa-solid fa-house"></i>Inicio</a></li>
+                <li class="active"><a href="<?php echo base_url('index_inicio.php'); ?>"><i class=" fa-solid fa-house"></i>Inicio</a></li>
                 <?php if ($_SESSION['privilegio'] == 1 or $_SESSION['privilegio'] == 2 or $_SESSION['privilegio'] == 15 or $_SESSION['privilegio'] == 28) {
                 ?>
                     <li class="">
-                        <a href="<?php echo $directorio . 'revolturas/index_inicio.php' ?>" style="color: #F1F0EF"><i class="fa-solid fa-fan"></i> Revolturas</a>
+                        <a href="<?php echo base_url('revolturas/index_inicio.php'); ?>" style="color: #F1F0EF"><i class="fa-solid fa-fan"></i> Revolturas</a>
                     </li><?php } ?>
-                <li class=""><a href="<?php echo $directorio . 'catalogos\submenu_catalogos.php' ?>" onclick="obtenerURL(<?php echo $directorio . 'catalogos\submenu_catalogos.php.php' ?>)"><i class=" fa-solid fa-folder-tree"></i> Catálogos</a></li>
-                <li class=""><a href="<?php echo $directorio . 'modulos\submenu_funciones.php' ?>" onclick="obtenerURL(<?php echo $directorio . 'modulos\submenu_funciones.php' ?>)"><i class=" fa-solid fa-gears"></i> Funciones</a></li>
-                <li class=""><a href="<?php echo $directorio . 'reportes\submenu_reportes.php' ?>" onclick="obtenerURL(<?php echo $directorio . 'reportes\submenu_reportes.php' ?>)"><i class=" fa-solid fa-file-lines"></i> Reportes</a></li>
+                <li class=""><a href="<?php echo base_url('catalogos/submenu_catalogos.php'); ?>"><i class=" fa-solid fa-folder-tree"></i> Catálogos</a></li>
+                <li class=""><a href="<?php echo base_url('modulos/submenu_funciones.php'); ?>"><i class=" fa-solid fa-gears"></i> Funciones</a></li>
+                <li class=""><a href="<?php echo base_url('reportes/submenu_reportes.php'); ?>"><i class=" fa-solid fa-file-lines"></i> Reportes</a></li>
                 <?php if (fnc_permiso($_SESSION['privilegio'], 2, 'upe_listar') == 1) { ?>
-                    <li class=""><a href="<?php echo $directorio . 'indicadores\submenu_indicadores.php' ?>" onclick="obtenerURL(<?php echo $directorio . 'indicadores\submenu_indicadores.php' ?>)"><i class=" fa-solid fa-gears"></i> Indicadores</a></li>
+                    <li class=""><a href="<?php echo base_url('indicadores/submenu_indicadores.php'); ?>"><i class=" fa-solid fa-gears"></i> Indicadores</a></li>
                 <?php } ?>
                 <li class="">
                     <?php if ($tot_alerta > 0) { ?>
@@ -119,13 +94,13 @@ $tot_alerta = 0;
                 if ($_SESSION['privilegio'] == 7 or $_SESSION['privilegio'] == 10 or $_SESSION['privilegio'] == 9 or $_SESSION['privilegio'] == 6 or $_SESSION['privilegio'] == 3 or $_SESSION['privilegio'] == 4) {
                 ?>
                     <li class="">
-                        <a href="../manuales_pdf/<?php echo $str_manual; ?>" style="color: #F1F0EF"><i class="fa-regular fa-circle-question"></i> Manual</a>
+                        <a href="<?php echo base_url('manuales_pdf/' . $str_manual); ?>" style="color: #F1F0EF"><i class="fa-regular fa-circle-question"></i> Manual</a>
                     </li><?php } ?>
                 <li class="">
-                    <a href="ayuda/index.php" style="color: #F1F0EF"><i class="fa-regular fa-circle-question"></i> Ayuda</a>
+                    <a href="<?php echo base_url('ayuda/index.php'); ?>" style="color: #F1F0EF"><i class="fa-regular fa-circle-question"></i> Ayuda</a>
                 </li>
                 <li class="">
-                    <a href="<?php echo $directorio . 'seguridad\salir.php' ?>" style="color: #F1F0EF">
+                    <a href="<?php echo base_url('seguridad/salir.php'); ?>" style="color: #F1F0EF">
                         <i class="fa-solid fa-user"></i> Cerrar sesión
                     </a>
                 </li>
@@ -135,18 +110,7 @@ $tot_alerta = 0;
 </nav>
 
 <script>
-    function obtenerURL(event) {
-        // Evitar la navegación predeterminada
-        event.preventDefault();
-
-        // Obtener la URL del enlace
-        var urlDelEnlace = event.target.href;
-
-        // Obtener la parte de la URL después de "http://localhost/sis_preparacion/"
-        var parteDeseada = urlDelEnlace.split("http://localhost/sis_preparacion/")[1];
-        window.location.href = parteDeseada;
-    }
-
+    var logoutUrl = <?php echo json_encode(base_url('seguridad/salir.php?session_closed=true'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
     var tiempoInactividad = 600; // en segundos
     var tiempoInactividadMillis = tiempoInactividad * 1000; // convierte a milisegundos
     var tiempoUltimaActividad;
@@ -170,7 +134,7 @@ $tot_alerta = 0;
                 confirmButtonText: 'OK'
             }).then(function() {
                 // Realiza acciones adicionales, como cerrar sesión o redirigir
-                window.location.href = 'index.php';
+                window.location.href = logoutUrl;
             });
         } else {
             // Si no ha pasado el tiempo de inactividad, sigue verificando

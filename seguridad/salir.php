@@ -3,8 +3,9 @@
 /*Contacto: info@ccaconsultoresti.com */
 /*Actualizado: Septiembre-2023*/
 /*Realizado: 21 - Agosto - 2018*/
+require_once __DIR__ . '/../config/app.php';
 
-session_start();
+app_session_start();
 
 $_SESSION['error'] = 'Has cerrado tu sesión';
 $_SESSION["autentificado"] = 'NO';
@@ -24,9 +25,10 @@ if (isset($url_revolturas)) {
 }
 
 if ($x == 'pelambre/tablero_pelambre.php') {
-	header("Location: " . "../pelambre/index.php");
+	redirect('pelambre/index.php');
 } elseif ($url_rev == 'revolturas/index_inicio.php') {
-	header("Location: " . "../revolturas/index.php");
+	redirect('revolturas/index.php');
 } else {
-	header("Location: " . "index.php");
+	$queryString = (isset($_GET['session_closed']) && $_GET['session_closed'] == 'true') ? '?session_closed=true' : '';
+	redirect('index.php' . $queryString);
 }

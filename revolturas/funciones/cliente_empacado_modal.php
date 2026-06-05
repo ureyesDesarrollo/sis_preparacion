@@ -187,7 +187,7 @@ $fechaActual = date("Y-m-d");
                 // Itera sobre el arreglo y agrega cada elemento como una nueva fila en la tabla
                 empaquesArray.forEach((empaque, index) => {
                     let row = document.createElement("tr");
-                    let cantidad = (empaque.rr_ext_real === '0.00') ? empaque.rr_ext_inicial : empaque.rr_ext_real;
+                    let cantidad = (empaque.cantidad_disponible && empaque.cantidad_disponible > 0) ? empaque.cantidad_disponible : empaque.rr_ext_real;
 
                     row.innerHTML = `
                 <td>${index + 1}</td>
@@ -215,80 +215,200 @@ $fechaActual = date("Y-m-d");
         function insertarRegistros_cliente() {
             let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
             let cliente = $('#cte_id').val();
-             let tipoCliente = $('#cte_tipo').val();
-             let clasificacion = $('#cte_clasificacion').val();
+            let tipoCliente = $('#cte_tipo').val();
+            let clasificacion = $('#cte_clasificacion').val();
 
-            if (empaquesArray.length > 0) {
-                let validacion = true;
-
-                empaquesArray.forEach((empaque, index) => {
-                    let cantidadIngresada = $(`#cantidad_${index}`).val();
-
-                    // Verifica que la cantidad ingresada no sea mayor que la disponible
-                    if (parseFloat(empaque.rr_ext_real) < parseFloat(cantidadIngresada)) {
-                        validacion = false;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Cantidad excedida',
-                            text: `No puedes tomar más de la cantidad disponible (${empaque.rr_ext_real}). Verifica la cantidad en la fila ${index + 1}.`
-                        });
-                        return; // Sale del bucle si encuentra una cantidad excedida
-                    }
+            if (!cliente || parseInt(cliente) <= 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Cliente requerido',
+                    text: 'Selecciona un cliente antes de apartar.'
                 });
+                return;
+            }
 
-                if (!validacion) return; // Sale de la función si alguna cantidad excede la disponible
-
-                // Procesa cada registro si todas las cantidades son válidas
-                empaquesArray.forEach((empaque, index) => {
-                    let cantidadIngresada = $(`#cantidad_${index}`).val();
-
-                    $.ajax({
-                        url: 'funciones/cliente_empacado_insertar.php',
-                        type: 'POST',
-                        data: {
-                            rr_id: empaque.rr_id,
-                            rev_id: empaque.rev_id,
-                            pres_id: empaque.pres_id,
-                            rrc_cantidad: cantidadIngresada,
-                            cte_id: cliente,
-                            cte_tipo: tipoCliente,
-                            cte_clasificacion: clasificacion
-                        },
-                        success: function(response) {
-                            let res = JSON.parse(response);
-                            if (res.success) {
-                                alertas_v5("#alerta-factura", 'Listo!', res.success, 1, true, 5000);
-                                localStorage.clear();
-                                cargarDatosEmpaques_cliente();
-                                $('#search_clientes').val('');
-                                actualizarListadoClientes('');
-
-                                $('#dataTableEmpaques').DataTable().ajax.reload();
-                            } else {
-                                alertas_v5("#alerta-factura", 'Error!', res.error, 3, true, 5000);
-                            }
-                        }
-                    });
-                });
-            } else {
+            if (empaquesArray.length === 0) {
                 Swal.fire({
                     icon: 'info',
                     title: 'No hay datos',
                     text: 'No hay registros para insertar.'
                 });
+                return;
             }
+
+            let validacion = true;
+            let errores = [];
+
+            /*
+                Validación 1:
+                Cada fila debe tener cantidad válida.
+            */
+            empaquesArray.forEach((empaque, index) => {
+                let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val()) || 0;
+                let cantidadDisponible = parseFloat(empaque.cantidad_disponible) || 0;
+
+                if (cantidadIngresada <= 0) {
+                    validacion = false;
+                    errores.push(`Fila ${index + 1}: la cantidad debe ser mayor que 0.`);
+                }
+
+                if (cantidadIngresada > cantidadDisponible) {
+                    validacion = false;
+                    errores.push(
+                        `Fila ${index + 1}: no puedes tomar más de la cantidad disponible (${cantidadDisponible}).`
+                    );
+                }
+            });
+
+            /*
+                Validación 2:
+                Si el mismo rr_id aparece varias veces, se suma lo solicitado.
+                Esto evita que por separado pase, pero en total exceda.
+            */
+            let acumuladoPorRr = {};
+
+            empaquesArray.forEach((empaque, index) => {
+                let rrId = parseInt(empaque.rr_id);
+                let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val()) || 0;
+                let cantidadDisponible = parseFloat(empaque.cantidad_disponible) || 0;
+
+                if (!rrId || rrId <= 0) {
+                    validacion = false;
+                    errores.push(`Fila ${index + 1}: falta rr_id.`);
+                    return;
+                }
+
+                if (!acumuladoPorRr[rrId]) {
+                    acumuladoPorRr[rrId] = {
+                        solicitado: 0,
+                        disponible: cantidadDisponible,
+                        filas: []
+                    };
+                }
+
+                acumuladoPorRr[rrId].solicitado += cantidadIngresada;
+                acumuladoPorRr[rrId].filas.push(index + 1);
+            });
+
+            Object.keys(acumuladoPorRr).forEach(rrId => {
+                let item = acumuladoPorRr[rrId];
+
+                if (item.solicitado > item.disponible) {
+                    validacion = false;
+                    errores.push(
+                        `El rr_id ${rrId} está repetido en las filas ${item.filas.join(', ')}. ` +
+                        `Solicitado total: ${item.solicitado}, disponible: ${item.disponible}.`
+                    );
+                }
+            });
+
+            if (!validacion) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validación incorrecta',
+                    html: errores.join('<br>')
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Asignando cliente...',
+                text: 'Espera mientras se aparta el producto.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            /*
+                Procesar uno por uno.
+                Así evitamos mandar varias peticiones simultáneas sobre el mismo inventario.
+            */
+            let promesas = empaquesArray.map((empaque, index) => {
+                let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val()) || 0;
+
+                return $.ajax({
+                    url: 'funciones/cliente_empacado_insertar.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        rr_id: empaque.rr_id,
+                        rrc_cantidad: cantidadIngresada,
+                        cte_id: cliente,
+                        cte_tipo: tipoCliente,
+                        cte_clasificacion: clasificacion
+                    }
+                });
+            });
+
+            /*
+                Ejecutar secuencialmente, no todas al mismo tiempo.
+            */
+            promesas.reduce((cadena, ajaxCall) => {
+                    return cadena.then(() => ajaxCall);
+                }, Promise.resolve())
+                .then(() => {
+                    Swal.close();
+
+                    alertas_v5(
+                        "#alerta-factura",
+                        'Listo!',
+                        'Producto apartado correctamente.',
+                        1,
+                        true,
+                        5000
+                    );
+
+                    localStorage.removeItem('empaques');
+
+                    cargarDatosEmpaques_cliente();
+                    $('#search_clientes').val('');
+                    actualizarListadoClientes('');
+
+                    if ($.fn.DataTable.isDataTable('#dataTableEmpaques')) {
+                        $('#dataTableEmpaques').DataTable().ajax.reload();
+                    }
+                })
+                .catch((error) => {
+                    Swal.close();
+
+                    let mensaje = 'Error al apartar producto.';
+
+                    if (error.responseJSON) {
+                        mensaje = error.responseJSON.error || error.responseJSON.message || mensaje;
+                    } else if (error.responseText) {
+                        try {
+                            let res = JSON.parse(error.responseText);
+                            mensaje = res.error || res.message || mensaje;
+                        } catch (e) {
+                            mensaje = error.responseText;
+                        }
+                    }
+
+                    alertas_v5(
+                        "#alerta-factura",
+                        'Error!',
+                        mensaje,
+                        3,
+                        true,
+                        8000
+                    );
+                });
         }
 
-        function cambiar_de_cliente(rrc_id, cte_id){
+        function cambiar_de_cliente(rrc_id, cte_id) {
             $.ajax({
                 type: 'POST',
                 url: 'funciones/cliente_empacado_cambiar_cliente.php',
-                data: {rrc_id, cte_id},
-                success: function(response){
+                data: {
+                    rrc_id,
+                    cte_id
+                },
+                success: function(response) {
                     Swal.fire({
                         'title': 'Cliente reasinganado correctamente',
                         'text': `El cliente nuevo sera ${d}`,
-                        'icon':  'success'
+                        'icon': 'success'
                     });
                 }
             });

@@ -16,6 +16,8 @@ try {
             t.pres_descrip,
             t.rr_ext_inicial,
             t.rr_ext_real,
+            t.cantidad_comprometida,
+            t.cantidad_disponible,
             t.pres_kg,
             t.pres_id,
             t.cal_id
@@ -24,27 +26,28 @@ try {
                 'REVOLTURA' AS tipo_producto,
                 rev.rev_folio AS revoltura,
                 rev.rev_id,
-                rr.rr_id,
+                v.rr_id,
                 NULL AS pe_id,
                 pres.pres_descrip,
-                rr.rr_ext_inicial,
-                rr.rr_ext_real,
+                v.rr_ext_inicial,
+                v.rr_ext_real,
+                v.cantidad_comprometida,
+                v.cantidad_disponible,
                 pres.pres_kg,
                 pres.pres_id,
                 cal.cal_id
-            FROM rev_revolturas_pt rr
+            FROM vw_rev_revolturas_pt_disponible v
             INNER JOIN rev_revolturas rev
-                ON rev.rev_id = rr.rev_id
+                ON rev.rev_id = v.rev_id
             INNER JOIN rev_calidad cal
                 ON cal.cal_id = rev.cal_id
             INNER JOIN rev_presentacion pres
-                ON pres.pres_id = rr.pres_id
+                ON pres.pres_id = v.pres_id
             WHERE rev.rev_count_etiquetado > 0
-              AND rr.rr_ext_real > 0
+              AND v.cantidad_disponible > 0
 
             UNION ALL
 
-            /* PRODUCTO EXTERNO */
             SELECT
                 'EXTERNO' AS tipo_producto,
                 pe.pe_lote AS revoltura,
@@ -54,6 +57,8 @@ try {
                 pres.pres_descrip,
                 pe.pe_existencia_inicial AS rr_ext_inicial,
                 pe.pe_existencia_real AS rr_ext_real,
+                0 AS cantidad_comprometida,
+                pe.pe_existencia_real AS cantidad_disponible,
                 pres.pres_kg,
                 pres.pres_id,
                 NULL AS cal_id
@@ -81,14 +86,22 @@ try {
             $fila['calidad'] = 'EXTERNO';
         }
 
+        $fila['rr_ext_inicial'] = floatval($fila['rr_ext_inicial']);
+        $fila['rr_ext_real'] = floatval($fila['rr_ext_real']);
+        $fila['cantidad_comprometida'] = floatval($fila['cantidad_comprometida']);
+        $fila['cantidad_disponible'] = floatval($fila['cantidad_disponible']);
+        $fila['pres_kg'] = floatval($fila['pres_kg']);
+
         $datos[] = $fila;
     }
 
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($datos);
+
 } catch (Exception $e) {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => $e->getMessage()]);
 } finally {
     mysqli_close($cnx);
 }

@@ -946,7 +946,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             let kilos = parseFloat($fila.find('td').eq(6).text()) || 0;
             let promocion = parseFloat($fila.find('.promocion input').val()) || 0;
             let costo = parseFloat($fila.find('.costo-unitario').val()) || 0;
-            total += Math.max(0, kilos - promocion) * costo;
+
+            if (promocion < 0) {
+                promocion = 0;
+            }
+
+            if (promocion > kilos) {
+                promocion = kilos;
+                $fila.find('.promocion input').val(promocion);
+            }
+
+            let kilosFacturables = kilos - promocion;
+
+            total += kilosFacturables * costo;
             totalRemision += kilos * costo;
         });
         let totalNota = parseFloat($('#total-nota').val()) || 0;
@@ -1023,7 +1035,18 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
             let cantidad_kilos = parseFloat($fila.find('td').eq(6).text());
             let precio = parseFloat($fila.find('.costo-unitario').val()) || 0;
             let promocion = parseFloat($fila.find('.promocion input').val()) || 0;
+
+            // Evita negativos o promociones mayores a la cantidad de la partida
+            if (promocion < 0) {
+                promocion = 0;
+            }
+
+            if (promocion > cantidad_kilos) {
+                promocion = cantidad_kilos;
+            }
+
             let cantidadFacturada = cantidad_kilos - promocion;
+
             if (cantidadFacturada > 0) {
                 jsonData.FACTURA_DETALLE.push({
                     PRODUCTO_CVE: claveDesc.clave,
@@ -1031,9 +1054,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     CANTIDAD: cantidadFacturada,
                     PRECIO: precio,
                     PROMOCION: 0,
-                    LOTE: [lote]
+                    LOTE: [lote],
+                    LINEA_ORIGEN: $fila.index() + 1
                 });
             }
+
             if (promocion > 0) {
                 jsonData.FACTURA_DETALLE.push({
                     PRODUCTO_CVE: claveDesc.clave,
@@ -1041,7 +1066,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'validar_factura') {
                     CANTIDAD: promocion,
                     PRECIO: 0,
                     PROMOCION: 1,
-                    LOTE: [lote]
+                    LOTE: [lote],
+                    LINEA_ORIGEN: $fila.index() + 1
                 });
             }
         });

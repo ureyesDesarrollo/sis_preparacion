@@ -4,20 +4,22 @@ $fechaActual = date("Y-m-d");
 ?>
 
 <script type="text/javascript" src="../js/alerta.js"></script>
-<div class="modal-dialog modal-lg">
+
+<div class="modal-dialog modal-xl">
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="title">Generar orden de embarque</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <div class="modal-body">
             <form id="form_orden_embarque" method="POST">
                 <div class="row mb-3 align-items-end">
                     <div class="col-md-5">
                         <input type="text" id="search_clientes" class="form-control mb-2" placeholder="Buscar cliente...">
+
                         <label for="cte_id" class="form-label">Cliente</label>
-                        <select name="cte_id" id="cte_id" class="form-select" required>
-                        </select>
+                        <select name="cte_id" id="cte_id" class="form-select" required></select>
                     </div>
 
                     <div class="col-md-3">
@@ -30,27 +32,78 @@ $fechaActual = date("Y-m-d");
                     </div>
                 </div>
 
+                <!-- 
+                    Cuando el modal viene desde "Clientes empacado", aquí se muestran los empaques
+                    disponibles del cliente para que el usuario seleccione cuáles quiere embarcar.
+                    No se agregan automáticamente a la orden.
+                -->
+                <div class="row mb-3 d-none" id="contenedor_disponibles_cliente">
+                    <div class="col-12">
+                        <div class="card border-primary">
+                            <div class="card-header bg-primary text-white">
+                                Empaques disponibles del cliente
+                            </div>
+
+                            <div class="card-body">
+                                <div class="alert alert-info py-2">
+                                    Selecciona los empaques que deseas agregar a la orden.
+                                    La cantidad no puede superar el disponible.
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-bordered align-middle" id="table_disponibles_cliente">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 60px;">Sel.</th>
+                                                <th>Revoltura</th>
+                                                <th>Empaque</th>
+                                                <th>Existencia real</th>
+                                                <th>Comprometido</th>
+                                                <th>Disponible</th>
+                                                <th style="width: 170px;">Cantidad a tomar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-success" id="agregar_seleccionados_cliente">
+                                        Agregar seleccionados a la orden
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Partidas definitivas de la orden -->
                 <div class="row">
-                    <div class="">
-                        <table class="table table-bordered" id="table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Tipo</th>
-                                    <th>Revoltura / Lote</th>
-                                    <th>Empaque</th>
-                                    <th>Existencias</th>
-                                    <th>Existencias a tomar</th>
-                                    <th>Bloom</th>
-                                    <th>Quitar</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="col-12">
+                        <h6 class="mb-2">Partidas de la orden</h6>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle" id="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Tipo</th>
+                                        <th>Revoltura / Lote</th>
+                                        <th>Empaque</th>
+                                        <th>Disponible</th>
+                                        <th>Existencias a tomar</th>
+                                        <th>Bloom</th>
+                                        <th>Quitar</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
+
         <div class="modal-footer">
             <div class="row w-100 align-items-center">
                 <div class="col-md-8 mb-3">
@@ -59,10 +112,12 @@ $fechaActual = date("Y-m-d");
                         <span class="alert-body"></span>
                     </div>
                 </div>
+
                 <div class="col-md-4 d-flex justify-content-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <img src="../iconos/close.png" alt=""> Cerrar
                     </button>
+
                     <button form="form_orden_embarque" type="submit" class="btn btn-primary ms-2" id="guardar">
                         <img src="../iconos/guardar.png" alt=""> Guardar
                     </button>
@@ -77,14 +132,6 @@ $fechaActual = date("Y-m-d");
 
     $(document).ready(function() {
         obtenerClientes();
-
-        setTimeout(() => {
-            $('#cte_id').val(localStorage.getItem('cliente_id') || '');
-            if ($('#cte_id').val() !== '') {
-                $('#cambiar_cliente').removeClass('d-none');
-            }
-            cargarDatosEmpaques();
-        }, 100);
 
         $('#form_orden_embarque').submit(function(e) {
             e.preventDefault();
@@ -115,51 +162,26 @@ $fechaActual = date("Y-m-d");
         });
 
         $('#cte_id').on('change', function() {
+            /*
+                IMPORTANTE:
+                No limpiar "empaques" al cambiar cliente.
+
+                Este select también se usa para REASIGNAR cliente.
+                Si limpiamos localStorage aquí, al elegir el cliente nuevo
+                se pierden los empaques seleccionados.
+
+                La limpieza debe hacerse únicamente:
+                - al cerrar el modal,
+                - al guardar la orden,
+                - o después de reasignar correctamente.
+            */
+            cargarDisponiblesCliente();
             cargarDatosEmpaques();
         });
 
-        function actualizarListadoClientes(filtro) {
-            let opciones = '<option value="">Seleccione un cliente</option>';
-
-            if (filtro.length > 0) {
-                arrayClientes
-                    .filter(cliente => cliente.cte_nombre.toLowerCase().includes(filtro))
-                    .forEach(cliente => {
-                        opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
-                    });
-            } else {
-                arrayClientes.forEach(cliente => {
-                    opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
-                });
-            }
-
-            $('#cte_id').html(opciones);
-        }
-
-        function obtenerClientes() {
-            $.ajax({
-                type: 'GET',
-                url: 'catalogos/clientes_listado.php',
-                success: function(data) {
-                    let clientes = JSON.parse(data);
-
-                    clientes.forEach(function(cte) {
-                        if (cte.cte_estatus === 'A') {
-                            arrayClientes.push({
-                                cte_id: cte.cte_id,
-                                cte_nombre: cte.cte_nombre,
-                                cte_bloom: cte.cte_tipo_bloom
-                            });
-                        }
-                    });
-
-                    actualizarListadoClientes('');
-                },
-                error: function() {
-                    alert('Error al cargar los clientes.');
-                }
-            });
-        }
+        $('#agregar_seleccionados_cliente').on('click', function() {
+            agregarSeleccionadosClienteAOrden();
+        });
 
         $('#cambiar_cliente').on('click', function(e) {
             e.preventDefault();
@@ -172,38 +194,242 @@ $fechaActual = date("Y-m-d");
                 item.tipo_producto === 'REVOLTURA' && item.rrc_id
             );
 
-            if (soloEmpacados.length === 0) {
+            if (!cte_id) {
                 Swal.fire({
-                    icon: 'info',
-                    title: 'Sin productos reasignables',
-                    text: 'Solo los productos empacados pueden reasignarse de cliente.'
+                    icon: 'warning',
+                    title: 'Cliente requerido',
+                    text: 'Selecciona el cliente nuevo.'
                 });
                 return;
             }
 
-            for (let index = 0; index < empaquesArray.length; index++) {
-                let empaque = empaquesArray[index];
+            if (soloEmpacados.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin productos reasignables',
+                    text: 'Solo los productos empacados de cliente pueden reasignarse.'
+                });
+                return;
+            }
 
-                if (empaque.tipo_producto !== 'REVOLTURA') {
-                    continue;
-                }
-
-                let cantidadDisponible = parseFloat(empaque.rr_ext_real || 0);
-                let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val()) || 0;
-
-                if (cantidadIngresada > cantidadDisponible) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Cantidad excedida',
-                        text: `No puedes tomar más de la cantidad disponible (${cantidadDisponible}). Verifica la fila ${index + 1}.`
-                    });
+            Swal.fire({
+                icon: 'question',
+                title: 'Confirmar reasignación',
+                text: `Se cambiarán ${soloEmpacados.length} empaque(s) al cliente ${cliente}.`,
+                showCancelButton: true,
+                confirmButtonText: 'Sí, reasignar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (!result.isConfirmed) {
                     return;
                 }
 
-                cambiar_de_cliente(empaque.rrc_id, cte_id, cliente);
-            }
+                reasignarEmpaquesCliente(soloEmpacados, cte_id, cliente);
+            });
         });
     });
+
+    function actualizarListadoClientes(filtro) {
+        let opciones = '<option value="">Seleccione un cliente</option>';
+
+        if (filtro.length > 0) {
+            arrayClientes
+                .filter(cliente => cliente.cte_nombre.toLowerCase().includes(filtro))
+                .forEach(cliente => {
+                    opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
+                });
+        } else {
+            arrayClientes.forEach(cliente => {
+                opciones += `<option value="${cliente.cte_id}">${cliente.cte_nombre}</option>`;
+            });
+        }
+
+        $('#cte_id').html(opciones);
+    }
+
+    function obtenerClientes() {
+        $.ajax({
+            type: 'GET',
+            url: 'catalogos/clientes_listado.php',
+            success: function(data) {
+                let clientes = typeof data === 'string' ? JSON.parse(data) : data;
+
+                clientes.forEach(function(cte) {
+                    if (cte.cte_estatus === 'A') {
+                        arrayClientes.push({
+                            cte_id: cte.cte_id,
+                            cte_nombre: cte.cte_nombre,
+                            cte_bloom: cte.cte_tipo_bloom
+                        });
+                    }
+                });
+
+                actualizarListadoClientes('');
+
+                const clienteLocal = localStorage.getItem('cliente_id') || '';
+
+                if (clienteLocal !== '') {
+                    $('#cte_id').val(clienteLocal);
+                    $('#cambiar_cliente').removeClass('d-none');
+                }
+
+                cargarDisponiblesCliente();
+                cargarDatosEmpaques();
+            },
+            error: function() {
+                alert('Error al cargar los clientes.');
+            }
+        });
+    }
+
+    function cargarDisponiblesCliente() {
+        let disponibles = JSON.parse(localStorage.getItem('empaques_cliente_disponibles')) || [];
+        const tbody = document.querySelector("#table_disponibles_cliente tbody");
+
+        if (!tbody) {
+            return;
+        }
+
+        tbody.innerHTML = "";
+
+        if (disponibles.length === 0) {
+            $('#contenedor_disponibles_cliente').addClass('d-none');
+            return;
+        }
+
+        $('#contenedor_disponibles_cliente').removeClass('d-none');
+
+        disponibles.forEach((empaque, index) => {
+            let disponible = parseFloat(empaque.cantidad_disponible || empaque.rr_ext_real || 0);
+            let real = parseFloat(empaque.rr_ext_real || 0);
+            let comprometido = parseFloat(empaque.cantidad_comprometida || 0);
+
+            let row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td class="text-center">
+                    <input type="checkbox" class="form-check-input" id="chk_cliente_${index}">
+                </td>
+                <td>${empaque.revoltura || ''}</td>
+                <td>${empaque.pres_descrip || ''}</td>
+                <td>${formatNumber(real)}</td>
+                <td>${formatNumber(comprometido)}</td>
+                <td>${formatNumber(disponible)}</td>
+                <td>
+                    <input type="text"
+                        class="form-control form-control-sm"
+                        id="cantidad_cliente_${index}"
+                        placeholder="0.00"
+                        onkeypress="return isNumberKey(event, this);"
+                        maxlength="7">
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    }
+
+    function agregarSeleccionadosClienteAOrden() {
+        let disponibles = JSON.parse(localStorage.getItem('empaques_cliente_disponibles')) || [];
+        let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
+
+        if (disponibles.length === 0) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Sin disponibles',
+                text: 'No hay empaques disponibles para seleccionar.'
+            });
+            return;
+        }
+
+        let errores = [];
+        let agregados = 0;
+
+        disponibles.forEach((empaque, index) => {
+            let seleccionado = $(`#chk_cliente_${index}`).is(':checked');
+
+            if (!seleccionado) {
+                return;
+            }
+
+            let cantidad = parseFloat($(`#cantidad_cliente_${index}`).val()) || 0;
+            let disponible = parseFloat(empaque.cantidad_disponible || empaque.rr_ext_real || 0);
+
+            if (cantidad <= 0) {
+                errores.push(`Fila ${index + 1}: la cantidad debe ser mayor que 0.`);
+                return;
+            }
+
+            if (cantidad > disponible) {
+                errores.push(`Fila ${index + 1}: cantidad ${cantidad} mayor al disponible ${disponible}.`);
+                return;
+            }
+
+            const llave = getLlaveProducto(empaque);
+            const existeIndex = empaquesArray.findIndex(item => getLlaveProducto(item) === llave);
+
+            const empaqueOrden = {
+                tipo_producto: empaque.tipo_producto || 'REVOLTURA',
+
+                revoltura: empaque.revoltura,
+                rev_id: empaque.rev_id || null,
+
+                rr_id: empaque.rr_id || null,
+                rrc_id: empaque.rrc_id || null,
+                pe_id: empaque.pe_id || null,
+
+                pres_id: empaque.pres_id || null,
+                pres_descrip: empaque.pres_descrip,
+
+                rr_ext_inicial: empaque.rr_ext_inicial || 0,
+                rr_ext_real: empaque.rr_ext_real || 0,
+
+                cantidad_comprometida: empaque.cantidad_comprometida || 0,
+                cantidad_disponible: disponible,
+
+                pres_kg: empaque.pres_kg || 0,
+                cantidad: cantidad
+            };
+
+            if (existeIndex >= 0) {
+                empaquesArray[existeIndex] = empaqueOrden;
+            } else {
+                empaquesArray.push(empaqueOrden);
+            }
+
+            agregados++;
+        });
+
+        if (errores.length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Validación incorrecta',
+                html: errores.join('<br>')
+            });
+            return;
+        }
+
+        if (agregados === 0) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Sin selección',
+                text: 'Selecciona al menos un empaque para agregarlo a la orden.'
+            });
+            return;
+        }
+
+        localStorage.setItem('empaques', JSON.stringify(empaquesArray));
+
+        cargarDatosEmpaques();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Agregado',
+            text: 'Los empaques seleccionados fueron agregados a la orden.',
+            timer: 1200,
+            showConfirmButton: false
+        });
+    }
 
     function cargarDatosEmpaques() {
         let empaquesArray = JSON.parse(localStorage.getItem('empaques')) || [];
@@ -222,7 +448,8 @@ $fechaActual = date("Y-m-d");
             empaquesArray.forEach((empaque, index) => {
                 let row = document.createElement("tr");
 
-                let cantidadDisponible = parseFloat(empaque.rr_ext_real || 0);
+                let cantidadDisponible = parseFloat(empaque.cantidad_disponible || empaque.rr_ext_real || 0);
+                let cantidadSeleccionada = empaque.cantidad ? parseFloat(empaque.cantidad) : '';
                 let esExterno = empaque.tipo_producto === 'EXTERNO';
 
                 row.innerHTML = `
@@ -233,14 +460,15 @@ $fechaActual = date("Y-m-d");
                             : '<span class="badge bg-success">REVOLTURA</span>'
                         }
                     </td>
-                    <td>${empaque.revoltura}</td>
-                    <td>${empaque.pres_descrip}</td>
-                    <td>${cantidadDisponible}</td>
+                    <td>${empaque.revoltura || ''}</td>
+                    <td>${empaque.pres_descrip || ''}</td>
+                    <td>${formatNumber(cantidadDisponible)}</td>
                     <td>
                         <input type="text"
                             class="form-control"
                             id="cantidad_${index}"
-                            onclick="$(this).val('')"
+                            value="${cantidadSeleccionada}"
+                            onclick="$(this).select()"
                             onkeypress="return isNumberKey(event, this);"
                             maxlength="7"
                             required>
@@ -252,8 +480,8 @@ $fechaActual = date("Y-m-d");
                                 : `<input type="text"
                                         class="form-control"
                                         id="bloom_${index}"
-                                        value="${bloomCliente ? bloomCliente : ''}"
-                                        onclick="$(this).val('')"
+                                        value="${empaque.bloom || (bloomCliente ? bloomCliente : '')}"
+                                        onclick="$(this).select()"
                                         onkeypress="return isNumberKey(event, this);"
                                         maxlength="3"
                                         required>`
@@ -280,7 +508,10 @@ $fechaActual = date("Y-m-d");
         empaquesArray.splice(index, 1);
         localStorage.setItem('empaques', JSON.stringify(empaquesArray));
         cargarDatosEmpaques();
-        $('#dataTableEmpaques').DataTable().ajax.reload();
+
+        if ($.fn.DataTable.isDataTable('#dataTableEmpaques')) {
+            $('#dataTableEmpaques').DataTable().ajax.reload();
+        }
     }
 
     function insertarOrdenEmbarque() {
@@ -304,46 +535,49 @@ $fechaActual = date("Y-m-d");
         }
 
         let validacion = true;
+        let errores = [];
         let empaquesProcesados = [];
+        let acumuladoPorProducto = {};
 
         empaquesArray.forEach((empaque, index) => {
             let cantidadIngresada = parseFloat($(`#cantidad_${index}`).val()) || 0;
-            let cantidadDisponible = parseFloat(empaque.rr_ext_real || 0);
+            let cantidadDisponible = parseFloat(empaque.cantidad_disponible || empaque.rr_ext_real || 0);
             let esExterno = empaque.tipo_producto === 'EXTERNO';
             let bloomAsig = esExterno ? null : ($(`#bloom_${index}`).val() || null);
 
             if (cantidadIngresada <= 0) {
                 validacion = false;
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Cantidad inválida',
-                    text: `Debes capturar una cantidad válida en la fila ${index + 1}.`
-                });
-                return false;
+                errores.push(`Fila ${index + 1}: debes capturar una cantidad válida.`);
+                return;
             }
 
             if (cantidadIngresada > cantidadDisponible) {
                 validacion = false;
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Cantidad excedida',
-                    text: `No puedes tomar más de la cantidad disponible (${cantidadDisponible}). Verifica la fila ${index + 1}.`
-                });
-                return false;
+                errores.push(`Fila ${index + 1}: cantidad ${cantidadIngresada} mayor al disponible ${cantidadDisponible}.`);
+                return;
             }
 
             if (!esExterno && (!bloomAsig || bloomAsig === '')) {
                 validacion = false;
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Bloom requerido',
-                    text: `Debes capturar bloom en la fila ${index + 1}.`
-                });
-                return false;
+                errores.push(`Fila ${index + 1}: debes capturar bloom.`);
+                return;
             }
 
+            const llave = getLlaveProducto(empaque);
+
+            if (!acumuladoPorProducto[llave]) {
+                acumuladoPorProducto[llave] = {
+                    solicitado: 0,
+                    disponible: cantidadDisponible,
+                    filas: []
+                };
+            }
+
+            acumuladoPorProducto[llave].solicitado += cantidadIngresada;
+            acumuladoPorProducto[llave].filas.push(index + 1);
+
             empaquesProcesados.push({
-                tipo_producto: empaque.tipo_producto ?? 'REVOLTURA',
+                tipo_producto: empaque.tipo_producto || 'REVOLTURA',
                 rr_id: empaque.rr_id || null,
                 pe_id: empaque.pe_id || null,
                 rrc_id: empaque.rrc_id || null,
@@ -352,7 +586,25 @@ $fechaActual = date("Y-m-d");
             });
         });
 
-        if (!validacion) return;
+        Object.keys(acumuladoPorProducto).forEach(llave => {
+            const item = acumuladoPorProducto[llave];
+
+            if (item.solicitado > item.disponible) {
+                validacion = false;
+                errores.push(
+                    `Producto repetido en filas ${item.filas.join(', ')}: ` +
+                    `solicitado ${item.solicitado}, disponible ${item.disponible}.`
+                );
+            }
+        });
+
+        if (!validacion) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Validación incorrecta',
+                html: errores.join('<br>')
+            });
+        }
 
         $.ajax({
             url: 'funciones/orden_embarque_insertar.php',
@@ -368,57 +620,134 @@ $fechaActual = date("Y-m-d");
                     alertas_v5("#alerta-factura", 'Listo!', response.message, 1, true, 5000);
 
                     localStorage.removeItem('empaques');
+                    localStorage.removeItem('empaques_cliente_disponibles');
                     localStorage.removeItem('cliente_id');
 
                     cargarDatosEmpaques();
+                    cargarDisponiblesCliente();
+
                     $('#cte_id').val('');
-                    $('#dataTableEmpaques').DataTable().ajax.reload();
-                    $('#dataTableEmpaquesClientes').DataTable().ajax.reload();
+
+                    if ($.fn.DataTable.isDataTable('#dataTableEmpaques')) {
+                        $('#dataTableEmpaques').DataTable().ajax.reload();
+                    }
+
+                    if ($.fn.DataTable.isDataTable('#dataTableEmpaquesClientes')) {
+                        $('#dataTableEmpaquesClientes').DataTable().ajax.reload();
+                    }
                 } else {
                     alertas_v5("#alerta-factura", 'Error!', response.message, 3, true, 5000);
                 }
             },
             error: function(xhr) {
+                let mensaje = 'No se pudo conectar con el servidor.';
+
+                if (xhr.responseJSON) {
+                    mensaje = xhr.responseJSON.message || xhr.responseJSON.error || mensaje;
+                } else if (xhr.responseText) {
+                    try {
+                        let res = JSON.parse(xhr.responseText);
+                        mensaje = res.message || res.error || mensaje;
+                    } catch (e) {
+                        mensaje = xhr.responseText;
+                    }
+                }
+
                 alertas_v5(
                     "#alerta-factura",
-                    'Error de red',
-                    xhr.responseText || 'No se pudo conectar con el servidor.',
+                    'Error',
+                    mensaje,
                     3,
                     true,
-                    5000
+                    7000
                 );
             }
         });
     }
 
-    function cambiar_de_cliente(rrc_id, cte_id, cliente) {
-        $.ajax({
+    function cambiar_de_cliente(rrc_id, cte_id, cantidad) {
+        return $.ajax({
             type: 'POST',
             url: 'funciones/cliente_empacado_cambiar_cliente.php',
+            dataType: 'json',
             data: {
-                rrc_id,
-                cte_id
-            },
-            success: function(response) {
-                Swal.fire({
-                    title: 'Cliente reasignado correctamente',
-                    text: `El cliente nuevo será ${cliente}`,
-                    icon: 'success'
-                });
-
-                localStorage.removeItem('empaques');
-                localStorage.removeItem('cliente_id');
-
-                cargarDatosEmpaques();
-                $('#dataTableEmpaquesClientes').DataTable().ajax.reload();
-            },
-            error: function() {
-                Swal.fire({
-                    title: 'Error al reasignar cliente',
-                    text: 'Ocurrió un error al intentar reasignar el cliente. Por favor intenta nuevamente.',
-                    icon: 'error'
-                });
+                rrc_id: rrc_id,
+                cte_id: cte_id,
+                cantidad: cantidad
             }
+        });
+    }
+
+    function reasignarEmpaquesCliente(empaques, cte_id, cliente) {
+        Swal.fire({
+            title: 'Reasignando...',
+            text: 'Espera mientras se cambia el cliente.',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
+
+        let cadena = Promise.resolve();
+
+        empaques.forEach(empaque => {
+            let cantidad = parseFloat(empaque.cantidad || 0);
+
+            cadena = cadena.then(() => cambiar_de_cliente(
+                empaque.rrc_id,
+                cte_id,
+                cantidad
+            ));
+        });
+
+        cadena.then(() => {
+            Swal.fire({
+                title: 'Cantidad reasignada correctamente',
+                text: `La cantidad seleccionada fue reasignada al cliente ${cliente}`,
+                icon: 'success'
+            });
+
+            localStorage.removeItem('empaques');
+            localStorage.removeItem('empaques_cliente_disponibles');
+            localStorage.removeItem('cliente_id');
+
+            cargarDatosEmpaques();
+            cargarDisponiblesCliente();
+
+            if ($.fn.DataTable.isDataTable('#dataTableEmpaquesClientes')) {
+                $('#dataTableEmpaquesClientes').DataTable().ajax.reload();
+            }
+        }).catch(error => {
+            let mensaje = 'Ocurrió un error al intentar reasignar el cliente.';
+
+            if (error.responseJSON) {
+                mensaje = error.responseJSON.error || error.responseJSON.message || mensaje;
+            }
+
+            Swal.fire({
+                title: 'Error al reasignar cliente',
+                text: mensaje,
+                icon: 'error'
+            });
+        });
+    }
+
+    function getLlaveProducto(empaque) {
+        if (empaque.tipo_producto === 'EXTERNO') {
+            return `EXTERNO_${empaque.pe_id}`;
+        }
+
+        if (empaque.rrc_id) {
+            return `RRC_${empaque.rrc_id}`;
+        }
+
+        return `RR_${empaque.rr_id}`;
+    }
+
+    function formatNumber(value) {
+        let number = parseFloat(value || 0);
+
+        return number.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
         });
     }
 </script>

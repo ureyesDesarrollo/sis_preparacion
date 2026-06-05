@@ -7,6 +7,15 @@ ob_start();
 ini_set('display_errors', '0');
 error_reporting(E_ALL);
 
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        limpiarBuffersSalida();
+        http_response_code(500);
+        echo 'Error al generar la remisión: ' . $error['message'] . ' en ' . basename($error['file']) . ':' . $error['line'];
+    }
+});
+
 require_once 'load_phpword.php';
 include '../../conexion/conexion.php';
 include '../utils/funciones.php';
@@ -414,8 +423,14 @@ if ($datos === null) {
     exit('No se pudieron obtener los datos de la remisión.');
 }
 
-$fmt = new \IntlDateFormatter('es_MX', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
-$fmt->setPattern("d 'de' MMMM 'del' yyyy");
+if (class_exists('IntlDateFormatter')) {
+    $fmt = new \IntlDateFormatter('es_MX', \IntlDateFormatter::LONG, \IntlDateFormatter::NONE);
+    $fmt->setPattern("d 'de' MMMM 'del' yyyy");
+    $fechaRemision = (string)$fmt->format(time());
+} else {
+    $meses = [1 => 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+    $fechaRemision = date('j') . ' de ' . $meses[(int)date('n')] . ' del ' . date('Y');
+}
 
 $preciosIndex = [];
 foreach ($precios as $p) {
@@ -430,7 +445,7 @@ foreach ($precios as $p) {
 
 $remision = [
     'folio' => limpiarTextoWord((string)$folio),
-    'fecha' => mayusculasSeguro((string)$fmt->format(time())),
+    'fecha' => mayusculasSeguro($fechaRemision),
     'cliente' => '',
     'domicilio' => '',
     'productos' => [],
@@ -455,21 +470,35 @@ foreach ($datos as $fila) {
     $precio = (float)$precioData['costo_unitario'];
     $promocion = (float)$precioData['promocion'];
     $kilosSolicitados = (float)($fila['cantidad_solicitada'] ?? 0) * (float)($fila['pres_kg'] ?? 0);
-    $kilosFacturables = max(0, $kilosSolicitados - $promocion);
 
-    $descripcion = obtenerDescripcionProducto($fila, $kilosFacturables, false);
-    $importe = $precio * $kilosFacturables;
+    // La promoción se maneja en kilos. No debe ser negativa ni mayor a la partida.
+    // Esto permite conservar la línea de "MERCANCÍA DE PROMOCIÓN" en $0.00
+    // sin generar cantidades negativas o divisiones raras.
+    if ($promocion < 0) {
+        $promocion = 0;
+    }
 
-    $remision['productos'][] = [
-        'presentacion_id' => $presentacionId,
-        'cantidad' => $kilosFacturables,
-        'descripcion' => $descripcion,
-        'bloom' => limpiarTextoWord($fila['calidad'] ?? ''),
-        'detalle' => limpiarTextoWord('Lote: ' . ($fila['rev_folio'] ?? '')),
-        'precio' => formatoMoneda($precio),
-        'importe' => formatoMoneda($importe),
-        'es_promocion' => false,
-    ];
+    if ($promocion > $kilosSolicitados) {
+        $promocion = $kilosSolicitados;
+    }
+
+    $kilosFacturables = $kilosSolicitados - $promocion;
+
+    if ($kilosFacturables > 0) {
+        $descripcion = obtenerDescripcionProducto($fila, $kilosFacturables, false);
+        $importe = $precio * $kilosFacturables;
+
+        $remision['productos'][] = [
+            'presentacion_id' => $presentacionId,
+            'cantidad' => $kilosFacturables,
+            'descripcion' => $descripcion,
+            'bloom' => limpiarTextoWord($fila['calidad'] ?? ''),
+            'detalle' => limpiarTextoWord('Lote: ' . ($fila['rev_folio'] ?? '')),
+            'precio' => formatoMoneda($precio),
+            'importe' => formatoMoneda($importe),
+            'es_promocion' => false,
+        ];
+    }
 
     if ($promocion > 0) {
         $descripcionPromo = obtenerDescripcionProducto($fila, $promocion, true);
@@ -500,4 +529,11 @@ $remision['total_letra'] = limpiarTextoWord((string)numeroALetras($subtotal));
 $nombreCliente = limpiarNombreArchivo($remision['cliente']);
 $nombreArchivo = 'REMISION_' . ($remision['folio'] !== '' ? $remision['folio'] : 'SIN_FOLIO') . '_' . $nombreCliente . '.docx';
 
-generarRemisionWord($remision, $nombreArchivo);
+try {
+    generarRemisionWord($remision, $nombreArchivo);
+} catch (Throwable $e) {
+    limpiarBuffersSalida();
+    http_response_code(500);
+    echo 'Error al generar la remisión: ' . $e->getMessage();
+    exit;
+}

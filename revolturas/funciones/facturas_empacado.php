@@ -113,12 +113,12 @@ include "../../seguridad/user_seguridad.php";
                     }
                 },
                 {
-                    data: 'rr_ext_real'
+                    data: 'cantidad_disponible'
                 },
                 {
                     data: null,
                     render: function(data, type, row) {
-                        const kg = parseFloat(row.pres_kg) * parseFloat(row.rr_ext_real);
+                        const kg = parseFloat(row.pres_kg) * parseFloat(row.cantidad_disponible);
                         return formatter.format(kg);
                     }
                 },

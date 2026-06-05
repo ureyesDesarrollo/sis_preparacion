@@ -1,5 +1,6 @@
 <?php
 include "../../conexion/conexion.php";
+
 $cnx = Conectarse();
 header('Content-Type: application/json');
 
@@ -18,10 +19,24 @@ try {
     }
 
     $cte_id = (int)$data['cte_id'];
+
+    if ($cte_id < 0) {
+        throw new Exception('Cliente inválido');
+    }
+
     $empaquesValidados = [];
 
+    /*
+        Acumuladores para validar disponibilidad total por producto.
+        Esto evita que el mismo rr_id / rrc_id / pe_id venga repetido
+        y pase la validación por partes.
+    */
+    $solicitadoGeneral = [];
+    $solicitadoCliente = [];
+    $solicitadoExterno = [];
+
     /* =========================
-       1. VALIDAR TODO PRIMERO
+       1. VALIDAR ESTRUCTURA
        ========================= */
     foreach ($data['empaques'] as $index => $empaque) {
         $fila = $index + 1;
@@ -46,6 +61,30 @@ try {
                 throw new Exception("Falta bloom en la fila $fila");
             }
 
+            if ($rr_id === null && $rrc_id === null) {
+                throw new Exception("Falta rr_id o rrc_id en la fila $fila");
+            }
+
+            if ($rr_id !== null && $rrc_id !== null) {
+                throw new Exception("La fila $fila tiene rr_id y rrc_id al mismo tiempo. Solo debe tener uno.");
+            }
+
+            if ($rr_id !== null) {
+                if (!isset($solicitadoGeneral[$rr_id])) {
+                    $solicitadoGeneral[$rr_id] = 0;
+                }
+
+                $solicitadoGeneral[$rr_id] += $cantidad;
+            }
+
+            if ($rrc_id !== null) {
+                if (!isset($solicitadoCliente[$rrc_id])) {
+                    $solicitadoCliente[$rrc_id] = 0;
+                }
+
+                $solicitadoCliente[$rrc_id] += $cantidad;
+            }
+
             $empaquesValidados[] = [
                 'tipo_producto' => 'REVOLTURA',
                 'rr_id' => $rr_id,
@@ -61,6 +100,12 @@ try {
                 throw new Exception("Falta pe_id en la fila $fila");
             }
 
+            if (!isset($solicitadoExterno[$pe_id])) {
+                $solicitadoExterno[$pe_id] = 0;
+            }
+
+            $solicitadoExterno[$pe_id] += $cantidad;
+
             $empaquesValidados[] = [
                 'tipo_producto' => 'EXTERNO',
                 'rr_id' => null,
@@ -73,9 +118,159 @@ try {
     }
 
     /* =========================
-       2. INSERTAR CABECERA
+       2. VALIDAR DISPONIBILIDAD PT GENERAL
        ========================= */
-    $query = "INSERT INTO rev_orden_embarque (cte_id) VALUES ($cte_id)";
+    foreach ($solicitadoGeneral as $rr_id => $cantidadSolicitada) {
+        $rr_id = (int)$rr_id;
+
+        $sqlDisponible = "
+            SELECT 
+                rr_id,
+                cantidad_disponible
+            FROM vw_rev_revolturas_pt_disponible
+            WHERE rr_id = $rr_id
+            LIMIT 1
+        ";
+
+        $resDisponible = mysqli_query($cnx, $sqlDisponible);
+
+        if (!$resDisponible) {
+            throw new Exception('Error al validar disponibilidad PT general: ' . mysqli_error($cnx));
+        }
+
+        $rowDisponible = mysqli_fetch_assoc($resDisponible);
+
+        if (!$rowDisponible) {
+            throw new Exception("No existe inventario PT general para rr_id $rr_id");
+        }
+
+        $cantidadDisponible = (float)$rowDisponible['cantidad_disponible'];
+
+        if ($cantidadSolicitada > $cantidadDisponible) {
+            throw new Exception(
+                "No hay disponibilidad suficiente para rr_id $rr_id. " .
+                "Solicitado: $cantidadSolicitada, disponible: $cantidadDisponible"
+            );
+        }
+    }
+
+    /* =========================
+       3. VALIDAR DISPONIBILIDAD PT CLIENTE
+       ========================= */
+    foreach ($solicitadoCliente as $rrc_id => $cantidadSolicitada) {
+        $rrc_id = (int)$rrc_id;
+
+        $sqlDisponible = "
+            SELECT 
+                rrc_id,
+                cte_id,
+                cantidad_disponible
+            FROM vw_rev_revolturas_pt_cliente_disponible
+            WHERE rrc_id = $rrc_id
+            LIMIT 1
+        ";
+
+        $resDisponible = mysqli_query($cnx, $sqlDisponible);
+
+        if (!$resDisponible) {
+            throw new Exception('Error al validar disponibilidad PT cliente: ' . mysqli_error($cnx));
+        }
+
+        $rowDisponible = mysqli_fetch_assoc($resDisponible);
+
+        if (!$rowDisponible) {
+            throw new Exception("No existe inventario PT cliente para rrc_id $rrc_id");
+        }
+
+        $cteInventario = (int)$rowDisponible['cte_id'];
+        $cantidadDisponible = (float)$rowDisponible['cantidad_disponible'];
+
+        if ($cteInventario !== $cte_id) {
+            throw new Exception(
+                "El inventario rrc_id $rrc_id pertenece al cliente $cteInventario, no al cliente $cte_id"
+            );
+        }
+
+        if ($cantidadSolicitada > $cantidadDisponible) {
+            throw new Exception(
+                "No hay disponibilidad suficiente para rrc_id $rrc_id. " .
+                "Solicitado: $cantidadSolicitada, disponible: $cantidadDisponible"
+            );
+        }
+    }
+
+    /* =========================
+       4. VALIDAR DISPONIBILIDAD PRODUCTO EXTERNO
+       ========================= */
+    foreach ($solicitadoExterno as $pe_id => $cantidadSolicitada) {
+        $pe_id = (int)$pe_id;
+
+        /*
+            Para producto externo todavía no tenemos vista.
+            Calculamos disponible así:
+            existencia real - comprometido en órdenes abiertas.
+        */
+        $sqlDisponible = "
+            SELECT
+                pe.pe_id,
+                pe.pe_existencia_real,
+                IFNULL(SUM(
+                    CASE
+                        WHEN oe.oe_estado IN ('PENDIENTE','PROCESO','ETIQUETA LIBERADA','LIBERADO')
+                            THEN d.cantidad
+                        ELSE 0
+                    END
+                ), 0) AS cantidad_comprometida,
+                pe.pe_existencia_real - IFNULL(SUM(
+                    CASE
+                        WHEN oe.oe_estado IN ('PENDIENTE','PROCESO','ETIQUETA LIBERADA','LIBERADO')
+                            THEN d.cantidad
+                        ELSE 0
+                    END
+                ), 0) AS cantidad_disponible
+            FROM producto_externo pe
+            LEFT JOIN rev_orden_embarque_detalle d
+                ON d.pe_id = pe.pe_id
+               AND d.oed_tipo_producto = 'EXTERNO'
+            LEFT JOIN rev_orden_embarque oe
+                ON oe.oe_id = d.oe_id
+            WHERE pe.pe_id = $pe_id
+            GROUP BY
+                pe.pe_id,
+                pe.pe_existencia_real
+            LIMIT 1
+        ";
+
+        $resDisponible = mysqli_query($cnx, $sqlDisponible);
+
+        if (!$resDisponible) {
+            throw new Exception('Error al validar disponibilidad producto externo: ' . mysqli_error($cnx));
+        }
+
+        $rowDisponible = mysqli_fetch_assoc($resDisponible);
+
+        if (!$rowDisponible) {
+            throw new Exception("No existe producto externo pe_id $pe_id");
+        }
+
+        $cantidadDisponible = (float)$rowDisponible['cantidad_disponible'];
+
+        if ($cantidadSolicitada > $cantidadDisponible) {
+            throw new Exception(
+                "No hay disponibilidad suficiente para producto externo pe_id $pe_id. " .
+                "Solicitado: $cantidadSolicitada, disponible: $cantidadDisponible"
+            );
+        }
+    }
+
+    /* =========================
+       5. INSERTAR CABECERA
+       ========================= */
+    $query = "
+        INSERT INTO rev_orden_embarque (cte_id)
+        VALUES ($cte_id)
+    ";
+
     if (!mysqli_query($cnx, $query)) {
         throw new Exception('Error al insertar la orden: ' . mysqli_error($cnx));
     }
@@ -83,7 +278,7 @@ try {
     $oe_id = mysqli_insert_id($cnx);
 
     /* =========================
-       3. INSERTAR DETALLES
+       6. INSERTAR DETALLES
        ========================= */
     foreach ($empaquesValidados as $index => $item) {
         $fila = $index + 1;
@@ -128,11 +323,13 @@ try {
         'message' => 'Orden de embarque registrada correctamente.',
         'oe_id' => $oe_id
     ]);
+
 } catch (Exception $e) {
 
-    /* =====================================
-       LIMPIEZA MANUAL PORQUE ES MYISAM
-       ===================================== */
+    /*
+        Limpieza manual porque las tablas todavía son MyISAM.
+        Cuando se conviertan a InnoDB, esto debe cambiarse por transacción real.
+    */
     if (!empty($oe_id)) {
         mysqli_query($cnx, "DELETE FROM rev_orden_embarque_detalle WHERE oe_id = " . (int)$oe_id);
         mysqli_query($cnx, "DELETE FROM rev_orden_embarque WHERE oe_id = " . (int)$oe_id);
@@ -143,6 +340,7 @@ try {
         'success' => false,
         'message' => 'Error al registrar orden: ' . $e->getMessage()
     ]);
+
 } finally {
     mysqli_close($cnx);
 }
