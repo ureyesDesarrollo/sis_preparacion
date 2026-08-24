@@ -698,6 +698,10 @@ mysqli_close($cnx);
                             <span id="total-kilos-barredura-resumen" class="fw-semibold"><?= number_format((float)$total_barredura['barredura']); ?></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
+                            <strong>Kilos rechazados:</strong>
+                            <span id="total-kilos-rechazados" class="fw-semibold"></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
                             <strong>Kilos revolturas terminadas:</strong>
                             <span id="total-kilos-revolturas-resumen" class="fw-semibold"></span>
                         </li>
@@ -755,6 +759,7 @@ mysqli_close($cnx);
                 cargarRevolturasTerminadas(),
                 cargarRevolturasDia(),
                 cargarTarimasDisponibles(),
+                cargarTarimasRechazadas()
             ]).then(totales => {
                 totalSinEmpacarKilos = totales.reduce((acc, total) => acc + total, 0);
                 totalGlobalResumen = totalSinEmpacarKilos + totalEmpaques + totalKilosBarredura + totalDevolucionesProceso;
@@ -922,6 +927,35 @@ mysqli_close($cnx);
                         }
                         data.forEach(t => totalKilos += Number(t.tar_kilos));
                         $('#total-kilos-disponibles-resumen').text(formatter.format(totalKilos));
+                        resolve(totalKilos);
+                    },
+                    error: function() {
+                        alert('Error al cargar las tarimas.');
+                        reject('Error al cargar las tarimas.');
+                    }
+                });
+            });
+        }
+
+        function cargarTarimasRechazadas() {
+            return new Promise((resolve, reject) => {
+                let totalKilos = 0;
+                $.ajax({
+                    type: 'POST',
+                    url: 'reporte_inventario.controller.php',
+                    data: {
+                        action: 'tarimas_rechazadas'
+                    },
+                    success: function(response) {
+                        const data = JSON.parse(response);
+                        if (data.error) {
+                            alert('Error: ' + data.message);
+                            reject(data.message);
+                            return;
+                        }
+                        console.log(data)
+                        data.forEach(t => totalKilos = Number(t.tar_kilos));
+                        $('#total-kilos-rechazados').text(formatter.format(totalKilos));
                         resolve(totalKilos);
                     },
                     error: function() {

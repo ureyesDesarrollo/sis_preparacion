@@ -30,4 +30,27 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
 RUN echo "date.timezone=America/Mazatlan" > \
     /usr/local/etc/php/conf.d/timezone.ini
 
+# ========================================
+# XDEBUG
+# ========================================
+
+RUN pecl install xdebug-3.1.6 \
+    && docker-php-ext-enable xdebug
+
+# ========================================
+# HERRAMIENTAS UTILES
+# ========================================
+
+RUN apt-get update && apt-get install -y \
+    git \
+    nano \
+    vim \
+    curl
+
+# ========================================
+# COMPOSER
+# ========================================
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 WORKDIR /var/www/html

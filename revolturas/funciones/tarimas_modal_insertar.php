@@ -7,22 +7,25 @@ include "../../funciones/funciones.php";
 $cnx = Conectarse();
 
 if (isset($_POST['action']) && $_POST['action'] == 'obtener_consecutivo') {
-    $fechaActual  = new DateTime();
-    $primerDiaMes = new DateTime(date('Y-m-01 07:00:00'));
+
+    $tz = new DateTimeZone('-06:00'); // Fijo, sin reglas DST
+
+    $fechaActual  = new DateTime('now', $tz);
+    $primerDiaMes = new DateTime($fechaActual->format('Y-m-01') . ' 07:00:00', $tz);
 
     if ($fechaActual < $primerDiaMes) {
-        $primerDiaMesAnterior = new DateTime(date('Y-m-01 07:00:00', strtotime('-1 month')));
-        $sql = "SELECT LPAD((COUNT(tar_id) + 1), 4, 0) AS total
-                FROM rev_tarimas
-                WHERE tar_fecha >= '" . $primerDiaMesAnterior->format('Y-m-d H:i:s') . "'";
+        $mesAnterior = (clone $primerDiaMes)->modify('-1 month');
+        $corte = $mesAnterior;
     } else {
-        $sql = "SELECT LPAD((COUNT(tar_id) + 1), 4, 0) AS total
-                FROM rev_tarimas
-                WHERE tar_fecha >= '" . $primerDiaMes->format('Y-m-d H:i:s') . "'";
+        $corte = $primerDiaMes;
     }
 
-    $result     = mysqli_query($cnx, $sql);
-    $registros  = mysqli_fetch_assoc($result);
+    $sql = "SELECT LPAD((COUNT(tar_id) + 1), 4, 0) AS total
+            FROM rev_tarimas
+            WHERE tar_fecha >= '" . $corte->format('Y-m-d H:i:s') . "'";
+
+    $result      = mysqli_query($cnx, $sql);
+    $registros   = mysqli_fetch_assoc($result);
     $consecutivo = $registros['total'];
 
     echo json_encode(['consecutivo' => $consecutivo]);

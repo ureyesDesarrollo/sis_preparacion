@@ -118,6 +118,9 @@ include "../funciones/funciones.php";
                     <?php if (($_SESSION['privilegio'] == 1 || $_SESSION['privilegio'] == 2 || $_SESSION['privilegio'] == 26 || $_SESSION['privilegio'] == 22)) { ?>
                         <li><a class="menu-item dropdown-item" href="funciones/ordenes_embarque.php">Ordenes de embarque - Listado</a></li>
                     <?php } ?>
+                    <?php if (fnc_permiso($_SESSION['privilegio'], 51, 'upe_listar') == 1) { ?>
+                        <li><a class="menu-item dropdown-item" href="funciones/pruebas_comportamiento.php">Pruebas Comportamiento</a></li>
+                    <?php } ?>
                 </ul>
             </li>
 
@@ -138,6 +141,7 @@ include "../funciones/funciones.php";
                     <?php } ?>
                     <li><a class="dropdown-item" href="reportes/reporte_inventario.php" target="_blank"> Producto terminado (sin empacar)</a></li>
                     <li><a class="menu-item dropdown-item" href="reportes/reporte_kardex.php" target="_blank"> Entradas - Salidas</a></li>
+                    <li><a class="dropdown-item" href="../reporte_ventas.php" target="_blank"> Reporte de ventas</a></li>
                 </ul>
             </li>
             <?php if ($_SESSION['privilegio'] == 1 or $_SESSION['privilegio'] == 2 or $_SESSION['privilegio'] == 15 or $_SESSION['privilegio'] == 28) {

@@ -98,10 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 c.cal_id
             FROM rev_tarimas t
             LEFT JOIN rev_calidad c ON c.cal_id = t.cal_id
-            WHERE t.tar_estatus = 0 AND t.tar_count_etiquetado > 0
-            AND t.tar_fecha < DATE_SUB(CURDATE(), INTERVAL 1 DAY) + INTERVAL 7 HOUR
-            AND (t.cal_id IS NULL OR t.cal_id = '')
-            AND t.pro_id NOT IN (0,1,2,3) ORDER BY t.tar_folio DESC;
+            WHERE t.tar_estatus = 0
+AND t.tar_count_etiquetado > 0
+AND t.tar_fecha < DATE_SUB(CURDATE(), INTERVAL 1 DAY) + INTERVAL 7 HOUR
+AND (t.cal_id IS NULL OR t.cal_id = '')
+AND (t.tar_bloom IS NULL OR t.tar_bloom = 0)
+AND t.pro_id NOT IN (0,1,2,3) ORDER BY t.tar_folio DESC;
         ";
 
         $resultado = mysqli_query($cnx, $sql);
@@ -162,12 +164,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             FROM rev_tarimas t
             INNER JOIN rev_calidad c ON c.cal_id = t.cal_id
             WHERE t.tar_estatus = 0
-            AND t.tar_count_etiquetado > 0
-            AND (
-                t.pro_id NOT IN (0,1,2,3)
-                OR t.tar_bloom = 0
-            )
-            ORDER BY t.tar_folio DESC;
+AND t.tar_count_etiquetado > 0
+AND t.cal_id IS NOT NULL
+AND t.tar_bloom IS NOT NULL
+AND t.tar_bloom > 0
+AND t.pro_id NOT IN (0,1,2,3);
             ";
 
         $resultado = mysqli_query($cnx, $sql);
@@ -319,7 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 c.cal_descripcion,
                 c.cal_color,
                 r.rev_folio
-            FROM rev_tarimas t
+            FROM rev_tarimas tP26220002
             LEFT JOIN rev_calidad c ON c.cal_id = t.cal_id
             LEFT JOIN rev_revolturas_tarimas rt ON rt.tar_id = t.tar_id
             LEFT JOIN rev_revolturas r ON r.rev_id = rt.rev_id
@@ -448,6 +449,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         mysqli_close($cnx);
 
         echo json_encode($tarimas_disponibles, JSON_UNESCAPED_UNICODE);
+    } catch (Exception $e) {
+        // Respuesta en caso de error
+        echo json_encode([
+            "error" => true,
+            "message" => $e->getMessage(),
+        ], JSON_UNESCAPED_UNICODE);
+    }
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'tarimas_rechazadas') {
+    try {
+        // Conexión a la base de datos
+        $cnx = Conectarse();
+
+        if (!$cnx) {
+            throw new Exception("Error en la conexión a la base de datos: " . mysqli_connect_error());
+        }
+
+        $sql = "SELECT SUM(tar_kilos) as tar_kilos 
+        FROM rev_tarimas WHERE tar_rechazado = 'R' AND tar_count_etiquetado > 0 AND tar_estatus !=9;";
+
+        $resultado = mysqli_query($cnx, $sql);
+
+        if (!$resultado) {
+            throw new Exception("Error en la consulta SQL: " . mysqli_error($cnx));
+        }
+
+        $tarimas_rechazadas = array();
+
+        while ($fila = mysqli_fetch_assoc($resultado)) {
+            $tarimas_rechazadas[] = $fila;
+        }
+
+        mysqli_close($cnx);
+
+        echo json_encode($tarimas_rechazadas, JSON_UNESCAPED_UNICODE);
     } catch (Exception $e) {
         // Respuesta en caso de error
         echo json_encode([
