@@ -20,8 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         LEFT JOIN
             rev_clientes cte ON oe.cte_id = cte.cte_id
         LEFT JOIN rev_revolturas_pt_facturas f ON oe.oe_id = f.orden_embarque_id
-        GROUP BY
-            oe.oe_id
         ORDER BY
             oe.oe_id DESC";
 

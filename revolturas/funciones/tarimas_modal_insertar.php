@@ -8,21 +8,22 @@ $cnx = Conectarse();
 
 if (isset($_POST['action']) && $_POST['action'] == 'obtener_consecutivo') {
 
-    $tz = new DateTimeZone('-06:00'); // Fijo, sin reglas DST
+    $zona = new DateTimeZone('-06:00');
 
-    $fechaActual  = new DateTime('now', $tz);
-    $primerDiaMes = new DateTime($fechaActual->format('Y-m-01') . ' 07:00:00', $tz);
+    $ahora = new DateTime('now', $zona);
 
-    if ($fechaActual < $primerDiaMes) {
-        $mesAnterior = (clone $primerDiaMes)->modify('-1 month');
-        $corte = $mesAnterior;
-    } else {
-        $corte = $primerDiaMes;
+    $corte = new DateTime(
+        $ahora->format('Y-m-01 07:00:00'),
+        $zona
+    );
+
+    if ($ahora < $corte) {
+        $corte->modify('-1 month');
     }
 
     $sql = "SELECT LPAD((COUNT(tar_id) + 1), 4, 0) AS total
-            FROM rev_tarimas
-            WHERE tar_fecha >= '" . $corte->format('Y-m-d H:i:s') . "'";
+        FROM rev_tarimas
+        WHERE tar_fecha >= '" . $corte->format('Y-m-d H:i:s') . "'";
 
     $result      = mysqli_query($cnx, $sql);
     $registros   = mysqli_fetch_assoc($result);

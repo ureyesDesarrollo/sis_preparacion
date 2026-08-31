@@ -44,8 +44,14 @@ include "../../seguridad/user_seguridad.php";
                         <label for="cte_clasificacion" class="form-label">Clasificación</label>
                         <select name="cte_clasificacion" id="cte_clasificacion" class="form-select" required>
                             <option value="" disabled selected>Seleccione</option>
+                            <option value="A">A</option>
                             <option value="AA">AA</option>
                             <option value="AAA">AAA</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="EX A">EX A</option>
+                            <option value="EX AA">EX AA</option>
+                            <option value="EX AAA">EX AAA</option>
                         </select>
                     </div>
 

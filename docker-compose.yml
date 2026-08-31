@@ -1,6 +1,7 @@
 services:
 
   app:
+    restart: unless-stopped
     build: .
     ports:
       - "8080:80"
@@ -14,10 +15,12 @@ services:
 
   db:
     image: mysql:8.0
-
+    restart: unless-stopped
     environment:
+      TZ: America/Mexico_City
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: bd_sis_preparacion
+      command: --default-time-zone=-06:00
 
     ports:
       - "3306:3306"

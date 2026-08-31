@@ -111,13 +111,13 @@ $fino = $mapaFino[$datos_tarimas['tar_fino']] ?? '';
     $printer_ip = "";
     switch ($opcion) {
         case 1: //Impresion proceso
-            $printer_ip = "192.168.1.99";
+            $printer_ip = "192.168.1.9";
             break;
         case 2: //Impresion cuarentena
-            $printer_ip = "192.168.1.97";
+            $printer_ip = "192.168.1.9";
             break;
         case 3: //Impresion Aceptada
-            $printer_ip = "192.168.1.98";
+            $printer_ip = "192.168.1.9";
             break;
     }
 

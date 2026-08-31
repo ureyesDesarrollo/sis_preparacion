@@ -36,12 +36,16 @@ try {
     if (!in_array($tipo, ['Comercial', 'Industrial', 'Ambos'])) {
         throw new Exception('Tipo de cliente inválido.');
     }
-    if (!in_array($clasificacion, ['AA', 'AAA'])) {
+    if (!in_array($clasificacion, ['A', 'AA', 'AAA', 'B', 'C', 'EX A', 'EX AA', 'EX AAA'])) {
         throw new Exception('Clasificación inválida.');
     }
 
-    // Construir condición para RFC duplicado, excluyendo el genérico
-    $condRfc = $rfc !== 'XAXX010101000'
+    $rfcsGenericos = [
+        'XAXX010101000',
+        'XEXX010101000'
+    ];
+
+    $condRfc = !in_array($rfc, $rfcsGenericos, true)
         ? " OR cte_rfc = '$rfc'"
         : "";
 
@@ -68,10 +72,10 @@ try {
     $sql = "
       INSERT INTO rev_clientes
         (cte_nombre, cte_rfc, cte_razon_social, cte_ubicacion, cte_tipo,
-        cte_clasificacion, cte_tipo_bloom, cte_bloom_min, cte_direccion_fiscal)
+        cte_clasificacion, cte_tipo_bloom, cte_direccion_fiscal)
       VALUES
         ('$nombre', '$rfc', '$razonSocial', '$ubicacion', '$tipo',
-        '$clasificacion','$tipo_bloom', '$bloom_min','$direccion_fiscal')
+        '$clasificacion','$tipo_bloom', '$direccion_fiscal')
     ";
     if (!mysqli_query($cnx, $sql)) {
         throw new Exception('Error al registrar el cliente: ' . mysqli_error($cnx));

@@ -245,3 +245,39 @@
         cte_bloom_min = '0',
         cte_direccion_fiscal = 'PONIENTE 146 No. 696 COL. INDUSTRIAL VALLEJO DELEGACION AZCAPOTZALCO. MEXICO, D.F. C.P. 0230'
         WHERE cte_id = '51';
+[2026-08-31 12:46:35] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'DEIMAN USA CORPORATION',
+        cte_razon_social = 'DEIMAN USA CORPORATION',
+        cte_rfc = 'XEXX010101000',
+        cte_estatus = 'A',
+        cte_ubicacion = 'EL PASO, TX',
+        cte_tipo = 'Industrial',
+        cte_clasificacion = 'EX AAA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = '0',
+        cte_direccion_fiscal = ''
+        WHERE cte_id = '516';
+[2026-08-31 12:46:50] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'DTG DRY PRODUCER LLC',
+        cte_razon_social = 'DTG DRY PRODUCER LLC',
+        cte_rfc = 'XEXX010101000',
+        cte_estatus = 'A',
+        cte_ubicacion = 'MCALLEN, TX',
+        cte_tipo = 'Industrial',
+        cte_clasificacion = 'EX AA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = '0',
+        cte_direccion_fiscal = ''
+        WHERE cte_id = '515';
+[2026-08-31 12:46:50] UPDATE SQL: UPDATE rev_clientes SET
+        cte_nombre = 'DTG DRY PRODUCER LLC',
+        cte_razon_social = 'DTG DRY PRODUCER LLC',
+        cte_rfc = 'XEXX010101000',
+        cte_estatus = 'A',
+        cte_ubicacion = 'MCALLEN, TX',
+        cte_tipo = 'Industrial',
+        cte_clasificacion = 'EX AA',
+        cte_tipo_bloom = '300',
+        cte_bloom_min = '0',
+        cte_direccion_fiscal = ''
+        WHERE cte_id = '515';

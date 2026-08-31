@@ -69,8 +69,14 @@ try {
                         <label for="cte_clasificacion" class="form-label">Clasificación</label>
                         <select name="cte_clasificacion" id="cte_clasificacion" class="form-select" required>
                             <option value="">Seleccione</option>
+							<option value="A" <?= $res['cte_clasificacion'] == 'A'  ? 'selected' : '' ?>>A</option>
                             <option value="AA" <?= $res['cte_clasificacion'] == 'AA'  ? 'selected' : '' ?>>AA</option>
                             <option value="AAA" <?= $res['cte_clasificacion'] == 'AAA' ? 'selected' : '' ?>>AAA</option>
+							<option value="B" <?= $res['cte_clasificacion'] == 'A'  ? 'selected' : '' ?>>B</option>
+							<option value="C" <?= $res['cte_clasificacion'] == 'A'  ? 'selected' : '' ?>>C</option>
+							<option value="EX A" <?= $res['cte_clasificacion'] == 'EX A'  ? 'selected' : '' ?>>EX A</option>
+							<option value="EX AA" <?= $res['cte_clasificacion'] == 'EX AA'  ? 'selected' : '' ?>>EX AA</option>
+							<option value="EX AAA" <?= $res['cte_clasificacion'] == 'EX AAA'  ? 'selected' : '' ?>>EX AAA</option>
                         </select>
                     </div>
 

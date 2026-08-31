@@ -132,7 +132,7 @@ include "../../conexion/conexion.php";
                     data: 'rev_estatus',
                     render: function(data, type, row) {
                         <?php if ((fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) || $_SESSION['privilegio'] == 20 || $_SESSION['privilegio'] == 24) { ?>
-                            if ((data == '2') && (row.cal_id != null || row.cal_id != '0')) {
+                            if ((data == '2') && (row.cal_id != null && row.cal_id != '0')) {
                                 return '<a href="#"><i class="btn-parametros fa-regular fa-pen-to-square" data-rev="' + row.rev_id + '"></i></a>';
                             } else {
                                 if (data == '3') {
@@ -197,7 +197,23 @@ include "../../conexion/conexion.php";
                 }, */
                 //Cliente teorico
                 {
-                    data: 'cte_nombre'
+                    data: 'cte_nombre',
+                    render: function(data, type, row) {
+                        return `
+                            <div class="d-flex align-items-center justify-content-between gap-2">
+                                <span>${row.cte_nombre ?? ''}</span>
+                            ${(row.rev_estatus != '3' && row.rev_estatus != '9') 
+                            ? `<button
+                                    type="button"
+                                    class="btn btn-link btn-sm p-0 btn-editar-cliente"
+                                    data-rev="${row.rev_id}"
+                                    title="Editar cliente"
+                                >
+                                    <i class="fas fa-edit"></i>
+                                </button>` : ''}
+                            </div>
+                        `;
+                    },
                 },
                 /* //Muetreo
                 {
@@ -275,11 +291,10 @@ include "../../conexion/conexion.php";
                             return '';
                         }
                     },
-                    visible: <?php if ((fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) || ($_SESSION['privilegio'] == 21 || $_SESSION['privilegio'] == 22 || $_SESSION['privilegio'] == 23)) { ?>true<?php } else { ?>false<?php } ?>
+                    visible: <?php echo ((fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) || in_array($_SESSION['privilegio'], [21, 22, 23])) ? 'true' : 'false'; ?>
                 }
             ]
         });
-
 
         $('#dataTableRevolturas').on('click', '.btn-convertir', function() {
             let rev_id = $(this).data('rev');
@@ -345,13 +360,26 @@ include "../../conexion/conexion.php";
             link.click();
         });
 
+        $('#dataTableRevolturas').on('click', '.btn-editar-cliente', function(){
+            let rev_id = $(this).data('rev');
+            $.ajax({
+                type: 'POST',
+                data: {'rev_id': rev_id},
+                url: 'funciones/revolturas_modal_editar_cliente.php',
+                success: function(result){
+                    $('#modal_revolturas').html(result);
+                    $('#modal_revolturas').modal('show');
+                }
+            });
+        });
+
 
     });
 </script>
 
 <div class="container-fluid">
     <div class="row mb-3 mt-3">
-        <div class="col-mb-7">
+        <div class="col-md-7">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">Listado de revolturas</li>
@@ -373,7 +401,7 @@ include "../../conexion/conexion.php";
 
 <div class="container-fluid" style="border: 1px solid #cccccc; border-radius: 10px; margin-bottom: 50px;">
     <div class="table-responsive mt-3">
-        <table class="table table-hover" cellpadding="0" cellspacing="0" border="0" class="display" id="dataTableRevolturas" style="width: 100%;">
+        <table class="table table-hover display" cellpadding="0" cellspacing="0" border="0" id="dataTableRevolturas" style="width: 100%;">
             <thead>
                 <tr>
                     <th>Clave</th>

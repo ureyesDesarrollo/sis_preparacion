@@ -3524,3 +3524,5 @@
 
 2026-03-23 10:11:07 - No se pudo conectar con la impresora (10060): Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder.
 
+2026-08-31 14:02:16 - No se pudo conectar con la impresora (113): No route to host
+2026-09-01 08:00:25 - No se pudo conectar con la impresora (113): No route to host
