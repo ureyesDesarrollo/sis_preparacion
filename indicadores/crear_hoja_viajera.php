@@ -252,9 +252,11 @@ $textoParametrosFinal = implode("\n", $textoParametros);
 ob_start();
 
 // Cargar plantilla
+$zona = new DateTimeZone('-06:00');
+$ahora = new DateTime('now', $zona);
 $template = new TemplateProcessor(__DIR__ . '/hoja_viajera.docx');
 $template->setValue('proceso', $textoFinal);
-$template->setValue('hora_liberacion', date('d/m/Y H:i'));
+$template->setValue('hora_liberacion', $ahora->format('d/m/Y H:i'));
 $template->setValue('materiales', $textoMaterialesFinal);
 $template->setValue('parametros', $textoParametrosFinal);
 $template->setValue('toneladas', implode("\n", $textoToneladas));

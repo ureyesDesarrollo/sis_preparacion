@@ -89,11 +89,15 @@ include "../../conexion/conexion.php";
                     data: null,
                     render: function(data, type, row) {
                         <?php if (fnc_permiso($_SESSION['privilegio'], 46, 'upe_listar') == 1 || $_SESSION['privilegio'] == 26) { ?>
-                            return '<a href="#"><i class="btn-qr-revoltura fa-solid fa-qrcode" data-rev="' + row.rev_id + '"></i></a>';
+                            if (row.rev_etiquetado == 0) {
+                                return '<a href="#"><i class="btn-qr-revoltura fa-solid fa-qrcode" data-rev="' + row.rev_id + '"></i></a>';
+                            } else {
+                                return '<a href="#"><i class="btn-qr-revoltura fa-solid fa-qrcode" style="color: gray;" title="Etiquetas generadas"></i></a>';
+                            }
                         <?php } else { ?>
                             return '';
                         <?php } ?>
-                    }
+                    },
                 },
                 {
                     data: 'usu_nombre'
@@ -132,7 +136,7 @@ include "../../conexion/conexion.php";
                     data: 'rev_estatus',
                     render: function(data, type, row) {
                         <?php if ((fnc_permiso($_SESSION['privilegio'], 46, 'upe_editar') == 1) || $_SESSION['privilegio'] == 20 || $_SESSION['privilegio'] == 24) { ?>
-                            if ((data == '2') && (row.cal_id != null && row.cal_id != '0')) {
+                            if (data == '2') {
                                 return '<a href="#"><i class="btn-parametros fa-regular fa-pen-to-square" data-rev="' + row.rev_id + '"></i></a>';
                             } else {
                                 if (data == '3') {
@@ -347,26 +351,86 @@ include "../../conexion/conexion.php";
         });
 
         $('#dataTableRevolturas').on('click', '.btn-qr-revoltura', function(e) {
-            let rev_id = $(this).data('rev');
 
             e.preventDefault();
-            // Construir la URL con parámetros
-            const url = `funciones/revolturas_hoja_qr?rev_id=${rev_id}`;
 
-            // Crear un enlace invisible y hacer clic para descargar
-            const link = document.createElement('a');
-            link.href = url;
-            link.target = '_self';
-            link.click();
+            const rev_id = $(this).data('rev');
+
+            $.ajax({
+                url: 'funciones/revolturas_etiquetado.php',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+
+                data: JSON.stringify({
+                    rev_id: rev_id
+                }),
+
+                success: function(response) {
+
+                    if (response.success) {
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Etiquetas generadas correctamente',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        // Actualizar tabla
+                        $('#dataTableRevolturas')
+                            .DataTable()
+                            .ajax
+                            .reload(null, false);
+
+                        // Descargar documento
+                        const url =
+                            `funciones/revolturas_hoja_qr.php?rev_id=${rev_id}`;
+
+                        const link = document.createElement('a');
+
+                        link.href = url;
+                        link.download = '';
+                        document.body.appendChild(link);
+
+                        link.click();
+
+                        document.body.removeChild(link);
+
+                    } else {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al generar etiquetas',
+                            text: response.error
+                        });
+
+                    }
+                },
+
+                error: function(jqXHR, textStatus, errorThrown) {
+
+                    console.error(
+                        'Error en la solicitud AJAX:',
+                        textStatus,
+                        errorThrown
+                    );
+
+                    console.log(jqXHR.responseText);
+                }
+            });
+
         });
 
-        $('#dataTableRevolturas').on('click', '.btn-editar-cliente', function(){
+        $('#dataTableRevolturas').on('click', '.btn-editar-cliente', function() {
             let rev_id = $(this).data('rev');
             $.ajax({
                 type: 'POST',
-                data: {'rev_id': rev_id},
+                data: {
+                    'rev_id': rev_id
+                },
                 url: 'funciones/revolturas_modal_editar_cliente.php',
-                success: function(result){
+                success: function(result) {
                     $('#modal_revolturas').html(result);
                     $('#modal_revolturas').modal('show');
                 }

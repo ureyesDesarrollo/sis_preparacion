@@ -8,20 +8,29 @@ $cnx = Conectarse();
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   try {
     $sql = "SELECT
-            oe.oe_id AS orden_id,
-            oe.oe_fecha AS fecha_creacion,
-            oe.cte_id AS cliente_id,
-            cte.cte_nombre AS cliente_nombre,
-            oe.oe_estado AS estado,
-            cte.cte_rfc AS rfc,
-            f.fe_factura as factura
-        FROM
-            rev_orden_embarque oe
-        LEFT JOIN
-            rev_clientes cte ON oe.cte_id = cte.cte_id
-        LEFT JOIN rev_revolturas_pt_facturas f ON oe.oe_id = f.orden_embarque_id
-        ORDER BY
-            oe.oe_id DESC";
+    oe.oe_id AS orden_id,
+    oe.oe_fecha AS fecha_creacion,
+    oe.cte_id AS cliente_id,
+    cte.cte_nombre AS cliente_nombre,
+    oe.oe_estado AS estado,
+    cte.cte_rfc AS rfc,
+    fac.facturas AS factura
+FROM rev_orden_embarque AS oe
+LEFT JOIN rev_clientes AS cte
+    ON oe.cte_id = cte.cte_id
+LEFT JOIN (
+    SELECT
+        orden_embarque_id,
+        GROUP_CONCAT(
+            DISTINCT fe_factura
+            ORDER BY fe_factura
+            SEPARATOR ', '
+        ) AS facturas
+    FROM rev_revolturas_pt_facturas
+    GROUP BY orden_embarque_id
+) AS fac
+    ON oe.oe_id = fac.orden_embarque_id
+ORDER BY oe.oe_id DESC;";
 
     $listado_ordenes_embarque = mysqli_query($cnx, $sql);
 
