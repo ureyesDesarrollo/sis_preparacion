@@ -75,13 +75,49 @@ imagedestroy($image);
 |--------------------------------------------------------------------------
 */
 
-$templatePath =
-    __DIR__ .
-    '/template_revoltura_10_paginas.docx';
+$paths = [
+    'template_azul' => __DIR__ . '/template_azul.docx',
+    'template_dorada' => __DIR__ . '/template_dorada.docx',
+    'template_morado' => __DIR__ . '/template_morado.docx',
+    'template_verde' => __DIR__ . '/template_verde.docx',
+    'template_default' => __DIR__ . '/template_revoltura_10_paginas.docx',
+];
 
-$template = new TemplateProcessor(
-    $templatePath
-);
+$calidadNormalizada = strtoupper(trim($calidad));
+
+$templatePath = $paths['template_default'];
+
+// Selección por calidad para TODOS los clientes
+switch ($calidadNormalizada) {
+    case 'AZUL':
+        $templatePath = $paths['template_azul'];
+        break;
+
+    case 'DORADA':
+    case '280':
+        $templatePath = $paths['template_dorada'];
+        break;
+
+    case 'MORADO':
+        $templatePath = $paths['template_morado'];
+        break;
+
+    case 'VERDE':
+    case '250':
+        $templatePath = $paths['template_verde'];
+        break;
+}
+
+// Excepciones específicas por cliente
+if ($id_cliente == 251) {
+    $templatePath = $paths['template_dorada'];
+}
+
+if (!file_exists($templatePath)) {
+    die('La plantilla no existe: ' . $templatePath);
+}
+
+$template = new TemplateProcessor($templatePath);
 
 
 /*
@@ -95,13 +131,15 @@ $template->setValue(
     $rev_folio
 );
 
+$clienteEtiqueta = $cliente;
+
 if ($id_cliente == 74) {
-    $template->setValue('cliente', strtoupper($calidad) . ' - ' . $cliente);
-} else if ($id_cliente == 251) {
-    $template->setValue('cliente', 'DORADA' . ' - ' . 'VENTA PUBLICO EN GENERAL');
-} else {
-    $template->setValue('cliente', $cliente);
+    $clienteEtiqueta = strtoupper($calidad) . ' - ' . $cliente;
+} elseif ($id_cliente == 251) {
+    $clienteEtiqueta = 'DORADA - VENTA PUBLICO EN GENERAL';
 }
+
+$template->setValue('cliente', $clienteEtiqueta);
 
 /*
 |--------------------------------------------------------------------------
