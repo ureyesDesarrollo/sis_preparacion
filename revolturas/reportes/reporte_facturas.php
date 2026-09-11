@@ -575,10 +575,22 @@
         <label><input type="radio" name="tabla" value="tablaTarimas"> Tarimas</label>
     </div>
     <div class="row p-3">
-        <div class="col-md-6">
-            <button class="btn btn-sm btn-primary" id="AgregarNotaCredito">Agregar Nota de credito</button>
-        </div>
+    <div class="col-12 d-flex justify-content-start gap-2">
+        <button
+            class="btn btn-sm btn-primary"
+            id="AgregarNotaCredito">
+            <i class="fas fa-file-invoice-dollar me-1"></i>
+            Agregar Nota de crédito
+        </button>
+
+        <button
+            class="btn btn-sm btn-success"
+            id="AgregarAnticipo">
+            <i class="fas fa-money-bill-wave me-1"></i>
+            Agregar Anticipo
+        </button>
     </div>
+</div>
     <div class="container-fluid" style="border: 1px solid #cccccc; border-radius: 10px; margin-bottom: 50px;" id="tabla">
         <div class="table-container" id="tablaEmpacado">
             <div class="table-responsive mt-3">
@@ -680,6 +692,10 @@
     $(document).ready(function() {
         $('#AgregarNotaCredito').on('click', function() {
             ingresar_nota_credito();
+        });
+
+        $('#AgregarAnticipo').on('click', function() {
+            ingresar_anticipo();
         });
     });
     async function ingresar_cartaporte(factura) {
@@ -802,4 +818,74 @@
             confirmButtonText: "Aceptar"
         });
     }
+
+   async function ingresar_anticipo() {
+
+    const { value: result } = await Swal.fire({
+        title: "Ingresa el folio del anticipo",
+        input: "text",
+        inputAttributes: {
+            autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Guardar",
+        cancelButtonText: "Cancelar",
+        showLoaderOnConfirm: true,
+
+        preConfirm: async (anticipoInput) => {
+
+            if (!anticipoInput) {
+                Swal.showValidationMessage(
+                    "Por favor ingresa el folio del anticipo."
+                );
+                return false;
+            }
+
+            try {
+
+                const response = await fetch(
+                    "reportes/capturar_anticipo.php",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            anticipo: anticipoInput
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.error || "Error al guardar el anticipo"
+                    );
+                }
+
+                return {
+                    ...data,
+                    anticipo: anticipoInput
+                };
+
+            } catch (error) {
+
+                Swal.showValidationMessage(error.message);
+                return false;
+            }
+        },
+
+        allowOutsideClick: () => !Swal.isLoading()
+    });
+
+    if (!result) return;
+
+    Swal.fire({
+        icon: "success",
+        title: "Anticipo registrado",
+        text: `El anticipo ${result.anticipo} ha sido guardado correctamente.`,
+        confirmButtonText: "Aceptar"
+    });
+}
 </script>
