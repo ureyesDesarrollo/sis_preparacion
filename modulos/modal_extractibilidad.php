@@ -10,7 +10,7 @@ $cnx = Conectarse();
 extract($_POST);
 
 
-$cadena = mysqli_query($cnx, "SELECT inv_id,mat_id,inv_kg_totales,inv_no_ticket,inv_fecha,prv_id, inv_extrac, inv_especial,inv_ban_flor, inv_alcalinidad,inv_calcios,inv_humedad, inv_ce, inv_humedad_origen, inv_solidos FROM inventario WHERE inv_id='$inv_id'") or die(mysqli_error($cnx) . "Error: en consultar");
+$cadena = mysqli_query($cnx, "SELECT inv_id,mat_id,inv_kg_totales,inv_no_ticket,inv_fecha,prv_id, inv_extrac, inv_especial,inv_ban_flor, inv_alcalinidad,inv_calcios,inv_humedad, inv_ce, inv_humedad_origen, inv_solidos, inv_ph, inv_rendimiento, inv_riesgo FROM inventario WHERE inv_id='$inv_id'") or die(mysqli_error($cnx) . "Error: en consultar");
 $registros = mysqli_fetch_assoc($cadena);
 $rows = mysqli_num_rows($cadena);
 
@@ -44,6 +44,51 @@ $reg_prov = mysqli_fetch_assoc($cad_prov);
             });
             return false;
         });
+
+        let rendimientoTimer;
+
+        $('#txt_rendimiento').on('input', function() {
+            clearTimeout(rendimientoTimer);
+
+            const input = $(this);
+
+            rendimientoTimer = setTimeout(function() {
+                const rendimiento = parseFloat(input.val());
+
+                let riesgo = '';
+                let className = '';
+
+                if (!Number.isNaN(rendimiento)) {
+
+                    if (rendimiento >= 38) {
+                        riesgo = 'ALTO - Sobre-tratado';
+                        className = 'riesgo-danger';
+
+                    } else if (rendimiento >= 34) {
+                        riesgo = 'MEDIO - Reactivo';
+                        className = 'riesgo-warning';
+
+                    } else if (rendimiento >= 26) {
+                        riesgo = 'BAJO - Normal';
+                        className = 'riesgo-success';
+
+                    } else if (rendimiento >= 22) {
+                        riesgo = 'MEDIO - Limite bajo';
+                        className = 'riesgo-warning';
+
+                    } else {
+                        riesgo = 'ALTO - Bajo rendimiento';
+                        className = 'riesgo-danger';
+                    }
+                }
+
+                $('#txt_riesgo')
+                    .val(riesgo)
+                    .removeClass('riesgo-danger riesgo-warning riesgo-success')
+                    .addClass(className);
+
+            }, 300);
+        });
     });
 
     //carga opciones de menu sin importación
@@ -53,6 +98,23 @@ $reg_prov = mysqli_fetch_assoc($cad_prov);
 </script>
 <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
  -->
+
+<style>
+    .riesgo-danger {
+        background-color: #dc3545 !important;
+        color: white !important;
+    }
+
+    .riesgo-warning {
+        background-color: #ffc107 !important;
+        color: #212529 !important;
+    }
+
+    .riesgo-success {
+        background-color: #28a745 !important;
+        color: white !important;
+    }
+</style>
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -85,14 +147,14 @@ $reg_prov = mysqli_fetch_assoc($cad_prov);
                         <label for="inputPassword4">Material</label>
                         <input class="form-control" type="text" readonly value="<?php echo $reg_mat['mat_nombre'] ?>">
                     </div>
-                    <div class="form-group col-md-2">
+                    <!--<div class="form-group col-md-2 d-none">
                         <label for="inputPassword4">Alcalinidad total</label>
                         <input onKeyPress="return isNumberKey(event, this);" class="form-control" type="text" name="txt_alcalinidad" id="txt_alcalinidad" value="<?php echo $registros['inv_alcalinidad'] ?>">
                     </div>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-2 d-none">
                         <label for="inputPassword4">Calcios</label>
                         <input onKeyPress="return isNumberKey(event, this);" class="form-control" type="text" name="txt_calcios" id="txt_calcios" value="<?php echo $registros['inv_calcios'] ?>">
-                    </div>
+                    </div>-->
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">Solidos</label>
                         <input onKeyPress="return isNumberKey(event, this);" class="form-control" type="text" name="txt_solidos" id="txt_solidos" value="<?php echo $registros['inv_solidos'] ?>">
@@ -114,6 +176,18 @@ $reg_prov = mysqli_fetch_assoc($cad_prov);
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">Ce</label>
                         <input onKeyPress="return isNumberKey(event, this);" class="form-control" type="text" name="txt_ce" id="txt_ce" value="<?php echo $registros['inv_ce'] ?>">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>PH</label>
+                        <input onKeyPress="return isNumberKey(event, this);" class="form-control" type="text" name="txt_ph" id="txt_ph" value="<?php echo $registros['inv_ph'] ?>">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>Rendimiento</label>
+                        <input onKeyPress="return isNumberKey(event, this);" class="form-control" type="text" name="txt_rendimiento" id="txt_rendimiento" value="<?php echo $registros['inv_rendimiento'] ?>">
+                    </div>
+                    <div class="form-group col-md-7">
+                        <label>Riesgo</label>
+                        <input class="form-control" type="text" name="txt_riesgo" id="txt_riesgo" value="<?php echo $registros['inv_riesgo'] ?>" readonly>
                     </div>
                     <div class="form-group col-md-2">
                         <label for="inputPassword4">Seguimiento</label>

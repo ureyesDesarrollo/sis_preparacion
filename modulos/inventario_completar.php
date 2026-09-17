@@ -21,12 +21,13 @@ mysqli_query(
     $cnx,
     "UPDATE inventario SET inv_extrac = '$txt_ext', 
 inv_especial = '$chk_seg',
-inv_alcalinidad = '$txt_alcalinidad',
-inv_calcios = '$txt_calcios',
 inv_humedad = '$txt_humedad',
 inv_ce = '$txt_ce',
 inv_ban_flor = '$chk_flor',
-inv_solidos = '$txt_solidos'
+inv_solidos = '$txt_solidos',
+inv_ph = '$txt_ph',
+inv_rendimiento = '$txt_rendimiento',
+inv_riesgo = '$txt_riesgo'
 WHERE inv_id = '$hdd_id' "
 )
     or die(mysqli_error($cnx) . " Error al actualizar el inventario");
