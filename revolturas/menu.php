@@ -121,6 +121,8 @@ include "../funciones/funciones.php";
                     <?php if (fnc_permiso($_SESSION['privilegio'], 51, 'upe_listar') == 1) { ?>
                         <li><a class="menu-item dropdown-item" href="funciones/pruebas_comportamiento.php">Pruebas Comportamiento</a></li>
                     <?php } ?>
+
+                    <li><a class="menu-item dropdown-item" href="funciones/cobranza/conciliacion.php">Cobranza R - Concilición</a></li>
                 </ul>
             </li>
 
