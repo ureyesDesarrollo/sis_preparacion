@@ -859,6 +859,39 @@ $orden_id = isset($_GET['orden_id']) ? (int)$_GET['orden_id'] : 0;
         margin: 0.8cm;
       }
     }
+
+
+    .recolecta-tarimas {
+      margin: 8px 16px;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .recolecta-titulo {
+      font-size: 12px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .firma-cliente {
+      width: 220px;
+      margin: 35px 0 5px auto;
+      text-align: center;
+    }
+
+    @media print {
+      .recolecta-tarimas {
+        margin: 7px 14px;
+        padding: 8px;
+      }
+
+      .firma-cliente {
+        width: 210px;
+        margin-top: 28px;
+      }
+    }
   </style>
 </head>
 
@@ -909,6 +942,26 @@ $orden_id = isset($_GET['orden_id']) ? (int)$_GET['orden_id'] : 0;
           </label>
         </div>
       </div>
+
+      <div class="campo-form">
+        <label>Recolecta de tarimas</label>
+        <div class="opciones-flete">
+          <label>
+            <input type="radio"
+              name="recolecta_tarimas"
+              value="SI">
+            Sí
+          </label>
+          <label>
+            <input type="radio"
+              name="recolecta_tarimas"
+              value="NO"
+              checked>
+            No
+          </label>
+        </div>
+      </div>
+
 
       <div class="campo-form" style="grid-column: 1 / -1;">
         <label for="observaciones_manual">Observaciones adicionales</label>
@@ -1063,6 +1116,16 @@ $orden_id = isset($_GET['orden_id']) ? (int)$_GET['orden_id'] : 0;
         'FLETE POR COBRAR AL REMITENTE';
     }
 
+
+    function recolectarTarimas() {
+      const seleccionado = document.querySelector(
+        'input[name="recolecta_tarimas"]:checked'
+      );
+
+      return seleccionado?.value === 'SI';
+    }
+
+
     function obtenerObservacionesManual() {
       const el = document.getElementById('observaciones_manual');
       return el ? el.value.trim() : '';
@@ -1209,6 +1272,7 @@ $orden_id = isset($_GET['orden_id']) ? (int)$_GET['orden_id'] : 0;
       const lugarExpedicion = encabezado.lugar_expedicion || 'LEÓN, GTO.';
       const transportista = obtenerTransportistaSeleccionado();
       const fleteTexto = obtenerFleteTexto();
+      const mostrarRecolecta = recolectarTarimas();
       const observacionesHtml = construirObservacionesHtml();
 
       const filas = detalle.map((item, index) => `
@@ -1321,6 +1385,21 @@ $orden_id = isset($_GET['orden_id']) ? (int)$_GET['orden_id'] : 0;
             CONDICIÓN DE FLETE: ${escaparHtml(fleteTexto)}
           </div>
 
+          ${mostrarRecolecta ? `
+          <div class="recolecta-tarimas">
+              <div class="recolecta-titulo">
+                  RECOLECTAR TARIMAS
+              </div>
+
+              <div class="firma-cliente">
+                  <div class="firma-linea"></div>
+                  <div class="firma-titulo">
+                      FIRMA DEL CLIENTE
+                  </div>
+              </div>
+          </div>
+      ` : ''}
+
           <div class="firma-recibi">
             <div class="firma-linea"></div>
             <div class="firma-titulo">RECIBÍ</div>
@@ -1412,16 +1491,19 @@ $orden_id = isset($_GET['orden_id']) ? (int)$_GET['orden_id'] : 0;
       }
     });
 
+
     document.addEventListener('change', function(e) {
       if (
         e.target.id === 'transportista_select' ||
         e.target.id === 'direccion_entrega_select' ||
         e.target.name === 'flete_cobro' ||
-        e.target.name === 'tipo_documento'
+        e.target.name === 'tipo_documento' ||
+        e.target.name === 'recolecta_tarimas'
       ) {
         aplicarDatosFormulario();
       }
     });
+
 
     cargarRecibo();
   </script>
